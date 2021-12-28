@@ -5,10 +5,13 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 from . import models
 
+admin.site.site_header = 'GIU Internship Portal'
+admin.site.index_title = 'GIU IP Admin'
+
 
 class SuperUser(UserAdmin):
     model = User
-    list_display = ['email', 'username', 'is_staff']
+    list_display = ['pk', 'email', 'username', 'is_staff']
 
 
 admin.site.register(User, SuperUser)

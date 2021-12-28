@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from . import forms
 from . import models
 from django.contrib.auth import login
@@ -106,3 +106,46 @@ class CareerOfficeCoordinatorSignUpView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('login')
+
+
+# Edit and Delete User Views
+
+
+class StudentUpdateView(UpdateView):
+    model = models.Student
+    fields = ('student_address',
+              'semester',
+              'faculty',
+              'major',
+              'gpa',)
+    template_name = 'editusers/student_edit.html'
+    context_object_name = 'student_edit_view'
+
+
+class EmployerUpdateView(UpdateView):
+    model = models.Employer
+    fields = ('company_name',
+              'employer_address',
+              'phone_number',
+              'fax_number',
+              'website',
+              'type_of_business',
+              'industry',
+              'number_of_current_employees',
+              'products_or_services')
+    template_name = 'editusers/employer_edit.html'
+    context_object_name = 'employer_edit_view'
+
+
+class FacultyRepresentativeUpdateView(UpdateView):
+    model = models.FacultyRepresentative
+    fields = ('faculty',)
+    template_name = 'editusers/facultyrep_edit.html'
+    context_object_name = 'facultyrep_edit_view'
+
+
+class AcademicAdvisorUpdateView(UpdateView):
+    model = models.AcademicAdvisor
+    fields = ('faculty',)
+    template_name = 'editusers/academicadv_edit.html'
+    context_object_name = 'academicadv_edit_view'
