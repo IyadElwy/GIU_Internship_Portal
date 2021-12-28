@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Student{% endblock title %}
+
+{% block content %}
+
+    <div class="article-entry">
+        <h2>{{ student_profile_view.user.username }}</h2>
+        <p>Name: {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }}
+            {{ student_profile_view.user.last_name }}</p>
+        <p>Email: {{ student_profile_view.user.email }}</p>
+        <p>Address: {{ student_profile_view.student_address }}</p>
+        <p>GIU ID: {{ student_profile_view.student_university_id }}</p>
+        <p>Birthdate: {{ student_profile_view.birthdate }}</p>
+        <p>Semester: {{ student_profile_view.semester }}</p>
+        <p>Faculty: {{ student_profile_view.faculty }}</p>
+        <p>Major: {{ student_profile_view.major }}</p>
+        <p>Gpa: {{ student_profile_view.gpa }}</p>
+    </div>
+    <p><a href="{% url 'student_edit' student_profile_view.pk %}">Edit</a> |
+        <a href="{% url 'user_delete' student_profile_view.pk %}">Delete</a></p>
+    <p>Back to <a href="{% url 'login' %}">Home</a>.</p>
+
+{% endblock content %}
+
+{#TODO: Remove class names for article#}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Employer{% endblock title %}
+
+{% block content %}
+
+    <div class="article-entry">
+        <h2>{{ employer_profile_view.company_name }}</h2>
+        <p>Username: {{ employer_profile_view.user.username }} </p>
+        <p>Email: {{ employer_profile_view.user.email }} </p>
+        <p>Company Address: {{ employer_profile_view.employer_address }}</p>
+        <p>Company Phone: {{ employer_profile_view.phone_number }}</p>
+        {% if employer_profile_view.fax_number %}
+            <p>Fax Number: {{ employer_profile_view.fax_number }}</p>
+        {% endif %}
+        <p>Website: {{ employer_profile_view.website }}</p>
+        <p>Industry: {{ employer_profile_view.industry }}</p>
+        <p>Type of business: {{ employer_profile_view.type_of_business }}</p>
+        <p>Products or services: {{ employer_profile_view.products_or_services }}</p>
+        <p>Establishment Year: {{ employer_profile_view.establishment_year }}</p>
+        <p>Country of origin: {{ employer_profile_view.country_of_origin }}</p>
+        {% if employer_profile_view.number_of_current_employees %}
+            <p>Current Employee count: {{ employer_profile_view.number_of_current_employees }}</p>
+        {% endif %}
+
+
+    </div>
+    <p><a href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
+        <a href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
+    {#TODO: change to home instead of login#}
+    <p>Back to <a href="{% url 'login' %}">Home</a>.</p>
+
+{% endblock content %}
+

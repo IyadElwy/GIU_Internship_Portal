@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Representative{% endblock title %}
+
+{% block content %}
+
+    <div class="article-entry">
+        <h2>{{ facultyrep_profile_view.user.username }}</h2>
+        <p>Email: {{ facultyrep_profile_view.user.email }}</p>
+        <p>Faculty: {{ facultyrep_profile_view.faculty }}</p>
+    </div>
+    <p><a href="{% url 'facrep_edit' facultyrep_profile_view.pk %}">Edit</a> |<a
+            href="{% url 'user_delete' facultyrep_profile_view.pk %}">Delete</a></p>
+    <p>Back to <a href="{% url 'login' %}">Home</a>.</p>
+
+{% endblock content %}

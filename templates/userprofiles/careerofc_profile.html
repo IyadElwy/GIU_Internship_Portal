@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Career Office Coordinator{% endblock title %}
+
+{% block content %}
+
+    <div class="article-entry">
+        <h2>{{ careerofc_profile_view.user.username }}</h2>
+        <p>Email: {{ careerofc_profile_view.user.email }}</p>
+    </div>
+    <p><a href="{% url 'user_delete' careerofc_profile_view.pk %}">Delete</a></p>
+    <p>Back to <a href="{% url 'login' %}">Home</a>.</p>
+
+{% endblock content %}

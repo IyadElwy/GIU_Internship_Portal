@@ -49,7 +49,7 @@ class Employer(models.Model):
     establishment_year = models.DateField()
     country_of_origin = models.CharField(max_length=20)
     industry = models.CharField(max_length=20)
-    number_of_current_employees = models.PositiveIntegerField()
+    number_of_current_employees = models.PositiveIntegerField(null=True, blank=True)
     products_or_services = models.CharField(max_length=30)
 
     def __str__(self):

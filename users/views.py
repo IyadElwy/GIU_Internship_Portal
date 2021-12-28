@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from . import forms
 from . import models
 from django.contrib.auth import login
@@ -149,3 +149,47 @@ class AcademicAdvisorUpdateView(UpdateView):
     fields = ('faculty',)
     template_name = 'editusers/academicadv_edit.html'
     context_object_name = 'academicadv_edit_view'
+
+
+class UserDeleteView(DeleteView):
+    model = models.User
+    template_name = 'editusers/user_delete.html'
+    context_object_name = 'user_delete_view'
+    success_url = reverse_lazy('login')
+
+
+# User profile views
+class StudentProfileView(DetailView):
+    model = models.Student
+    template_name = 'userprofiles/student_profile.html'
+    context_object_name = 'student_profile_view'
+
+
+class EmployerProfileView(DetailView):
+    model = models.Employer
+    template_name = 'userprofiles/employer_profile.html'
+    context_object_name = 'employer_profile_view'
+
+
+class AdminProfileView(DetailView):
+    model = models.GIUAdmin
+    template_name = 'userprofiles/admin_profile.html'
+    context_object_name = 'admin_profile_view'
+
+
+class FacultyRepresentativeProfileView(DetailView):
+    model = models.FacultyRepresentative
+    template_name = 'userprofiles/facultyrep_profile.html'
+    context_object_name = 'facultyrep_profile_view'
+
+
+class AcademicAdvisorProfileView(DetailView):
+    model = models.AcademicAdvisor
+    template_name = 'userprofiles/academicadv_profile.html'
+    context_object_name = 'acadadv_profile_view'
+
+
+class careerofficeecoordinatorProfileView(DetailView):
+    model = models.CareerOfficeCoordinator
+    template_name = 'userprofiles/careerofc_profile.html'
+    context_object_name = 'careerofc_profile_view'
