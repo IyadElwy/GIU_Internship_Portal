@@ -30,7 +30,8 @@
                 <div class="article-entry">
                     <p>Email: {{ admin_profile_view.user.email }}</p>
                 </div>
-                <p><a href="{% url 'user_delete' admin_profile_view.pk %}">Delete</a></p>
+                <p><a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
+                    <a class="no_underline" href="{% url 'user_delete' admin_profile_view.pk %}">Delete</a></p>
 
 
             </div>

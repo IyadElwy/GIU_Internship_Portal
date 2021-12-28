@@ -45,8 +45,9 @@
                         <p>Current Employee count: {{ employer_profile_view.number_of_current_employees }}</p>
                     {% endif %}
                 </div>
-                <p><a href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
-                    <a href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
+                <p><a class="no_underline" href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
+                    <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
+                    <a class="no_underline" href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
 
 
             </div>
