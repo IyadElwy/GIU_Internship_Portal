@@ -3,7 +3,6 @@ from . import views
 
 urlpatterns = [
     # Signup urls
-    # path('signup/', views.GenericSignUpView.as_view(), name='signup'),
     path('student/signup/', views.StudentSignUpView.as_view(), name='student_signup'),
     path('employer/signup/', views.EmployerSignUpView.as_view(), name='employer_signup'),
     path('admin/signup/', views.GIUAdminSignUpView.as_view(), name='admin_signup'),
@@ -30,5 +29,8 @@ urlpatterns = [
     path('academicadvisor/<int:pk>/edit', views.AcademicAdvisorUpdateView.as_view(), name='acadadv_edit'),
     # Delete urls
     path('<int:pk>/delete', views.UserDeleteView.as_view(), name='user_delete'),
+    # successful signup
+    path('signupsuccessful/', views.SuccessfulSignupView.as_view(), name='success_signup'),
+    path('signupsuccessfulemployer/', views.SuccessfulSignupEmployerView.as_view(), name='success_signup_employer'),
 
 ]

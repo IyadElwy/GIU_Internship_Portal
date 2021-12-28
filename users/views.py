@@ -1,5 +1,5 @@
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from . import forms
 from . import models
 from django.contrib.auth import login
@@ -7,10 +7,18 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
+class SuccessfulSignupView(TemplateView):
+    template_name = 'signup/successful_signup_others.html'
+
+
+class SuccessfulSignupEmployerView(TemplateView):
+    template_name = 'signup/successful_signup_employer.html'
+
+
 class StudentSignUpView(CreateView):
     model = models.Student
     form_class = forms.StudentSignUpForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('success_signup')
     context_object_name = 'student_signup_view'
     template_name = 'signup/student_signup.html'
 
@@ -21,13 +29,13 @@ class StudentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('login')
+        return redirect('success_signup')
 
 
 class EmployerSignUpView(CreateView):
     model = models.Employer
     form_class = forms.EmployerSignUpForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('success_signup_employer')
     context_object_name = 'employer_signup_view'
     template_name = 'signup/employer_signup.html'
 
@@ -38,13 +46,13 @@ class EmployerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('login')
+        return redirect('success_signup_employer')
 
 
 class GIUAdminSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = models.GIUAdmin
     form_class = forms.GIUAdminSignUpForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('success_signup')
     context_object_name = 'admin_signup_view'
     template_name = 'signup/admin_signup.html'
     login_url = 'login'
@@ -56,7 +64,7 @@ class GIUAdminSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('login')
+        return redirect('success_signup')
 
     def test_func(self):
         return self.request.user.is_admin
@@ -65,7 +73,7 @@ class GIUAdminSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 class FacultyRepresentativeSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = models.FacultyRepresentative
     form_class = forms.FacultyRepresentativeForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('success_signup')
     context_object_name = 'facultyrepresentative_signup_view'
     template_name = 'signup/facultyrepresentative_signup.html'
     login_url = 'login'
@@ -77,7 +85,7 @@ class FacultyRepresentativeSignUpView(LoginRequiredMixin, UserPassesTestMixin, C
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('login')
+        return redirect('success_signup')
 
     def test_func(self):
         return self.request.user.is_admin
@@ -86,7 +94,7 @@ class FacultyRepresentativeSignUpView(LoginRequiredMixin, UserPassesTestMixin, C
 class AcademicAdvisorSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = models.AcademicAdvisor
     form_class = forms.AcademicAdvisorForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('success_signup')
     context_object_name = 'academicadvisor_signup_view'
     template_name = 'signup/academicadvisor_signup.html'
     login_url = 'login'
@@ -98,7 +106,7 @@ class AcademicAdvisorSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateV
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('login')
+        return redirect('success_signup')
 
     def test_func(self):
         return self.request.user.is_admin
@@ -107,7 +115,7 @@ class AcademicAdvisorSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateV
 class CareerOfficeCoordinatorSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = models.CareerOfficeCoordinator
     form_class = forms.CareerOfficeCoordinatorForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('success_signup')
     context_object_name = 'careerofficeecoordinator_signup_view'
     template_name = 'signup/careerofficeecoordinator_signup.html'
     login_url = 'login'
@@ -119,7 +127,7 @@ class CareerOfficeCoordinatorSignUpView(LoginRequiredMixin, UserPassesTestMixin,
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('login')
+        return redirect('success_signup')
 
     def test_func(self):
         return self.request.user.is_admin
@@ -140,7 +148,11 @@ class StudentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = 'login'
 
     def test_func(self):
-        return self.request.user.is_student and self.request.user == self.object.user
+        return self.request.user.is_student and self.request.user.pk == self.get_object().pk
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('student_profile', kwargs={"pk": pk})
 
 
 class EmployerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -159,7 +171,11 @@ class EmployerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = 'login'
 
     def test_func(self):
-        return self.request.user.is_employer and self.request.user == self.object.user
+        return self.request.user.is_employer and self.request.user.pk == self.get_object().pk
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('employer_profile', kwargs={"pk": pk})
 
 
 class FacultyRepresentativeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -169,7 +185,11 @@ class FacultyRepresentativeUpdateView(LoginRequiredMixin, UserPassesTestMixin, U
     context_object_name = 'facultyrep_edit_view'
 
     def test_func(self):
-        return self.request.user.is_faculty_representative and self.request.user == self.object.user
+        return self.request.user.is_faculty_representative and self.request.user.pk == self.get_object().pk
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('facrep_profile', kwargs={"pk": pk})
 
 
 class AcademicAdvisorUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -179,7 +199,11 @@ class AcademicAdvisorUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateV
     context_object_name = 'academicadv_edit_view'
 
     def test_func(self):
-        return self.request.user.is_academic_advisor and self.request.user == self.object.user
+        return self.request.user.is_academic_advisor and self.request.user.pk == self.get_object().pk
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('acadadv_profile', kwargs={"pk": pk})
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -189,46 +213,64 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('login')
 
     def test_func(self):
-        return self.request.user == self.object.user
+        return self.request.user.pk == self.get_object().pk
 
 
 # User profile views (if user views their own profile)
-class StudentProfileView(LoginRequiredMixin, DetailView):
+class StudentProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.Student
     template_name = 'userprofiles/student_profile.html'
     context_object_name = 'student_profile_view'
     login_url = 'login'
 
+    def test_func(self):
+        return self.request.user.pk == self.get_object().pk
 
-class EmployerProfileView(LoginRequiredMixin, DetailView):
+
+class EmployerProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.Employer
     template_name = 'userprofiles/employer_profile.html'
     context_object_name = 'employer_profile_view'
     login_url = 'login'
 
+    def test_func(self):
+        return self.request.user.pk == self.get_object().pk
 
-class AdminProfileView(LoginRequiredMixin, DetailView):
+
+class AdminProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.GIUAdmin
     template_name = 'userprofiles/admin_profile.html'
     context_object_name = 'admin_profile_view'
     login_url = 'login'
 
+    def test_func(self):
+        return self.request.user.pk == self.get_object().pk
 
-class FacultyRepresentativeProfileView(LoginRequiredMixin, DetailView):
+
+class FacultyRepresentativeProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.FacultyRepresentative
     template_name = 'userprofiles/facultyrep_profile.html'
     context_object_name = 'facultyrep_profile_view'
     login_url = 'login'
 
+    def test_func(self):
+        return self.request.user.pk == self.get_object().pk
 
-class AcademicAdvisorProfileView(LoginRequiredMixin, DetailView):
+
+class AcademicAdvisorProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.AcademicAdvisor
     template_name = 'userprofiles/academicadv_profile.html'
     context_object_name = 'acadadv_profile_view'
 
+    def test_func(self):
+        return self.request.user.pk == self.get_object().pk
 
-class CareerOfficeCoordinatorProfileView(LoginRequiredMixin, DetailView):
+
+class CareerOfficeCoordinatorProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.CareerOfficeCoordinator
     template_name = 'userprofiles/careerofc_profile.html'
     context_object_name = 'careerofc_profile_view'
     login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.pk == self.get_object().pk

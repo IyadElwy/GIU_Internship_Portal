@@ -1,14 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'userprofiles/profile_base.html' %}
 
-{% block title %}Career Office Coordinator{% endblock title %}
+{% block profiletyple %}Career Office Coordinator{% endblock profiletyple %}
 
-{% block content %}
+{% block navitems %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'careerofc_profile' careerofc_profile_view.pk %}">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show Academic Advisors</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show Applications</a>
+    </li>
 
-    <div class="article-entry">
-        <h2>{{ careerofc_profile_view.user.username }}</h2>
-        <p>Email: {{ careerofc_profile_view.user.email }}</p>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{{ careerofc_profile_view.user.username }}</h1>
+
+                <div class="article-entry">
+                    <p>Email: {{ careerofc_profile_view.user.email }}</p>
+                </div>
+                <p><a href="{% url 'user_delete' careerofc_profile_view.pk %}">Delete</a></p>
+
+
+            </div>
+        </div>
     </div>
-    <p><a href="{% url 'user_delete' careerofc_profile_view.pk %}">Delete</a></p>
-    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
+    <br>
+    <br>
 
-{% endblock content %}
+{% endblock profile_body %}

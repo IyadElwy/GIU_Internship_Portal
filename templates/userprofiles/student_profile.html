@@ -1,26 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'userprofiles/profile_base.html' %}
 
-{% block title %}Student{% endblock title %}
+{% block profiletyple %}Student{% endblock profiletyple %}
 
-{% block content %}
+{% block navitems %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'student_profile' student_profile_view.pk %}">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Resume</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Applications</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Active Internships</a>
+    </li>
 
-    <div class="article-entry">
-        <h2>{{ student_profile_view.user.username }}</h2>
-        <p>Name: {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }}
-            {{ student_profile_view.user.last_name }}</p>
-        <p>Email: {{ student_profile_view.user.email }}</p>
-        <p>Address: {{ student_profile_view.student_address }}</p>
-        <p>GIU ID: {{ student_profile_view.student_university_id }}</p>
-        <p>Birthdate: {{ student_profile_view.birthdate }}</p>
-        <p>Semester: {{ student_profile_view.semester }}</p>
-        <p>Faculty: {{ student_profile_view.faculty }}</p>
-        <p>Major: {{ student_profile_view.major }}</p>
-        <p>Gpa: {{ student_profile_view.gpa }}</p>
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{{ student_profile_view.user.username }}</h1>
+
+                <p>Name: {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }}
+                    {{ student_profile_view.user.last_name }}</p>
+                <p>Email: {{ student_profile_view.user.email }}</p>
+                <p>Address: {{ student_profile_view.student_address }}</p>
+                <p>GIU ID: {{ student_profile_view.student_university_id }}</p>
+                <p>Birthdate: {{ student_profile_view.birthdate }}</p>
+                <p>Semester: {{ student_profile_view.semester }}</p>
+                <p>Faculty: {{ student_profile_view.faculty }}</p>
+                <p>Major: {{ student_profile_view.major }}</p>
+                <p>Gpa: {{ student_profile_view.gpa }}</p>
+                <p><a class="no_underline" href="{% url 'student_edit' student_profile_view.pk %}">Edit</a> |
+                    <a class="no_underline" href="{% url 'user_delete' student_profile_view.pk %}">Delete</a></p>
+
+            </div>
+        </div>
     </div>
-    <p><a href="{% url 'student_edit' student_profile_view.pk %}">Edit</a> |
-        <a href="{% url 'user_delete' student_profile_view.pk %}">Delete</a></p>
-    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
+    <br>
+    <br>
 
-{% endblock content %}
+{% endblock profile_body %}
 
-{#TODO: Remove class names for article#}
+

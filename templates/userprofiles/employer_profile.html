@@ -1,33 +1,59 @@
-{% extends 'base.html' %}
+{% extends 'userprofiles/profile_base.html' %}
 
-{% block title %}Employer{% endblock title %}
+{% block profiletyple %}Employer{% endblock profiletyple %}
 
-{% block content %}
-
-    <div class="article-entry">
-        <h2>{{ employer_profile_view.company_name }}</h2>
-        <p>Username: {{ employer_profile_view.user.username }} </p>
-        <p>Email: {{ employer_profile_view.user.email }} </p>
-        <p>Company Address: {{ employer_profile_view.employer_address }}</p>
-        <p>Company Phone: {{ employer_profile_view.phone_number }}</p>
-        {% if employer_profile_view.fax_number %}
-            <p>Fax Number: {{ employer_profile_view.fax_number }}</p>
-        {% endif %}
-        <p>Website: {{ employer_profile_view.website }}</p>
-        <p>Industry: {{ employer_profile_view.industry }}</p>
-        <p>Type of business: {{ employer_profile_view.type_of_business }}</p>
-        <p>Products or services: {{ employer_profile_view.products_or_services }}</p>
-        <p>Establishment Year: {{ employer_profile_view.establishment_year }}</p>
-        <p>Country of origin: {{ employer_profile_view.country_of_origin }}</p>
-        {% if employer_profile_view.number_of_current_employees %}
-            <p>Current Employee count: {{ employer_profile_view.number_of_current_employees }}</p>
-        {% endif %}
+{% block navitems %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'employer_profile' employer_profile_view.pk %}">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Profile Status</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Post Job</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show posted jobs</a>
+    </li>
 
 
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{{ employer_profile_view.company_name }}</h1>
+
+                <div class="article-entry">
+                    <p>Username: {{ employer_profile_view.user.username }} </p>
+                    <p>Email: {{ employer_profile_view.user.email }} </p>
+                    <p>Company Address: {{ employer_profile_view.employer_address }}</p>
+                    <p>Company Phone: {{ employer_profile_view.phone_number }}</p>
+                    {% if employer_profile_view.fax_number %}
+                        <p>Fax Number: {{ employer_profile_view.fax_number }}</p>
+                    {% endif %}
+                    <p>Website: {{ employer_profile_view.website }}</p>
+                    <p>Industry: {{ employer_profile_view.industry }}</p>
+                    <p>Type of business: {{ employer_profile_view.type_of_business }}</p>
+                    <p>Products or services: {{ employer_profile_view.products_or_services }}</p>
+                    <p>Establishment Year: {{ employer_profile_view.establishment_year }}</p>
+                    <p>Country of origin: {{ employer_profile_view.country_of_origin }}</p>
+                    {% if employer_profile_view.number_of_current_employees %}
+                        <p>Current Employee count: {{ employer_profile_view.number_of_current_employees }}</p>
+                    {% endif %}
+                </div>
+                <p><a href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
+                    <a href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
+
+
+            </div>
+        </div>
     </div>
-    <p><a href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
-        <a href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
-    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
+    <br>
+    <br>
 
-{% endblock content %}
+{% endblock profile_body %}
 

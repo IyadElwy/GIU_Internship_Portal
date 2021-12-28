@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Success{% endblock title %}
+
+
+{% block content %}
+
+    <div class="jumbotron">
+
+        <h1>Sign up successful</h1>
+        <h2>But...</h2>
+        <p>for security reasons we'll have to ask you to wait a few days for our team to confirm you profile before
+            you can post any jobs so keep
+            checking your email and we'll notify you as soon as you're ready to post your first job.
+        </p>
+        <p>You can log in now on the <a href="{% url 'login' %}">Log in page</a>.</p>s
+        <p>Back to <a href="{% url 'home' %}">home</a>.</p>
+
+
+    </div>
+
+{% endblock content %}

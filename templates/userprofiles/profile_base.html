@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block profiletyple %}{% endblock profiletyple %}{% endblock title %}
+
+{% block body_content %}
+
+    {% block profile_body %}
+
+    {% endblock profile_body %}
+
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark bg-dark" aria-label="Tenth navbar example">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08"
+                    aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+                <ul class="navbar-nav">
+                    {% block navitems %}
+
+                    {% endblock navitems %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+{% endblock body_content %}
+
+{#TODO: Remove class names for article#}

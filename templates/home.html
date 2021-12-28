@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+
+{% block giuwebsite %}
+    <li><a href="http://www.giu-uni.de/" class="nav-link px-2 text-white">GIU Webpage</a></li>
+{% endblock giuwebsite %}
+
+{% block content %}
+
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <h1 class="display-4 fw-bold lh-1">Apply now!</h1>
+            <p class="lead">Search for hundreds of jobs from top notch companies from all sectors and all industries,
+                and
+                take your future into your own hands.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4">See active companies</button>
+            </div>
+        </div>
+        <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+            <img class="rounded-lg-3" src="{% static 'images/giu_from_far.jpg' %}" alt="" width="580">
+        </div>
+    </div>
+
+    <br>
+
+    <div class="bg-dark text-secondary px-4 py-5 text-center rounded-3">
+        <div class="py-5">
+            <h1 class="display-5 fw-bold text-white">Not a student ?</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="fs-5 mb-4">Are you looking for talented and hardworking students for your compnay ?
+                    Sign up now and post a job to start accepting applicants from the German International University.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="{% url 'employer_signup' %}" class="no_underline">
+                        <button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Sign up as an
+                            employer
+                        </button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <section id="about-section">
+
+
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Use the custom CV builder</h1>
+                <p class="col-md-8 fs-4">Sign up and use the custom CV builder tool to generate a beautiful resume
+                    accessible as an interactive webpage as well as a downloadable pdf.</p>
+                <button class="btn btn-primary btn-lg" type="button">See example</button>
+            </div>
+        </div>
+
+        <div class="row align-items-md-stretch">
+            <div class="col-md-6">
+                <div class="h-100 p-5 text-white bg-dark rounded-3">
+                    <h2>Get Help</h2>
+                    <p>Have dedicated faculty members supervise your internship to ensure a successful work
+                        experience.</p>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="h-100 p-5 bg-light border rounded-3">
+                    <h2>Want to learn more ?</h2>
+                    <p>For any inquiries about the offered services of this platform please contact the Internship
+                        admins at <a href="">admin@faculty.giu-uni.de</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        </div>
+
+    </section>
+
+{% endblock content %}

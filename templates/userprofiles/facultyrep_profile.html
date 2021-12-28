@@ -1,16 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'userprofiles/profile_base.html' %}
 
-{% block title %}Faculty Representative{% endblock title %}
+{% block profiletyple %}Faculty Representative{% endblock profiletyple %}
 
-{% block content %}
+{% block navitems %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'facrep_profile' facultyrep_profile_view.pk %}">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show Jobs</a>
+    </li>
 
-    <div class="article-entry">
-        <h2>{{ facultyrep_profile_view.user.username }}</h2>
-        <p>Email: {{ facultyrep_profile_view.user.email }}</p>
-        <p>Faculty: {{ facultyrep_profile_view.faculty }}</p>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{{ facultyrep_profile_view.user.username }}</h1>
+
+                <div class="article-entry">
+                    <p>Email: {{ facultyrep_profile_view.user.email }}</p>
+                    <p>Faculty: {{ facultyrep_profile_view.faculty }}</p>
+                </div>
+                <p><a href="{% url 'facrep_edit' facultyrep_profile_view.pk %}">Edit</a> | <a
+                        href="{% url 'user_delete' facultyrep_profile_view.pk %}">Delete</a></p>
+            </div>
+        </div>
     </div>
-    <p><a href="{% url 'facrep_edit' facultyrep_profile_view.pk %}">Edit</a> |<a
-            href="{% url 'user_delete' facultyrep_profile_view.pk %}">Delete</a></p>
-    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
+    <br>
+    <br>
 
-{% endblock content %}
+{% endblock profile_body %}
+
+
+

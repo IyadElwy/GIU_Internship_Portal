@@ -1,14 +1,46 @@
-{% extends 'base.html' %}
+{% extends 'userprofiles/profile_base.html' %}
 
-{% block title %}Admin{% endblock title %}
+{% block profiletyple %}Admin{% endblock profiletyple %}
 
-{% block content %}
+{% block navitems %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_profile' admin_profile_view.pk %}">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show Employers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show Jobs</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Show Faculty Representatives</a>
+    </li>
 
-    <div class="article-entry">
-        <h2>{{ admin_profile_view.user.username }}</h2>
-        <p>Email: {{ admin_profile_view.user.email }}</p>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{{ admin_profile_view.user.username }}</h1>
+
+                <div class="article-entry">
+                    <p>Email: {{ admin_profile_view.user.email }}</p>
+                </div>
+                <p><a href="{% url 'user_delete' admin_profile_view.pk %}">Delete</a></p>
+
+
+            </div>
+        </div>
     </div>
-    <p><a href="{% url 'user_delete' admin_profile_view.pk %}">Delete</a></p>
-    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
+    <br>
+    <br>
 
-{% endblock content %}
+{% endblock profile_body %}
+
+
+
+
