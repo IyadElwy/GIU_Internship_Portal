@@ -20,7 +20,7 @@ urlpatterns = [
     path('facultyrepresentative/<int:pk>/', views.FacultyRepresentativeProfileView.as_view(),
          name='facrep_profile'),
     path('academicadvisor/<int:pk>/', views.AcademicAdvisorProfileView.as_view(), name='acadadv_profile'),
-    path('careerofficeecoordinator/<int:pk>/', views.careerofficeecoordinatorProfileView.as_view(),
+    path('careerofficeecoordinator/<int:pk>/', views.CareerOfficeCoordinatorProfileView.as_view(),
          name='careerofc_profile'),
 
     #     Edit urls

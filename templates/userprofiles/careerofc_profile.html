@@ -9,6 +9,6 @@
         <p>Email: {{ careerofc_profile_view.user.email }}</p>
     </div>
     <p><a href="{% url 'user_delete' careerofc_profile_view.pk %}">Delete</a></p>
-    <p>Back to <a href="{% url 'login' %}">Home</a>.</p>
+    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
 
 {% endblock content %}

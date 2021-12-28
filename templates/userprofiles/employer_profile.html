@@ -27,8 +27,7 @@
     </div>
     <p><a href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
         <a href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
-    {#TODO: change to home instead of login#}
-    <p>Back to <a href="{% url 'login' %}">Home</a>.</p>
+    <p>Back to <a href="{% url 'home' %}">Home</a>.</p>
 
 {% endblock content %}
 
