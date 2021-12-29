@@ -7,7 +7,7 @@
         <a class="nav-link" href="{% url 'student_profile' student_profile_view.pk %}">Profile</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Resume</a>
+        <a class="nav-link" href="{% url 'resumehome' student_profile_view.pk %}">Resume</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Applications</a>
@@ -19,6 +19,7 @@
 {% endblock navitems %}
 
 {% block profile_body %}
+
 
     <br>
     <div class="container">

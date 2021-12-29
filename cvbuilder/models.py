@@ -3,7 +3,7 @@ from users.models import Student
 
 
 class CvBuilder(models.Model):
-    student_id = models.OneToOneField(Student, on_delete=models.DO_NOTHING)
+    student_id = models.OneToOneField(Student, on_delete=models.CASCADE)
     personal_phone = models.CharField(max_length=30)
     personal_email = models.CharField(max_length=50)
     education = models.TextField(max_length=100)
@@ -13,8 +13,8 @@ class CvBuilder(models.Model):
     languages = models.TextField(max_length=100)
     interests = models.TextField(max_length=100)
     experience = models.TextField(max_length=100)
-    linked_in_link = models.CharField(max_length=30)
-    github_link = models.CharField(max_length=30)
+    linked_in_link = models.CharField(max_length=30, null=True)
+    github_link = models.CharField(max_length=30, null=True)
 
     def __str__(self):
-        return f"CV: {self.student_id.first_name} {self.student_id.last_name}"
+        return f"CV: {self.student_id.user.first_name} {self.student_id.user.last_name}"

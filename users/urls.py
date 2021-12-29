@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -32,5 +32,7 @@ urlpatterns = [
     # successful signup
     path('signupsuccessful/', views.SuccessfulSignupView.as_view(), name='success_signup'),
     path('signupsuccessfulemployer/', views.SuccessfulSignupEmployerView.as_view(), name='success_signup_employer'),
+    # resume
+    path('student/<int:pk>/resume/', include('cvbuilder.urls')),
 
 ]

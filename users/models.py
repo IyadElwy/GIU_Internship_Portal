@@ -17,10 +17,7 @@ class User(AbstractUser):
 # All users
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
-    # first_name = models.CharField(max_length=20)
     middle_name = models.CharField(max_length=20)
-    # last_name = models.CharField(max_length=20)
     student_university_id = models.PositiveIntegerField()
     birthdate = models.DateField()
     semester = models.IntegerField()
