@@ -33,7 +33,8 @@ class CreateResumeForm(ModelForm):
                   'interests',
                   'experience',
                   'linked_in_link',
-                  'github_link')
+                  'github_link',
+                  'profile_image')
 
 
 class EditResumeForm(ModelForm):
@@ -66,4 +67,5 @@ class EditResumeForm(ModelForm):
                   'interests',
                   'experience',
                   'linked_in_link',
-                  'github_link')
+                  'github_link',
+                  'profile_image')

@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Student
+from django.conf import settings
 
 
 class CvBuilder(models.Model):
@@ -15,6 +16,8 @@ class CvBuilder(models.Model):
     experience = models.TextField(max_length=2000)
     linked_in_link = models.CharField(max_length=30, null=True)
     github_link = models.CharField(max_length=30, null=True)
+    profile_image = models.ImageField(upload_to=str(settings.MEDIA_ROOT) + '/profile_images/', blank=True, null=True,
+                                      default='profile_images/default.jpg', max_length=1000)
 
     def __str__(self):
         return f"CV: {self.student_id.user.first_name} {self.student_id.user.last_name}"
