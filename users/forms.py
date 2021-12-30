@@ -7,7 +7,7 @@ from . import models
 class StudentSignUpForm(UserCreationForm):
     middle_name = forms.CharField(max_length=20)
     student_university_id = forms.IntegerField()
-    birthdate = forms.DateField()
+    birthdate = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD'}))
     semester = forms.IntegerField()
     faculty = forms.CharField(max_length=20)
     major = forms.CharField(max_length=20)
@@ -59,7 +59,7 @@ class EmployerSignUpForm(UserCreationForm):
     fax_number = forms.CharField(max_length=50, required=False)
     website = forms.CharField(max_length=50)
     type_of_business = forms.CharField(max_length=50)
-    establishment_year = forms.DateField()
+    establishment_year = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD'}))
     country_of_origin = forms.CharField(max_length=20)
     industry = forms.CharField(max_length=20)
     number_of_current_employees = forms.IntegerField(required=False)

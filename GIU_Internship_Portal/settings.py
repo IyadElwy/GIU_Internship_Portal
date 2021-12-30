@@ -137,4 +137,7 @@ LOGOUT_REDIRECT_URL = 'home'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]  # new
+STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
+
+MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')
+MEDIA_URL = 'media/'

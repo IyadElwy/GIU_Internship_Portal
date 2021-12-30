@@ -30,7 +30,7 @@ class Student(models.Model):
 
     @property
     def age(self):
-        return self.birthdate.year - datetime.now().year
+        return datetime.now().year - self.birthdate.year
 
     def __str__(self):
         return self.user.username

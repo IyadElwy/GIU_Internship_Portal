@@ -1,0 +1,27 @@
+{% extends 'cvbuilder/resumehome.html' %}
+{% load crispy_forms_tags %}
+
+{% block profiletyple %}Student{% endblock profiletyple %}
+
+{% block navitems %}
+
+{% endblock navitems %}
+
+
+{% block profile_body %}
+    <br>
+    <div class="container">
+        <h1>Delete</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete your cv ?</p>
+            {{ form|crispy }}
+            <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+            <button onclick="history.back()" class="btn btn-outline-success ml-2" type="button">Cancel</button>
+        </form>
+        <br>
+    </div>
+    <br>
+    <br>
+    <br>
+{% endblock profile_body %}

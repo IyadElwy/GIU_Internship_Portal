@@ -7,7 +7,7 @@
         <a class="nav-link" href="{% url 'student_profile' student_profile_view.pk %}">Profile</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'resumehome' student_profile_view.pk %}">Resume</a>
+        <a class="nav-link" href="{% url 'resumehome' student_profile_view.user.pk %}">Resume</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Applications</a>
@@ -29,6 +29,7 @@
 
                 <p>Name: {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }}
                     {{ student_profile_view.user.last_name }}</p>
+                <p>Age: {{ student_profile_view.age }}</p>
                 <p>Email: {{ student_profile_view.user.email }}</p>
                 <p>Address: {{ student_profile_view.student_address }}</p>
                 <p>GIU ID: {{ student_profile_view.student_university_id }}</p>
