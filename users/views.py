@@ -142,7 +142,8 @@ class StudentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
               'semester',
               'faculty',
               'major',
-              'gpa',)
+              'gpa',
+              'cover_letter')
     template_name = 'editusers/student_edit.html'
     context_object_name = 'student_edit_view'
     login_url = 'login'

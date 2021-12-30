@@ -12,7 +12,7 @@
     <!--========== CSS ==========-->
     <link rel="stylesheet" href="{% static 'css/cvstyles.css' %}">
 
-    <title>Thomas Anderson's resume</title>
+    <title>{{ resume_show_view.student_id.user.username }} resume</title>
 </head>
 <body class="scale-cv">
 <!--========== HEADER ==========-->
@@ -73,25 +73,25 @@
             <section class="home" id="home">
                 <div class="home__container section bd-grid">
                     <div class="home__data bd-grid">
-                        <img src="{% static 'images/thomas_anderson.jpg' %}" alt="" class="home__img">
-                        <h1 class="home__title">Thomas <b>
-                            Anderson</b></h1>
-                        <h3 class="home__profile">Programmer</h3>
+                        <img src="assets/img/me.jpg" alt="" class="home__img">
+                        <h1 class="home__title">{{ resume_show_view.student_id.user.first_name }} <b>
+                            {{ resume_show_view.student_id.user.last_name }}</b></h1>
+                        <h3 class="home__profile">{{ resume_show_view.student_id.faculty }} Student</h3>
 
                         <div>
                         </div>
                     </div>
                     <div class="home--address bd-grid">
                         <Span class="home__information">
-                            <i class="bx bx-map home__icon"></i> Somewhere in the matrix
+                            <i class="bx bx-map home__icon"></i> {{ resume_show_view.student_id.student_address }}
                         </Span>
 
                         <Span class="home__information">
-                            <i class="bx bx-envelope home__icon"></i> thomas_anderson@email.com
+                            <i class="bx bx-envelope home__icon"></i> {{ resume_show_view.personal_email }}
                         </Span>
 
                         <Span class="home__information">
-                            <i class="bx bx-phone home__icon"></i> +20 312 332 3243
+                            <i class="bx bx-phone home__icon"></i> {{ resume_show_view.personal_phone }}
                         </Span>
                     </div>
                 </div>
@@ -106,95 +106,70 @@
             </section>
 
             <!--========== SOCIAL ==========-->
-            <section class="social section">
-                <h2 class="section-title">SOCIAL</h2>
-                <div class="social__container bd-grid">
-                    <a href='https://www.linkedin.com' target="_blank"
-                       class="social__link">
-                        <i class="bx bxl-linkedin-square social__icon"></i> LinkedIn
-                    </a>
-                    <a href='https://www.github.com' target="_blank" class="social__link">
-                        <i class="bx bxl-github social__icon"></i> GitHub
-                    </a>
-                </div>
-            </section>
+            {% if resume_show_view.github_link != '' or resume_show_view.linked_in_link != '' %}
+                <section class="social section">
+                    <h2 class="section-title">SOCIAL</h2>
+                    <div class="social__container bd-grid">
+                        {% if resume_show_view.linked_in_link != '' %}
+                            <a href={{ resume_show_view.linked_in_link }} target="_blank"
+                               class="social__link">
+                                <i class="bx bxl-linkedin-square social__icon"></i> LinkedIn
+                            </a>
+                        {% endif %}
+                        {% if resume_show_view.github_link != '' %}
+                            <a href={{ resume_show_view.github_link }} target="_blank" class="social__link">
+                                <i class="bx bxl-github social__icon"></i> GitHub
+                            </a>
+                        {% endif %}
+                    </div>
+                </section>
+            {% endif %}
 
             <!--========== PROFILE ==========-->
             <section class="profile section" id="profile">
                 <h2 class="section-title">Profile</h2>
-                <p class="profile__description">I Don't Know The Future. I Didn't Come Here To Tell You How This Is
-                    Going To End. I Came Here To Tell You How It's Going To Begin </p>
+                <p class="profile__description">{{ resume_show_view.student_id.cover_letter }}</p>
             </section>
 
             <!--========== EDUCATION ==========-->
             <section class="education section" id="education">
 
                 <h2 class="section-title">Education</h2>
+                {% for education in resume_show_view.education_as_list %}
 
-                <div class="education__container bd-grid">
-                    <div class="education__content">
-                        <div class="education__time">
+                    <div class="education__container bd-grid">
+                        <div class="education__content">
+                            <div class="education__time">
                             <span class="education__rounder">
                             <span class="education__line"></span>
                         </span>
-                        </div>
-                        <div class="education__date bd-grid">
-                            <h3 class="education__title">Harvard</h3>
-                            <span class="education__studies">Computer Science</span>
-                            <span class="education__year">Bachelor of science</span>
-                            <span class="education__year">1992 - 1996</span>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="education__container bd-grid">
-                    <div class="education__content">
-                        <div class="education__time">
-                            <span class="education__rounder">
-                            <span class="education__line"></span>
-                        </span>
-                        </div>
-                        <div class="education__date bd-grid">
-                            <h3 class="education__title">Computer Simulation</h3>
-                            <span class="education__studies">Accelerating the learning</span>
-                            <span class="education__year">Kung fu, among other things</span>
-                            <span class="education__year">5 minutes</span>
+                            </div>
+                            <div class="education__date bd-grid">
+                                <h3 class="education__title">{{ education.0 }}</h3>
+                                <span class="education__studies">{{ education.1 }}</span>
+                                <span class="education__year">{{ education.2 }}</span>
+                                <span class="education__year">{{ education.3 }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <br>
+                    <br>
+                {% endfor %}
 
 
             </section>
+            {#{{ resume_show_view. }}#}
 
+            <!--========== SKILLS  ==========-->
             <section class="skills section" id="skills">
                 <h2 class="section-title">SKILLS</h2>
                 <div class="skills__content bd-grid">
                     <ul class="skills__data">
+                        {% for skill in resume_show_view.skills_as_list %}
 
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Java
-                        </li>
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Python
-                        </li>
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Django
-                        </li>
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Machine Learning
-                        </li>
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Ethical Hacking
-                        </li>
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Reading the matrix
-                        </li>
-                        <li class="skills__name">
-                            <span class="skills__circle"></span>Kung-fu
-                        </li>
-
-
+                            <li class="skills__name">
+                                <span class="skills__circle"></span>{{ skill }}
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </section>
@@ -207,19 +182,22 @@
 
                 <h2 class="section-title">Experience</h2>
 
+                {% for experience in resume_show_view.experiences_as_list %}
 
-                <div class="experience__container bd-grid">
+                    <div class="experience__container bd-grid">
                     <div class="experience__content">
                         <div class="experience__time">
                             <span class=""></span>
                             <span class="experience__line"></span>
                         </div>
                         <div class="experience__date bd-grid">
-                            <h3 class="experience__title">Microsoft intern</h3>
-                            <span class="experience__company">Software engineer and ethical hacker</span>
-                            <p class="experience__description">Pentesting new software</p>
+                            <h3 class="experience__title">{{ experience.0 }}</h3>
+                            <span class="experience__company">{{ experience.1 }}</span>
+                            <p class="experience__description">{{ experience.2 }}</p>
                         </div>
                     </div>
+
+                {% endfor %}
 
 
             </section>
@@ -229,11 +207,13 @@
                 <h2 class="section-title">Achievements</h2>
                 <div class="certificate__container">
 
-                    <div class="certificate">
-                        <h3 class="certificate__title">
-                            Hacker of the century</h3>
-                        <p class="certificate__description">Received hacker of the century award</p>
-                    </div>
+                    {% for achievement in resume_show_view.achievements_as_list %}
+                        <div class="certificate">
+                            <h3 class="certificate__title">
+                                {{ achievement.0 }}</h3>
+                            <p class="certificate__description">{{ achievement.1 }}</p>
+                        </div>
+                    {% endfor %}
 
                 </div>
             </section>
@@ -243,11 +223,13 @@
                 <h2 class="section-title">Extracurricular Activities</h2>
                 <div class="certificate__container">
 
-                    <div class="certificate">
-                        <h3 class="certificate__title">
-                            Selling illegal software</h3>
-                        <p class="certificate__description">I gotta make a living...</p>
-                    </div>
+                    {% for activity in resume_show_view.extracurricular_activities_as_list %}
+                        <div class="certificate">
+                            <h3 class="certificate__title">
+                                {{ activity.0 }}</h3>
+                            <p class="certificate__description">{{ activity.1 }}</p>
+                        </div>
+                    {% endfor %}
 
                 </div>
             </section>
@@ -259,18 +241,11 @@
                 <div class="languages__container">
                     <ul class="languages__content bd-grid">
 
-                        <li class="languages__name">
-                            <span class="languages__circle"></span> English
-                        </li>
-                        <li class="languages__name">
-                            <span class="languages__circle"></span> Arabic
-                        </li>
-                        <li class="languages__name">
-                            <span class="languages__circle"></span> German
-                        </li>
-                        <li class="languages__name">
-                            <span class="languages__circle"></span> Chineese
-                        </li>
+                        {% for language in resume_show_view.languages_as_list %}
+                            <li class="languages__name">
+                                <span class="languages__circle"></span> {{ language }}
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </section>
@@ -279,16 +254,11 @@
             <section class="interests section">
                 <h2 class="section-title">Interests</h2>
                 <div class="interests__container bd-grid">
-
-                    <div class="interests__content">
-                        <span class="interests__name">Fighting rogue computer programs</span>
-                    </div>
-                    <div class="interests__content">
-                        <span class="interests__name">Penetration testing</span>
-                    </div>
-                    <div class="interests__content">
-                        <span class="interests__name">Kung-Fu</span>
-                    </div>
+                    {% for interest in resume_show_view.interests_as_list %}
+                        <div class="interests__content">
+                            <span class="interests__name">{{ interest }}</span>
+                        </div>
+                    {% endfor %}
 
                 </div>
             </section>

@@ -28,18 +28,18 @@
 
                 {% if showResumeHomePageView.has_cv %}
                     <li class="nav-item">
-                        <a id="showNav" class="nav-link active" aria-current="true" href="#">Show</a>
+                        <a id="showNav" class="nav-link active" aria-current="true" href="javascript:void(0)">Show</a>
                     </li>
-                    <a id="editNav" class="nav-link" href="#">Edit</a>
+                    <a id="editNav" class="nav-link" href="javascript:void(0)">Edit</a>
                     </li>
                     <li class="nav-item">
                         <a id="deleteNav" class="nav-link"
-                           href="#">Delete</a>
+                           href="javascript:void(0)">Delete</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="true"
-                           href="#">Create</a>
+                           href="javascript:void(0)">Create</a>
                     </li>
                 {% endif %}
 
@@ -51,9 +51,23 @@
                 <br>
                 <br>
                 <br>
-                <h5 class="card-title">See your current resume</h5>
-                <p class="card-text">Ps. You can download your resume as a PDF!</p>
-                <a href="#" class="btn btn-primary">Show resume</a>
+                <div id="showDiv">
+                    <h5 class="card-title">See your current resume</h5>
+                    <p class="card-text">Ps. You can download your resume as a PDF!</p>
+                    <a href="{% url 'showresume' showResumeHomePageView.pk %}" class="btn btn-primary">Show resume</a>
+
+                </div>
+                <div id="editDiv" style="display: none">
+                    <h5 class="card-title">Edit your resume</h5>
+                    <p class="card-text">Always keep your resume up to date!</p>
+                    <a href="{% url 'editresume' showResumeHomePageView.pk %}" class="btn btn-primary">Edit resume</a>
+                </div>
+                <div id="deleteDiv" style="display:none;">
+                    <h5 class="card-title">Delete your resume</h5>
+                    <p class="card-text">Want a do-over? Delete your resume and start over.</p>
+                    <a href="{% url 'deleteresume' showResumeHomePageView.pk %}" class="btn btn-primary">Delete
+                        resume</a>
+                </div>
                 <br>
                 <br>
                 <br>

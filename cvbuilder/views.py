@@ -5,8 +5,8 @@ from .models import CvBuilder
 from users.models import Student
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
-
-from .forms import CreateResumeForm
+from django.shortcuts import get_object_or_404
+from .forms import CreateResumeForm, EditResumeForm
 
 
 class CVExample(TemplateView):
@@ -23,7 +23,7 @@ class ResumeHomeView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user.is_student and self.request.user.pk == self.get_object().pk
 
 
-class CreateResumeView(LoginRequiredMixin, CreateView):
+class CreateResumeView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = CvBuilder
     form_class = CreateResumeForm
     template_name = 'cvbuilder/createresume.html'
@@ -40,20 +40,14 @@ class CreateResumeView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('resumehome', kwargs={'pk': self.request.user.pk})
 
+    def test_func(self):
+        student = Student(user=self.request.user)
+        return student.has_cv == False
+
 
 class EditResumeView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CvBuilder
-    fields = ('personal_phone',
-              'personal_email',
-              'education',
-              'extracurricular_activities',
-              'skills',
-              'achievements',
-              'languages',
-              'interests',
-              'experience',
-              'linked_in_link',
-              'github_link')
+    form_class = EditResumeForm
     template_name = 'cvbuilder/update_resume.html'
     context_object_name = 'resume_update_view'
     login_url = 'login'
@@ -63,8 +57,12 @@ class EditResumeView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse('resumehome', kwargs={'pk': self.request.user.pk})
 
     def test_func(self):
-        obj = self.get_object()
-        return self.get_object().pk == self.request.user
+        return self.get_object().student_id.user.pk == self.request.user.pk
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, student_id=self.kwargs['pk'])
 
 
 class DeleteResumeView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -72,6 +70,7 @@ class DeleteResumeView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'cvbuilder/delete_resume.html'
     context_object_name = 'resume_delete_view'
     success_url = reverse_lazy('resumehome')
+    login_url = 'login'
 
     def form_valid(self, form):
         Student.objects.filter(user=self.request.user).update(has_cv=False)
@@ -81,7 +80,28 @@ class DeleteResumeView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return reverse('resumehome', kwargs={'pk': self.request.user.pk})
 
     def test_func(self):
-        obj = self.get_object()
-        return self.get_object().pk == self.request.user
+        return self.get_object().student_id.user.pk == self.request.user.pk
 
-# class ShowResumeView(DetailView)
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, student_id=self.kwargs['pk'])
+
+
+class ShowResumeView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = CvBuilder
+    template_name = 'cvbuilder/show_resume.html'
+    context_object_name = 'resume_show_view'
+    success_url = reverse_lazy('resumehome')
+    login_url = 'login'
+
+    def get_success_url(self):
+        return reverse('resumehome', kwargs={'pk': self.request.user.pk})
+
+    def test_func(self):
+        return self.get_object().student_id.user.pk == self.request.user.pk
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, student_id=self.kwargs['pk'])
