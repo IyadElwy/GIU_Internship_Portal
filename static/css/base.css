@@ -1,3 +1,34 @@
 .no_underline {
     text-decoration: none !important
 }
+
+.scene_element,
+.m-scene {
+    animation-duration: 0.25s;
+    transition-timing-function: ease-in;
+    animation-fill-mode: both;
+}
+
+
+.m-scene {
+
+}
+
+.scene_element--fadein {
+    animation-name: fadeIn;
+}
+
+.scene_element--fadeinup {
+    animation-name: fadeInUp;
+}
+
+.scene_element--fadeinright {
+    animation-name: fadeInRight;
+}
+
+
+@media only screen and (max-width: 400px) {
+    .small_screen_vanish {
+        display: none;
+    }
+}

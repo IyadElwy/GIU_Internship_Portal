@@ -23,10 +23,10 @@ urlpatterns = [
          name='careerofc_profile'),
 
     #     Edit urls
-    path('student/<int:pk>/edit', views.StudentUpdateView.as_view(), name='student_edit'),
-    path('employer/<int:pk>/edit', views.EmployerUpdateView.as_view(), name='employer_edit'),
-    path('facultyrepresentative/<int:pk>/edit', views.FacultyRepresentativeUpdateView.as_view(), name='facrep_edit'),
-    path('academicadvisor/<int:pk>/edit', views.AcademicAdvisorUpdateView.as_view(), name='acadadv_edit'),
+    path('student/<int:pk>/edit/', views.StudentUpdateView.as_view(), name='student_edit'),
+    path('employer/<int:pk>/edit/', views.EmployerUpdateView.as_view(), name='employer_edit'),
+    path('facultyrepresentative/<int:pk>/edit/', views.FacultyRepresentativeUpdateView.as_view(), name='facrep_edit'),
+    path('academicadvisor/<int:pk>/edit/', views.AcademicAdvisorUpdateView.as_view(), name='acadadv_edit'),
     # Delete urls
     path('<int:pk>/delete', views.UserDeleteView.as_view(), name='user_delete'),
     # successful signup
@@ -34,5 +34,10 @@ urlpatterns = [
     path('signupsuccessfulemployer/', views.SuccessfulSignupEmployerView.as_view(), name='success_signup_employer'),
     # resume
     path('student/<int:pk>/resume/', include('cvbuilder.urls')),
+
+    path('student/<slug:pk>/phonenumbers/', views.StudentPhoneView.as_view(), name='student_phone_detail'),
+    path('student/<slug:pk>/phonenumbers/add', views.AddStudentPhoneView.as_view(), name='add_student_phone'),
+    path('student/<slug:pk>/phonenumbers/delete', views.DeleteStudentPhoneView.as_view(),
+         name='delete_student_phone'),
 
 ]

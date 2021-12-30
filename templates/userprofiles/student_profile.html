@@ -38,6 +38,10 @@
                 <p>Faculty: {{ student_profile_view.faculty }}</p>
                 <p>Major: {{ student_profile_view.major }}</p>
                 <p>Gpa: {{ student_profile_view.gpa }}</p>
+                <p><a class="no_underline" href="{% url 'student_phone_detail' student_profile_view.pk %}">Phone
+                    Numbers</a> | <a class="no_underline"
+                                     href="{% url 'add_student_phone' student_profile_view.pk %}">Add</a>
+                </p>
                 <p><a class="no_underline" href="{% url 'student_edit' student_profile_view.pk %}">Edit</a> |
                     <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
                     <a class="no_underline" href="{% url 'user_delete' student_profile_view.pk %}">Delete</a></p>

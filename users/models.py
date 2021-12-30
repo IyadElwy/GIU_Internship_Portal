@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 from django.urls import reverse_lazy
+from django.conf import settings
 
 
 # Parent User
@@ -39,7 +40,7 @@ class Student(models.Model):
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     company_name = models.CharField(max_length=20)
-    employer_address = models.CharField(max_length=20)
+    employer_address = models.CharField(max_length=40)
     phone_number = models.CharField(max_length=20)
     fax_number = models.CharField(max_length=50, null=True, blank=True)
     website = models.CharField(max_length=50)
@@ -49,6 +50,8 @@ class Employer(models.Model):
     industry = models.CharField(max_length=20)
     number_of_current_employees = models.PositiveIntegerField(null=True, blank=True)
     products_or_services = models.CharField(max_length=30)
+    company_logo = models.ImageField(upload_to=str(settings.MEDIA_ROOT) + '/company_images/', blank=True, null=True,
+                                     default='company_images/default.png', max_length=1000)
 
     def __str__(self):
         return self.company_name
@@ -86,9 +89,10 @@ class CareerOfficeCoordinator(models.Model):
 
 # other tables
 
+
 class StudentPhoneNumbers(models.Model):
-    student_id = models.OneToOneField(Student, on_delete=models.CASCADE, primary_key=True)
-    phone_number = models.CharField(max_length=20)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20, primary_key=True)
 
     def __str__(self):
         return self.phone_number

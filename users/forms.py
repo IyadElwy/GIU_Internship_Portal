@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from . import models
@@ -65,6 +66,7 @@ class EmployerSignUpForm(UserCreationForm):
     number_of_current_employees = forms.IntegerField(required=False)
     products_or_services = forms.CharField(max_length=30)
     email = forms.EmailField(required=True)
+    company_logo = forms.ImageField(max_length=1000, required=False)
 
     class Meta(UserCreationForm.Meta):
         model = models.User
@@ -82,7 +84,8 @@ class EmployerSignUpForm(UserCreationForm):
                   'country_of_origin',
                   'industry',
                   'number_of_current_employees',
-                  'products_or_services')
+                  'products_or_services',
+                  'company_logo')
 
     @transaction.atomic
     def save(self):

@@ -1,10 +1,11 @@
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, TemplateView, ListView
 from . import forms
 from . import models
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.conf import settings
 
 
 class SuccessfulSignupView(TemplateView):
@@ -166,7 +167,8 @@ class EmployerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
               'type_of_business',
               'industry',
               'number_of_current_employees',
-              'products_or_services')
+              'products_or_services',
+              'company_logo')
     template_name = 'editusers/employer_edit.html'
     context_object_name = 'employer_edit_view'
     login_url = 'login'
@@ -228,11 +230,55 @@ class StudentProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user.pk == self.get_object().pk
 
 
+class StudentPhoneView(LoginRequiredMixin, ListView):
+    model = models.StudentPhoneNumbers
+    template_name = 'userprofiles/student_phone_numbers.html'
+    context_object_name = 'student_phone_list'
+    login_url = 'login'
+
+
+class AddStudentPhoneView(LoginRequiredMixin, CreateView):
+    model = models.StudentPhoneNumbers
+    fields = ('phone_number',)
+    template_name = 'userprofiles/student_phone_numbers_add.html'
+    context_object_name = 'create_phone_number'
+    login_url = 'login'
+    success_url = reverse_lazy('student_profile')
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('student_profile', kwargs={"pk": pk})
+
+    def form_valid(self, form):
+        student = models.Student(user=self.request.user)
+        form.instance.student_id = student
+        return super().form_valid(form)
+
+
+class DeleteStudentPhoneView(LoginRequiredMixin, DeleteView):
+    model = models.StudentPhoneNumbers
+    template_name = 'userprofiles/student_delete_number.html'
+    context_object_name = 'delete_phone_number'
+    login_url = 'login'
+    success_url = reverse_lazy('student_profile')
+
+    def get_success_url(self):
+        return reverse('student_profile', kwargs={"pk": self.request.user.pk})
+
+
 class EmployerProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = models.Employer
+    api_key = settings.GOOGLE_MAPS_API_KEY
+    api_key_places = settings.POSITION_API
     template_name = 'userprofiles/employer_profile.html'
     context_object_name = 'employer_profile_view'
     login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = super(EmployerProfileView, self).get_context_data(**kwargs)
+        context['google_maps_api_key'] = self.api_key
+        context['positions_api_key'] = self.api_key_places
+        return context
 
     def test_func(self):
         return self.request.user.pk == self.get_object().pk

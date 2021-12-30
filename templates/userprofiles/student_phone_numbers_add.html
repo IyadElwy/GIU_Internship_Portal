@@ -1,0 +1,38 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Student{% endblock profiletyple %}
+
+{% block navitems %}
+
+{% endblock navitems %}
+
+{% block profile_body %}
+    {% load crispy_forms_tags %}
+
+
+    <br>
+    <div class="container">
+        <h1>Phone Numbers</h1>
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <br>
+                    <button class="btn btn-success ml-2" type="submit">Add</button>
+                    <button onclick="history.back()" class="btn btn-outline-success ml-2" type="button">Cancel</button>
+
+                </form>
+                <br>
+
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+{% endblock profile_body %}
+

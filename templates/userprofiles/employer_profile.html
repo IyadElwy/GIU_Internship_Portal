@@ -1,4 +1,25 @@
 {% extends 'userprofiles/profile_base.html' %}
+{% load static %}
+
+{% block header_block %}
+    <link href="{% static 'css/google_maps.css' %}" rel="stylesheet">
+    <style type="text/css">
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 1000px;
+            /* The height is 400 pixels */
+            width: 300%;
+            /* The width is the width of the web page */
+        }
+
+        @media only screen and (max-width: 300px) {
+            .small_screen_vanish {
+                display: none;
+            }
+        }
+
+    </style>
+{% endblock header_block %}
 
 {% block profiletyple %}Employer{% endblock profiletyple %}
 
@@ -21,40 +42,133 @@
 
 {% block profile_body %}
 
-    <br>
-    <div class="container">
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">{{ employer_profile_view.company_name }}</h1>
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="row-justify-content-md-center">
 
-                <div class="article-entry">
-                    <p>Username: {{ employer_profile_view.user.username }} </p>
-                    <p>Email: {{ employer_profile_view.user.email }} </p>
-                    <p>Company Address: {{ employer_profile_view.employer_address }}</p>
-                    <p>Company Phone: {{ employer_profile_view.phone_number }}</p>
-                    {% if employer_profile_view.fax_number %}
-                        <p>Fax Number: {{ employer_profile_view.fax_number }}</p>
-                    {% endif %}
-                    <p>Website: {{ employer_profile_view.website }}</p>
-                    <p>Industry: {{ employer_profile_view.industry }}</p>
-                    <p>Type of business: {{ employer_profile_view.type_of_business }}</p>
-                    <p>Products or services: {{ employer_profile_view.products_or_services }}</p>
-                    <p>Establishment Year: {{ employer_profile_view.establishment_year }}</p>
-                    <p>Country of origin: {{ employer_profile_view.country_of_origin }}</p>
-                    {% if employer_profile_view.number_of_current_employees %}
-                        <p>Current Employee count: {{ employer_profile_view.number_of_current_employees }}</p>
-                    {% endif %}
+            <div class="row">
+
+
+                <div class="col-6">
+                    <div class="container-fluid py-5">
+                        <h1 class="display-5 fw-bold">{{ employer_profile_view.company_name }}</h1>
+
+                        <p>Username: {{ employer_profile_view.user.username }} </p>
+                        <p>Email: {{ employer_profile_view.user.email }} </p>
+                        <p>Company Address: {{ employer_profile_view.employer_address }}</p>
+                        <p>Company Phone: {{ employer_profile_view.phone_number }}</p>
+                        {% if employer_profile_view.fax_number %}
+                            <p>Fax Number: {{ employer_profile_view.fax_number }}</p>
+                        {% endif %}
+                        <p>Website: {{ employer_profile_view.website }}</p>
+                        <p>Industry: {{ employer_profile_view.industry }}</p>
+                        <p>Type of business: {{ employer_profile_view.type_of_business }}</p>
+                        <p>Products or services: {{ employer_profile_view.products_or_services }}</p>
+                        <p>Establishment Year: {{ employer_profile_view.establishment_year }}</p>
+                        <p>Country of origin: {{ employer_profile_view.country_of_origin }}</p>
+                        {% if employer_profile_view.number_of_current_employees %}
+                            <p>Current Employee
+                                count: {{ employer_profile_view.number_of_current_employees }}</p>
+                        {% endif %}
+
+                        <p><a class="no_underline"
+                              href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
+                            <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
+                            <a class="no_underline"
+                               href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a>
+                        </p>
+
+                    </div>
                 </div>
-                <p><a class="no_underline" href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
-                    <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
-                    <a class="no_underline" href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a></p>
+
+                <div class="col-5 d-none d-md-block">
+                    <div class="container">
+                        <div class="row">
+                            <div class="card">
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="200"
+                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+                                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">
+                                        {% if not employer_profile_view.company_log %}
+                                            <img src="{{ employer_profile_view.company_logo.url }}"
+                                                 width="200" class="mx-auto"
+                                                 alt="Responsive image"/>
+                                            <br>
+                                        {% else %}
+
+                                        {% endif %}
+
+                                    </text>
+                                </svg>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title that wraps to a new line</h5>
+                                    <p class="card-text">This is a longer card with supporting text below as a natural
+                                        lead-in to additional content. This content is a little bit longer.</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Card title</h5>
+                                        <p class="card-text">This card has a regular title and short paragraph of text
+                                            below
+                                            it.</p>
+                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
 
 
+                        <br>
+                        <div class="container">
+                            <div class="row">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Card title</h5>
+                                        <p class="card-text">This card has a regular title and short paragraph of text
+                                            below
+                                            it.</p>
+                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <h1 class="d-none d-md-block">Location</h1>
+                <!--The div element for the map -->
+                <div class="d-none d-md-block" id="map"></div>
+
+
+                <p hidden id="company_address">{{ employer_profile_view.employer_address }}</p>
+                <p hidden id="api_key">{{ google_maps_api_key }} </p>
+                <p hidden id="api_key_positions">{{ positions_api_key }} </p>
+
+                <script
+                        src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap&libraries=&v=weekly"
+                        async
+                ></script>
+                <script src="{% static 'js/google_maps.js' %}"></script>
+                <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
             </div>
         </div>
     </div>
-    <br>
-    <br>
+
 
 {% endblock profile_body %}
 

@@ -8,7 +8,9 @@
         {% csrf_token %}
         <p>Are you sure you want to delete "{{ user_delete_view.username }}" ?</p>
         <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+        <button onclick="history.back()" class="btn btn-outline-success ml-2" type="button">Cancel</button>
     </form>
+
     <br>
 
 {% endblock content %}

@@ -10,99 +10,109 @@
     <!-- Bootstrap CSS -->
     <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/giu_icon.png' %}">
+    {% block header_block %}
+
+    {% endblock header_block %}
 
 </head>
 <body>
 
+<main class="m-scene" id="main">
 
-<header class="p-3 bg-dark text-white">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            </a>
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                </a>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="{% url 'home' %}" class="nav-link px-2 text-secondary">GIU Internship Portal</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Companies</a></li>
-                {% block giuwebsite %}{% endblock giuwebsite %}
-            </ul>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{% url 'home' %}" class="nav-link px-2 text-secondary">GIU Internship Portal</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Companies</a></li>
+                    {% block giuwebsite %}{% endblock giuwebsite %}
+                </ul>
 
 
-            {% if user.is_authenticated %}
-                <div class="text-end">
-                    <a href="{% url 'logout' %}" class="no_underline">
-                        <button type="button" class="btn btn-outline-light me-2">Logout
-                        </button>
-                    </a>
-                    {% if user.is_student %}
-                        <a href="{% url 'student_profile' user.pk %}" class="no_underline">
-                            <button type="button" class="btn btn-warning">Profile</button>
+                {% if user.is_authenticated %}
+                    <div class="text-end">
+                        <a href="{% url 'logout' %}" class="no_underline">
+                            <button type="button" class="btn btn-outline-light me-2">Logout
+                            </button>
                         </a>
-                    {% endif %}
-                    {% if user.is_employer %}
-                        <a href="{% url 'employer_profile' user.pk %}" class="no_underline">
-                            <button type="button" class="btn btn-warning">Profile</button>
-                        </a>
-                    {% endif %}
-                    {% if user.is_admin %}
-                        <a href="{% url 'admin_profile' user.pk %}" class="no_underline">
-                            <button type="button" class="btn btn-warning">Profile</button>
-                        </a>
-                    {% endif %}
-                    {% if user.is_faculty_representative %}
-                        <a href="{% url 'facrep_profile' user.pk %}" class="no_underline">
-                            <button type="button" class="btn btn-warning">Profile</button>
-                        </a>
-                    {% endif %}
-                    {% if user.is_academic_advisor %}
-                        <a href="{% url 'acadadv_profile' user.pk %}" class="no_underline">
-                            <button type="button" class="btn btn-warning">Profile</button>
-                        </a>
-                    {% endif %}
-                    {% if user.is_career_office_coordinator %}
-                        <a href="{% url 'careerofc_profile' user.pk %}" class="no_underline">
-                            <button type="button" class="btn btn-warning">Profile</button>
-                        </a>
-                    {% endif %}
-                </div>
-            {% else %}
+                        {% if user.is_student %}
+                            <a href="{% url 'student_profile' user.pk %}" class="no_underline">
+                                <button type="button" class="btn btn-warning">Profile</button>
+                            </a>
+                        {% endif %}
+                        {% if user.is_employer %}
+                            <a href="{% url 'employer_profile' user.pk %}" class="no_underline">
+                                <button type="button" class="btn btn-warning">Profile</button>
+                            </a>
+                        {% endif %}
+                        {% if user.is_admin %}
+                            <a href="{% url 'admin_profile' user.pk %}" class="no_underline">
+                                <button type="button" class="btn btn-warning">Profile</button>
+                            </a>
+                        {% endif %}
+                        {% if user.is_faculty_representative %}
+                            <a href="{% url 'facrep_profile' user.pk %}" class="no_underline">
+                                <button type="button" class="btn btn-warning">Profile</button>
+                            </a>
+                        {% endif %}
+                        {% if user.is_academic_advisor %}
+                            <a href="{% url 'acadadv_profile' user.pk %}" class="no_underline">
+                                <button type="button" class="btn btn-warning">Profile</button>
+                            </a>
+                        {% endif %}
+                        {% if user.is_career_office_coordinator %}
+                            <a href="{% url 'careerofc_profile' user.pk %}" class="no_underline">
+                                <button type="button" class="btn btn-warning">Profile</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% else %}
 
-                <div class="text-end">
-                    <a href="{% url 'login' %}" class="no_underline">
-                        <button type="button" class="btn btn-outline-light me-2">Login
-                        </button>
-                    </a>
-                    <a href="{% url 'student_signup' %}" class="no_underline">
-                        <button type="button" class="btn btn-warning">Sign up</button>
-                    </a>
-                </div>
+                    <div class="text-end">
+                        <a href="{% url 'login' %}" class="no_underline">
+                            <button type="button" class="btn btn-outline-light me-2">Login
+                            </button>
+                        </a>
+                        <a href="{% url 'student_signup' %}" class="no_underline">
+                            <button type="button" class="btn btn-warning">Sign up</button>
+                        </a>
+                    </div>
 
-            {% endif %}
+                {% endif %}
 
 
+            </div>
         </div>
+    </header>
+    {% block body_content %}
+
+    {% endblock body_content %}
+
+
+
+
+    <div class="container">
+        <br>
+
+
+        <main>
+            {% block content %}
+
+
+            {% endblock content %}
+        </main>
     </div>
-</header>
-{% block body_content %}
 
-{% endblock body_content %}
+    <!-- Bootstrap JavaScript Bundle -->
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery.smoothState.js' %}"></script>
 
+</main>
 
-
-
-<div class="container">
-    <br>
-
-
-    <main>
-        {% block content %}
-
-
-        {% endblock content %}
-    </main>
-</div>
-
-<!-- Bootstrap JavaScript Bundle -->
-<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
 </body>
 </html>

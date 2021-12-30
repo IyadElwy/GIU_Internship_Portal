@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = Path.joinpath(BASE_DIR, 'templates')
+ENV_PATH = Path.joinpath(BASE_DIR, '.env')
+load_dotenv(ENV_PATH)
 
+GOOGLE_MAPS_API_KEY = os.environ.get('google_maps_api_key')
+POSITION_API = os.environ.get('position_stack_api')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
