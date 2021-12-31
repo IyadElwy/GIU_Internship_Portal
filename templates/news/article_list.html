@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}News{% endblock title %}
+
+{% block content %}
+    <div class="Jumbotron">
+        <div class="container">
+            <h2>News</h2>
+            <p>Welcome to the German International University Internship Portal</p>
+
+        </div>
+    </div>
+    <br>
+    {% for article in article_list_view %}
+
+        <div class="card">
+            <div class="card-header">
+                <span class="font-weight-bold">{{ article.title }}</span>
+                <span class="text-muted">by {{ article.author }} | {{ article.date }}</span>
+            </div>
+            <div class="card-body">
+                {{ article.body }}
+                {% if article.author ==  user %}
+                    <br>
+                    <br>
+                    <a class="no_underline" href="{% url 'article_edit' article.pk %}">Edit</a> |
+                    <a class="no_underline" href="{% url 'article_delete' article.pk %}">Delete</a>
+
+
+                {% else %}
+                    <br>
+                    <a class="no_underline" href="{% url 'article_detail' article.pk %}">View</a>
+                {% endif %}
+
+
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock content %}

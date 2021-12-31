@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="article-entry">
+        <h2>{{ article_detail_view.title }}</h2>
+        <p>by {{ article_detail_view.author }} | {{ article_detail_view.date }}</p>
+        <p>{{ article_detail_view.body }}</p>
+    </div>
+    {% if article.author ==  user %}
+
+        <p><a class="no_underline" href="{% url 'article_edit' article_detail_view.pk %}">Edit</a> |
+            <a class="no_underline" href="{% url 'article_delete' article_detail_view.pk %}">Delete</a></p>
+        <p>Back to <a class="no_underline" href="{% url 'article_list' %}">All Articles</a>.</p>
+    {% else %}
+        <p>Back to <a class="no_underline" href="{% url 'article_list' %}">All Articles</a>.</p>
+    {% endif %}
+{% endblock content %}

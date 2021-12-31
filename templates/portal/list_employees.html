@@ -1,0 +1,70 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Admin{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Company Name</th>
+            <th scope="col">Website</th>
+            <th scope="col">Profile</th>
+            <th scope="col">Profile Status</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for emp in admin_list_employees_view %}
+            {% if emp.reviewprofile.review_status == 'In review' %}
+                <tr class="table-danger">
+                    <td>{{ emp.company_name }}</td>
+                    <td><a class="no_underline" href="{{ emp.website }}">{{ emp.website }}</a></td>
+                    <td>@<a class="no_underline"
+                            href="{% url 'generic_employer_profile' emp.pk %}">{{ emp.user.username }}</a>
+                    </td>
+                    <td><a class="no_underline" href="{% url 'update_profile_status' emp.pk %}">Change</a></td>
+                    </td>
+                    <td>
+                        <a class="no_underline" href="{% url 'admin_delete_employer' emp.user.pk %}">
+                            <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+                        </a>
+                    </td>
+                </tr>
+
+            {% else %}
+
+                <tr class="table-success">
+                    <td>{{ emp.company_name }}</td>
+                    <td><a class="no_underline" href="{{ emp.website }}">{{ emp.website }}</a></td>
+                    <td>@<a class="no_underline"
+                            href="{% url 'generic_employer_profile' emp.pk %}">{{ emp.user.username }}</a>
+                    </td>
+                    <td><a class="no_underline" href="{% url 'update_profile_status' emp.pk %}">Change</a></td>
+                    <td>
+                        <a class="no_underline" href="{% url 'admin_delete_employer' emp.user.pk %}">
+                            <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+                        </a>
+                    </td>
+
+                </tr>
+
+
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock profile_body %}
+
+
+
+

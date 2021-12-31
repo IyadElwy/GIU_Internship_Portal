@@ -6,6 +6,7 @@ from .models import User
 from . import models
 from portal import models as portal_models
 from cvbuilder import models as cv_models
+from news.models import Article
 
 admin.site.site_header = 'GIU Internship Portal'
 admin.site.index_title = 'GIU IP Admin'
@@ -34,3 +35,5 @@ admin.site.register(portal_models.ProgressReport)
 admin.site.register(portal_models.Job)
 
 admin.site.register(cv_models.CvBuilder)
+
+admin.site.register(Article)

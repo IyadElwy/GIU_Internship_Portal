@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
                   path('', include('portal.urls')),
+                  path('news/', include('news.urls')),
                   path('admin/', admin.site.urls),
                   path('cvexample/', CVExample.as_view(), name='cvexample'),
                   path('users/', include('users.urls')),

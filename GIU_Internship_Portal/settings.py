@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'portal.apps.PortalConfig',
     'messenger.apps.MessengerConfig',
     'cvbuilder.apps.CvbuilderConfig',
+    'news.apps.NewsConfig',
     # 3rd party apps
     'crispy_forms',
     'crispy_bootstrap5',
@@ -137,7 +138,7 @@ AUTH_USER_MODEL = 'users.User'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'article_list'
 LOGOUT_REDIRECT_URL = 'home'
 
 # TODO: edit

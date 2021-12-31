@@ -1,4 +1,6 @@
 {% extends 'userprofiles/profile_base.html' %}
+{% load static %}
+
 
 {% block profiletyple %}Student{% endblock profiletyple %}
 
@@ -20,38 +22,78 @@
 
 {% block profile_body %}
 
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="row-justify-content-md-center">
 
-    <br>
-    <div class="container">
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">{{ student_profile_view.user.username }}</h1>
+            <div class="row">
+                <div id="student_info_div" style="" class="col-7">
+                    <div class="container-fluid py-5">
+                        <h1 class="display-5 fw-bold">{{ student_profile_view.user.username }}</h1>
 
-                <p>
-                    <strong>Name: </strong> {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }} {{ student_profile_view.user.last_name }}
-                </p>
-                <p><strong>Age: </strong> {{ student_profile_view.age }}</p>
-                <p><strong>Email: </strong> {{ student_profile_view.user.email }}</p>
-                <p><strong>Address: </strong> {{ student_profile_view.student_address }}</p>
-                <p><strong>GIU ID: </strong> {{ student_profile_view.student_university_id }}</p>
-                <p><strong>Birthdate: </strong> {{ student_profile_view.birthdate }}</p>
-                <p><strong>Semester: </strong> {{ student_profile_view.semester }}</p>
-                <p><strong>Faculty: </strong> {{ student_profile_view.faculty }}</p>
-                <p><strong>Major: </strong> {{ student_profile_view.major }}</p>
-                <p><strong>Gpa: </strong> {{ student_profile_view.gpa }}</p>
-                <p><a class="no_underline" href="{% url 'student_phone_detail' student_profile_view.pk %}">Phone
-                    Numbers</a> | <a class="no_underline"
-                                     href="{% url 'add_student_phone' student_profile_view.pk %}">Add</a>
-                </p>
-                <p><a class="no_underline" href="{% url 'student_edit' student_profile_view.pk %}">Edit</a> |
-                    <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
-                    <a class="no_underline" href="{% url 'user_delete' student_profile_view.pk %}">Delete</a></p>
+                        <p>
+                            <strong>Name: </strong> {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }} {{ student_profile_view.user.last_name }}
+                        </p>
+                        <p><strong>Age: </strong> {{ student_profile_view.age }}</p>
+                        <p><strong>Email: </strong> {{ student_profile_view.user.email }}</p>
+                        <p><strong>Address: </strong> {{ student_profile_view.student_address }}</p>
+                        <p><strong>GIU ID: </strong> {{ student_profile_view.student_university_id }}</p>
+                        <p><strong>Birthdate: </strong> {{ student_profile_view.birthdate }}</p>
+                        <p><strong>Semester: </strong> {{ student_profile_view.semester }}</p>
+                        <p><strong>Faculty: </strong> {{ student_profile_view.faculty }}</p>
+                        <p><strong>Major: </strong> {{ student_profile_view.major }}</p>
+                        <p><strong>Gpa: </strong> {{ student_profile_view.gpa }}</p>
+                        <p><a class="no_underline" href="{% url 'student_phone_detail' student_profile_view.pk %}">Phone
+                            Numbers</a> | <a class="no_underline"
+                                             href="{% url 'add_student_phone' student_profile_view.pk %}">Add</a>
+                        </p>
+                        <p><a class="no_underline" href="{% url 'student_edit' student_profile_view.pk %}">Edit</a> |
+                            <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
+                            <a class="no_underline" href="{% url 'user_delete' student_profile_view.pk %}">Delete</a>
+                        </p>
 
+                    </div>
+                </div>
+
+
+                <div id="profile_logo_card_student" class="col-5 d-none d-md-block">
+                    <br>
+                    <br>
+                    <br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="card">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ student_profile_view.user.first_name }} {{ student_profile_view.user.last_name }}</h5>
+                                    <p class="card-text">{{ student_profile_view.cover_letter }}</p>
+                                    <br>
+
+                                    {% if student_profile_view.has_cv %}
+                                        <div class=" justify-content-md-center">
+                                            <a href="{% url 'showresume' student_profile_view.pk %}"
+                                               class="no_underline">
+                                                <button type="button" class="btn btn-warning">Resume</button>
+                                            </a>
+
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                    </div>
+                </div>
             </div>
         </div>
+        <script src="{% static 'js/student_profile.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
     </div>
-    <br>
-    <br>
+
 
 {% endblock profile_body %}
 

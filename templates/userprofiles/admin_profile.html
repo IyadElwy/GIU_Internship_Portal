@@ -7,15 +7,28 @@
         <a class="nav-link" href="{% url 'admin_profile' admin_profile_view.pk %}">Profile</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Show Employers</a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link" href="#">Show Jobs</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Show Faculty Representatives</a>
-    </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_list_employers' admin_profile_view.pk %}">Show Employers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_students_admin' admin_profile_view.pk %}">Show Students</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_fac_rep' %}">Show Faculty Reps.</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_academic_advisor_admin'  admin_profile_view.pk %}">Show Academic
+            Advisors</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_career_oc_admin'  admin_profile_view.pk %}">Show Career OC.</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'article_new' admin_profile_view.pk %}">Post News</a>
+    </li>
 
 {% endblock navitems %}
 
@@ -26,7 +39,7 @@
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">{{ admin_profile_view.user.username }}</h1>
-                        <br>
+                <br>
 
                 <div class="article-entry">
                     <p>Email: {{ admin_profile_view.user.email }}</p>

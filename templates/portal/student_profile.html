@@ -1,0 +1,86 @@
+{% extends 'userprofiles/profile_base.html' %}
+{% load static %}
+
+
+{% block profiletyple %}Admin{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="row-justify-content-md-center">
+
+            <div class="row">
+                <div id="student_info_div" style="" class="col-7">
+                    <div class="container-fluid py-5">
+                        <h1 class="display-5 fw-bold">{{ student_profile_view_generic.user.username }}</h1>
+
+                        <p>
+                            <strong>Name: </strong> {{ student_profile_view_generic.user.first_name }} {{ student_profile_view_generic.middle_name }} {{ student_profile_view_generic.user.last_name }}
+                        </p>
+                        <p><strong>Age: </strong> {{ student_profile_view_generic.age }}</p>
+                        <p><strong>Email: </strong> {{ student_profile_view_generic.user.email }}</p>
+                        <p><strong>Address: </strong> {{ student_profile_view_generic.student_address }}</p>
+                        <p><strong>GIU ID: </strong> {{ student_profile_view_generic.student_university_id }}</p>
+                        <p><strong>Birthdate: </strong> {{ student_profile_view_generic.birthdate }}</p>
+                        <p><strong>Semester: </strong> {{ student_profile_view_generic.semester }}</p>
+                        <p><strong>Faculty: </strong> {{ student_profile_view_generic.faculty }}</p>
+                        <p><strong>Major: </strong> {{ student_profile_view_generic.major }}</p>
+                        <p><strong>Gpa: </strong> {{ student_profile_view_generic.gpa }}</p>
+                        <p><a class="no_underline"
+                              href="{% url 'student_phone_detail' student_profile_view_generic.pk %}">Phone
+                            Numbers</a>
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div id="profile_logo_card_student" class="col-5 d-none d-md-block">
+                    <br>
+                    <br>
+                    <br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="card">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ student_profile_view_generic.user.first_name }} {{ student_profile_view_generic.user.last_name }}</h5>
+                                    <p class="card-text">{{ student_profile_view_generic.cover_letter }}</p>
+                                    <br>
+
+                                    {% if student_profile_view_generic.has_cv %}
+
+                                        <div class=" justify-content-md-center">
+                                            <a href="{% url 'showresume' student_profile_view_generic.pk %}"
+                                               class="no_underline">
+                                                <button type="button" class="btn btn-warning">Resume</button>
+                                            </a>
+
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{% static 'js/student_profile.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    </div>
+
+
+{% endblock profile_body %}
+
+

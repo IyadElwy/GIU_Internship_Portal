@@ -99,7 +99,7 @@ class ShowResumeView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return reverse('resumehome', kwargs={'pk': self.request.user.pk})
 
     def test_func(self):
-        return self.get_object().student_id.user.pk == self.request.user.pk
+        return self.get_object().student_id.user.pk == self.request.user.pk or self.request.user.is_admin
 
     def get_object(self, queryset=None):
         if queryset is None:

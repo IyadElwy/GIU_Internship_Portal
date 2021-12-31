@@ -129,6 +129,8 @@ class GIUAdminSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
         user.save()
         admin = models.GIUAdmin.objects.create(user=user)
 

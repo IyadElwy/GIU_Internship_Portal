@@ -21,21 +21,10 @@
     </style>
 {% endblock header_block %}
 
-{% block profiletyple %}Employer{% endblock profiletyple %}
+{% block profiletyple %}Admin{% endblock profiletyple %}
 
 {% block navitems %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'employer_profile' employer_profile_view.pk %}">Profile</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'employer_profile_status' employer_profile_view.pk %}">Profile Status</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Post Job</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Show posted jobs</a>
-    </li>
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
 
 
 {% endblock navitems %}
@@ -48,30 +37,25 @@
             <div class="row">
                 <div id="employer_info_div" style="" class="col-6">
                     <div class="container-fluid py-5">
-                        <h1 class="display-5 fw-bold">{{ employer_profile_view.company_name }}</h1>
+                        <h1 class="display-5 fw-bold">{{ employer_profile_view_generic.company_name }}</h1>
                         <br>
-                        <p><strong>Username: </strong>{{ employer_profile_view.user.username }} </p>
-                        <p><strong>Email: </strong> {{ employer_profile_view.user.email }} </p>
-                        <p><strong>Company Address: </strong> {{ employer_profile_view.employer_address }}</p>
-                        <p><strong>Company Phone: </strong> {{ employer_profile_view.phone_number }}</p>
-                        {% if employer_profile_view.fax_number %}
-                            <p><strong>Fax Number: </strong> {{ employer_profile_view.fax_number }}</p>
+                        <p><strong>Username: </strong>{{ employer_profile_view_generic.user.username }} </p>
+                        <p><strong>Email: </strong> {{ employer_profile_view_generic.user.email }} </p>
+                        <p><strong>Company Address: </strong> {{ employer_profile_view_generic.employer_address }}</p>
+                        <p><strong>Company Phone: </strong> {{ employer_profile_view_generic.phone_number }}</p>
+                        {% if employer_profile_view_generic.fax_number %}
+                            <p><strong>Fax Number: </strong> {{ employer_profile_view_generic.fax_number }}</p>
                         {% endif %}
-                        <p><strong>Industry: </strong> {{ employer_profile_view.industry }}</p>
-                        <p><strong>Type of business: </strong> {{ employer_profile_view.type_of_business }}</p>
-                        <p><strong>Products or services: </strong> {{ employer_profile_view.products_or_services }}</p>
-                        {% if employer_profile_view.number_of_current_employees %}
+                        <p><strong>Industry: </strong> {{ employer_profile_view_generic.industry }}</p>
+                        <p><strong>Type of business: </strong> {{ employer_profile_view_generic.type_of_business }}</p>
+                        <p><strong>Products or
+                            services: </strong> {{ employer_profile_view_generic.products_or_services }}</p>
+                        {% if employer_profile_view_generic.number_of_current_employees %}
                             <p>
                                 <strong>Current Employee count: </strong>
-                                {{ employer_profile_view.number_of_current_employees }}</p>
+                                {{ employer_profile_view_generic.number_of_current_employees }}</p>
                         {% endif %}
 
-                        <p><a class="no_underline"
-                              href="{% url 'employer_edit' employer_profile_view.pk %}">Edit</a> |
-                            <a class="no_underline" href="{% url 'password_change' %}">Change Password</a> |
-                            <a class="no_underline"
-                               href="{% url 'user_delete' employer_profile_view.pk %}">Delete</a>
-                        </p>
 
                     </div>
                 </div>
@@ -87,8 +71,8 @@
                                      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
                                      preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
                                     <text x="50%" y="50%" fill="#dee2e6" dy=".3em">
-                                        {% if not employer_profile_view.company_log %}
-                                            <img src="{{ employer_profile_view.company_logo.url }}"
+                                        {% if not employer_profile_view_generic.company_log %}
+                                            <img src="{{ employer_profile_view_generic.company_logo.url }}"
                                                  width="200" class="mx-auto"
                                                  alt="Responsive image"/>
                                             <br>
@@ -98,10 +82,10 @@
                                 </svg>
 
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="{{ employer_profile_view.website }}"></a>
-                                        {{ employer_profile_view.website }}</h5>
-                                    <p class="card-text">{{ employer_profile_view.country_of_origin }}</p>
-                                    <p class="card-text">Est. {{ employer_profile_view.establishment_year }}</p>
+                                    <h5 class="card-title"><a href="{{ employer_profile_view_generic.website }}"></a>
+                                        {{ employer_profile_view_generic.website }}</h5>
+                                    <p class="card-text">{{ employer_profile_view_generic.country_of_origin }}</p>
+                                    <p class="card-text">Est. {{ employer_profile_view_generic.establishment_year }}</p>
                                     <br>
 
                                     <div class="row justify-content-md-center">
@@ -109,10 +93,7 @@
                                             <div class="container">
                                                 <strong>Contact person</strong>
                                                 <p><a class="no_underline" href="
-{% url 'contact_person' employer_profile_view.pk %}">Show</a> | <a
-                                                        class="no_underline"
-                                                        href="
-{% url 'contact_person_edit' employer_profile_view.user.pk %}">Edit</a></p>
+{% url 'generic_contact_person' employer_profile_view_generic.pk %}">Show</a></p>
                                             </div>
                                         </div>
 
@@ -120,11 +101,7 @@
                                             <div class="container">
                                                 <strong>HR director</strong>
                                                 <p><a class="no_underline" href="
-{% url 'hrdirector' employer_profile_view.pk %}"> Show</a> |
-                                                    <a
-                                                            class="no_underline"
-                                                            href="
-{% url 'hrdirector_edit' employer_profile_view.pk %}">Edit</a></p>
+{% url 'generic_hr_director' employer_profile_view_generic.pk %}"> Show</a></p>
                                             </div>
                                         </div>
 
@@ -145,7 +122,7 @@
                 <div class="d-none d-md-block" id="map"></div>
 
 
-                <p hidden id="company_address">{{ employer_profile_view.employer_address }}</p>
+                <p hidden id="company_address">{{ employer_profile_view_generic.employer_address }}</p>
                 <p hidden id="api_key">{{ google_maps_api_key }} </p>
                 <p hidden id="api_key_positions">{{ positions_api_key }} </p>
 

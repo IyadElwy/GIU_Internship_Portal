@@ -217,7 +217,7 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('login')
 
     def test_func(self):
-        return self.request.user.pk == self.get_object().pk
+        return self.request.user.pk == self.get_object().pk or self.request.user.is_admin
 
 
 # User profile views (if user views their own profile)

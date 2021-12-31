@@ -1,0 +1,38 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Admin{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Faculty</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for aa in coc_list_academic_advisor_view %}
+            <tr class="table-success">
+                <td>{{ aa.user.username }}</td>
+                <td>{{ aa.user.email }}</td>
+                <td>{{ aa.faculty }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock profile_body %}
+
+
+
+

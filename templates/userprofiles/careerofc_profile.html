@@ -7,7 +7,8 @@
         <a class="nav-link" href="{% url 'careerofc_profile' careerofc_profile_view.pk %}">Profile</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Show Academic Advisors</a>
+        <a class="nav-link" href="{% url 'list_academic_advisor_coc' careerofc_profile_view.pk %}">Show Academic
+            Advisors</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Show Applications</a>
@@ -23,7 +24,7 @@
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">{{ careerofc_profile_view.user.username }}</h1>
-                        <br>
+                <br>
 
                 <div class="article-entry">
                     <p>Email: {{ careerofc_profile_view.user.email }}</p>

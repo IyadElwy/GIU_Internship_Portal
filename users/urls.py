@@ -48,6 +48,14 @@ urlpatterns = [
 
     path('employer/<int:pk>/profilestatus/', views.EmployerProfileStatus.as_view(), name='employer_profile_status'),
 
-    # Jobs
+    # portal
     path('employer/<int:pk>/', include('portal.urls')),
+    path('admin/<int:pk>/employers/', include('portal.urls')),
+    path('student/<int:pk>/', include('portal.urls')),
+    path('facultyrepresentative/<int:pk>/', include('portal.urls')),
+    path('academicadvisor/<int:pk>/', include('portal.urls')),
+    path('careerofficeecoordinator/<int:pk>/', include('portal.urls')),
+
+    # news
+    path('admin/<int:pk>/news/', include('news.urls')),
 ]

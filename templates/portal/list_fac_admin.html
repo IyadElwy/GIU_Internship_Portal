@@ -1,0 +1,51 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Admin{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+    <div class="container">
+        <a href="{% url 'faculty_representative_signup' %}"
+           class="no_underline">
+            <button type="button" class="btn btn-success">Add new faculty representative</button>
+        </a>
+
+    </div>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Faculty</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fac in admin_list_fac_view %}
+            <tr class="table-success">
+                <td>{{ fac.user.username }}</td>
+                <td>{{ fac.user.email }}</td>
+                <td>{{ fac.faculty }}</td>
+                <td><a class="no_underline" href="{% url 'admin_delete_fac' fac.user.pk %}">
+                    <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+                </a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock profile_body %}
+
+
+
+

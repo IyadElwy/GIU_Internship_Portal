@@ -1,5 +1,4 @@
 {% extends 'userprofiles/profile_base.html' %}
-{% load crispy_forms_tags %}
 
 {% block profiletyple %}Employer{% endblock profiletyple %}
 
@@ -13,21 +12,16 @@
 
     <br>
     <div class="container">
-        <h1>Contact Person</h1>
-        <br>
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
-
-                <h1>Edit</h1>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    {{ form|crispy }}
+                <div class="jumbotron">
+                    <h1>Contact Person</h1>
                     <br>
-                    <button class="btn btn-success ml-2" type="submit">Update</button>
-                </form>
-                <br>
-
-
+                    <h2>{{ contact_person_view_generic.contact_person_name }}</h2>
+                    <p><strong>Email: </strong> {{ contact_person_view_generic.email }}</p>
+                    <p><strong>Job: </strong> {{ contact_person_view_generic.job_title }}</p>
+                    <p><strong>Phone Number: </strong> {{ contact_person_view_generic.mobile_number }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -35,5 +29,3 @@
     <br>
 
 {% endblock profile_body %}
-
-
