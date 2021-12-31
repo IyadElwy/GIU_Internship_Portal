@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from . import models
+from portal.models import ReviewProfile
 
 
 class StudentSignUpForm(UserCreationForm):
@@ -104,8 +105,15 @@ class EmployerSignUpForm(UserCreationForm):
                                                   industry=self.cleaned_data.get('industry'),
                                                   number_of_current_employees=self.cleaned_data.get(
                                                       'number_of_current_employees'),
-                                                  products_or_services=self.cleaned_data.get('products_or_services')
+                                                  products_or_services=self.cleaned_data.get('products_or_services'),
+                                                  company_logo=self.cleaned_data.get('company_logo')
                                                   )
+        employer_profile_status = ReviewProfile.objects.create(employer_id=employer)
+        employer_profile_status.save()
+        contact_person = models.ContactPerson.objects.create(employer_id=employer)
+        contact_person.save()
+        hr_director = models.HRDirector.objects.create(employer_id=employer)
+        hr_director.save()
 
         return user
 

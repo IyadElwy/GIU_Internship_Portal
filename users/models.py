@@ -103,11 +103,11 @@ class StudentPhoneNumbers(models.Model):
 
 class ContactPerson(models.Model):
     employer_id = models.OneToOneField(Employer, on_delete=models.CASCADE, primary_key=True)
-    contact_person_name = models.CharField(max_length=20)
-    job_title = models.CharField(max_length=30)
-    email = models.CharField(max_length=50)
-    mobile_number = models.CharField(max_length=20)
-    fax = models.CharField(max_length=50, null=True, blank=True)
+    contact_person_name = models.CharField(max_length=20, blank=True, null=True, default='None')
+    job_title = models.CharField(max_length=30, blank=True, null=True, default='None')
+    email = models.CharField(max_length=50, blank=True, null=True, default='None')
+    mobile_number = models.CharField(max_length=20, blank=True, null=True, default='None')
+    fax = models.CharField(max_length=50, null=True, blank=True, default='None')
 
     def __str__(self):
         return self.contact_person_name
@@ -115,8 +115,8 @@ class ContactPerson(models.Model):
 
 class HRDirector(models.Model):
     employer_id = models.OneToOneField(Employer, on_delete=models.CASCADE, primary_key=True)
-    hr_name = models.CharField(max_length=20)
-    hr_email = models.CharField(max_length=50)
+    hr_name = models.CharField(max_length=20, blank=True, null=True, default='None')
+    hr_email = models.CharField(max_length=50, blank=True, null=True, default='None')
 
     def __str__(self):
         return self.hr_name

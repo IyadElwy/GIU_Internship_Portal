@@ -1,36 +1,20 @@
-;(function ($) {
-    'use strict';
-    var content = $('#main').smoothState({
-        // onStart runs as soon as link has been activated
-        onStart: {
-
-            // Set the duration of our animation
-            duration: 250,
-
-            // Alterations to the page
-            render: function () {
-
-                // Quickly toggles a class and restarts css animations
-                content.toggleAnimationClass('is-exiting');
-            }
-        }
-    }).data('smoothState'); // makes public methods available
-})(jQuery);
+employer_det_div = dom.getElementById("employer_info_div")
+profile_logo_card = dom.getElementById("profile_logo_card")
 
 
-;(function ($) {
-    'use strict';
-    var $body = $('html, body'), // Define jQuery collection
-        content = $('#main').smoothState({
-            onStart: {
-                duration: 250,
-                render: function () {
-                    content.toggleAnimationClass('is-exiting');
+function check_size_employer_profile() {
+    if (window.outerWidth < 790) {
+        employer_det_div.className = "col-12"
+        profile_logo_card.className = "col-12 d-none d-md-block"
 
-                    // Scroll user to the top
-                    $body.animate({'scrollTop': 0});
+    }
+    console.log(window.outerWidth)
+    if (window.outerWidth > 790) {
+        employer_det_div.className = "col-6"
+        profile_logo_card.className = "col-5 d-none d-md-block"
 
-                }
-            }
-        }).data('smoothState');
-})(jQuery);
+    }
+
+}
+
+window.onresize = check_size_employer_profile

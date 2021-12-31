@@ -4,9 +4,9 @@ from users import models as user_models
 
 class ReviewProfile(models.Model):
     employer_id = models.OneToOneField(user_models.Employer, on_delete=models.CASCADE, primary_key=True)
-    admin_id = models.OneToOneField(user_models.GIUAdmin, on_delete=models.CASCADE)
-    review_status = models.CharField(max_length=20)
-    reason = models.TextField(max_length=100)
+    admin_id = models.OneToOneField(user_models.GIUAdmin, on_delete=models.CASCADE, null=True, blank=True)
+    review_status = models.CharField(max_length=20, blank=True, default='In review')
+    reason = models.TextField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f'{self.employer_id.company_name}: {self.review_status}'

@@ -1,0 +1,31 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Employer{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <div class="jumbotron">
+                    <h1>Contact Person</h1>
+                    <br>
+                    <h2>{{ contact_person_view.contact_person_name }}</h2>
+                    <p><strong>Email: </strong> {{ contact_person_view.email }}</p>
+                    <p><strong>Job: </strong> {{ contact_person_view.job_title }}</p>
+                    <p><strong>Phone Number: </strong> {{ contact_person_view.mobile_number }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+{% endblock profile_body %}

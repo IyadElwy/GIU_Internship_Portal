@@ -25,6 +25,12 @@ urlpatterns = [
     #     Edit urls
     path('student/<int:pk>/edit/', views.StudentUpdateView.as_view(), name='student_edit'),
     path('employer/<int:pk>/edit/', views.EmployerUpdateView.as_view(), name='employer_edit'),
+
+    path('employer/<int:pk>/contactperson/', views.ShowContactPerson.as_view(), name='contact_person'),
+    path('employer/<int:pk>/contactperson/edit/', views.EditContactPerson.as_view(), name='contact_person_edit'),
+    path('employer/<int:pk>/hrdirector/', views.ShowHRDirector.as_view(), name='hrdirector'),
+    path('employer/<int:pk>/hrdirector/edit/', views.EditHRDirector.as_view(), name='hrdirector_edit'),
+
     path('facultyrepresentative/<int:pk>/edit/', views.FacultyRepresentativeUpdateView.as_view(), name='facrep_edit'),
     path('academicadvisor/<int:pk>/edit/', views.AcademicAdvisorUpdateView.as_view(), name='acadadv_edit'),
     # Delete urls
@@ -40,4 +46,8 @@ urlpatterns = [
     path('student/<slug:pk>/phonenumbers/delete', views.DeleteStudentPhoneView.as_view(),
          name='delete_student_phone'),
 
+    path('employer/<int:pk>/profilestatus/', views.EmployerProfileStatus.as_view(), name='employer_profile_status'),
+
+    # Jobs
+    path('employer/<int:pk>/', include('portal.urls')),
 ]

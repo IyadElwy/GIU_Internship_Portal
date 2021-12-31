@@ -28,7 +28,12 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="{% url 'home' %}" class="nav-link px-2 text-secondary">GIU Internship Portal</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white"></a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Companies</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Students</a></li>
+                    {% if user.is_authenticated and user.is_student or user.is_employer %}
+                        <li><a href="#" class="nav-link px-2 text-white">Jobs</a></li>
+                    {% endif %}
                     {% block giuwebsite %}{% endblock giuwebsite %}
                 </ul>
 

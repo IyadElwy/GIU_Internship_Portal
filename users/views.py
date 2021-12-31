@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.conf import settings
+from portal.models import ReviewProfile
 
 
 class SuccessfulSignupView(TemplateView):
@@ -321,3 +322,63 @@ class CareerOfficeCoordinatorProfileView(LoginRequiredMixin, UserPassesTestMixin
 
     def test_func(self):
         return self.request.user.pk == self.get_object().pk
+
+
+class EmployerProfileStatus(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = ReviewProfile
+    template_name = 'userprofiles/employer_status.html'
+    context_object_name = 'employer_profile_view'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.pk == self.get_object().employer_id.pk
+
+
+class ShowContactPerson(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = models.ContactPerson
+    template_name = 'userprofiles/show_contact_person.html'
+    context_object_name = 'contact_person_view'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.pk == self.get_object().employer_id.pk
+
+
+class EditContactPerson(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.ContactPerson
+    fields = ('contact_person_name', 'job_title', 'email', 'mobile_number')
+    template_name = 'userprofiles/contact_person_edit.html'
+    context_object_name = 'contact_person_edit_view'
+    success_url = 'employer_profile'
+
+    def test_func(self):
+        return self.request.user.pk == self.get_object().employer_id.pk
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('employer_profile', kwargs={"pk": pk})
+
+
+class ShowHRDirector(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = models.HRDirector
+    template_name = 'userprofiles/show_hr_directore.html'
+    context_object_name = 'hr_director_view'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.pk == self.get_object().employer_id.pk
+
+
+class EditHRDirector(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.HRDirector
+    fields = ('hr_name', 'hr_email')
+    template_name = 'userprofiles/hr_director_edit.html'
+    context_object_name = 'hr_director_edit_view'
+    success_url = 'employer_profile'
+
+    def test_func(self):
+        return self.request.user.pk == self.get_object().employer_id.pk
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('employer_profile', kwargs={"pk": pk})

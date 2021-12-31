@@ -27,17 +27,18 @@
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">{{ student_profile_view.user.username }}</h1>
 
-                <p>Name: {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }}
-                    {{ student_profile_view.user.last_name }}</p>
-                <p>Age: {{ student_profile_view.age }}</p>
-                <p>Email: {{ student_profile_view.user.email }}</p>
-                <p>Address: {{ student_profile_view.student_address }}</p>
-                <p>GIU ID: {{ student_profile_view.student_university_id }}</p>
-                <p>Birthdate: {{ student_profile_view.birthdate }}</p>
-                <p>Semester: {{ student_profile_view.semester }}</p>
-                <p>Faculty: {{ student_profile_view.faculty }}</p>
-                <p>Major: {{ student_profile_view.major }}</p>
-                <p>Gpa: {{ student_profile_view.gpa }}</p>
+                <p>
+                    <strong>Name: </strong> {{ student_profile_view.user.first_name }} {{ student_profile_view.middle_name }} {{ student_profile_view.user.last_name }}
+                </p>
+                <p><strong>Age: </strong> {{ student_profile_view.age }}</p>
+                <p><strong>Email: </strong> {{ student_profile_view.user.email }}</p>
+                <p><strong>Address: </strong> {{ student_profile_view.student_address }}</p>
+                <p><strong>GIU ID: </strong> {{ student_profile_view.student_university_id }}</p>
+                <p><strong>Birthdate: </strong> {{ student_profile_view.birthdate }}</p>
+                <p><strong>Semester: </strong> {{ student_profile_view.semester }}</p>
+                <p><strong>Faculty: </strong> {{ student_profile_view.faculty }}</p>
+                <p><strong>Major: </strong> {{ student_profile_view.major }}</p>
+                <p><strong>Gpa: </strong> {{ student_profile_view.gpa }}</p>
                 <p><a class="no_underline" href="{% url 'student_phone_detail' student_profile_view.pk %}">Phone
                     Numbers</a> | <a class="no_underline"
                                      href="{% url 'add_student_phone' student_profile_view.pk %}">Add</a>
