@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Success{% endblock title %}
+
+
+{% block content %}
+
+    <div class="jumbotron">
+
+        <h1>We're sorry...</h1>
+        <h2>your profile hasn't been accepted yet by the administration.</h2>
+        <p>As soon as they accept your profile you will be granted access to post jobs on the platform.</p>
+        <p>For further queries please head to the <a class="no_underline" href="#">help</a> page where we'll be able to answer your
+            questions.</p>
+        <p>Back to <a class="no_underline"
+                      href="{% url 'employer_profile' employer_status_not_accepted.pk %}">profile</a>.</p>
+
+    </div>
+
+{% endblock content %}

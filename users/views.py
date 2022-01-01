@@ -60,7 +60,7 @@ class GIUAdminSignUpView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     login_url = 'login'
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'admin'
+        kwargs['user_type'] = 'giuadmin'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -231,11 +231,14 @@ class StudentProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user.pk == self.get_object().pk
 
 
-class StudentPhoneView(LoginRequiredMixin, ListView):
+class StudentPhoneView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = models.StudentPhoneNumbers
     template_name = 'userprofiles/student_phone_numbers.html'
     context_object_name = 'student_phone_list'
     login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.is_student or self.request.user.is_admin
 
 
 class AddStudentPhoneView(LoginRequiredMixin, CreateView):

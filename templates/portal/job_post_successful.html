@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Success{% endblock title %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="jumbotron">
+
+            <h1>Job posted successfully</h1>
+            <h2>You can view your posted jobs <a class="no_underline" href="#">here</a>.</h2>
+            <p>Back to <a class="no_underline" href="{% url 'employer_profile' job_post_successful.pk %}">profile</a>.
+            </p>
+
+
+        </div>
+    </div>
+
+{% endblock content %}

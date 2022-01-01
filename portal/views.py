@@ -4,11 +4,16 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users import models
-from .models import ReviewProfile
+from .models import ReviewProfile, Job, ProgressReport, Eligible, Application
+from django.dispatch import receiver
 
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
+
+
+class HelpPageView(TemplateView):
+    template_name = 'help.html'
 
 
 class ListEmployeesViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -138,3 +143,91 @@ class ListAcademicAdvisorCOC(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
         return self.request.user.is_career_office_coordinator
+
+
+class EmployerPostsJobView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Job
+    fields = ('title', 'job_description', 'department', 'job_start_date', 'job_end_date', 'application_deadline',
+              'num_of_available_internships', 'salary_range', 'qualifications', 'job_location', 'job_type',
+              'allowed_faculties', 'required_semesters', 'application_link',
+              'application_email')
+    template_name = 'portal/employer_posts_job.html'
+    context_object_name = 'employer_posts_job'
+    login_url = 'login'
+    success_url = reverse_lazy('employer_job_post_successful')
+
+    def get_success_url(self):
+        return reverse('employer_job_post_successful', args=[self.request.user.pk])
+
+    def form_valid(self, form):
+        employer = models.Employer(user=self.request.user)
+        form.instance.employer_id = employer
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user.is_employer
+
+
+class EmployerJobPostSuccessful(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    template_name = 'portal/job_post_successful.html'
+    model = models.Employer
+    login_url = 'login'
+    context_object_name = 'job_post_successful'
+
+    def test_func(self):
+        employer = models.Employer(user=self.request.user)
+        return employer.reviewprofile.review_status == 'Accepted'
+
+
+class EmployerStatusNotAccepted(LoginRequiredMixin, DetailView):
+    template_name = 'portal/employer_status_not_accepted.html'
+    model = models.Employer
+    login_url = 'login'
+    context_object_name = 'employer_status_not_accepted'
+
+
+class ShowPostedJobsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Job
+    template_name = 'portal/employer_views_jobs.html'
+    context_object_name = 'employer_views_jobs'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.is_employer
+
+
+class ShowJobForEmployer(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = Job
+    template_name = 'portal/employer_views_own_job.html'
+    context_object_name = 'employer_views_own_jobs'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.is_employer and self.get_object().user == self.request.user
+
+# class ShowAllApplicationsByCompany(LoginRequiredMixin, UserPassesTestMixin, ListView):
+# class ShowAllApplicationsByJob(LoginRequiredMixin, UserPassesTestMixin, ListView):
+# class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+# class AdminShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
+# class ShowJobForAdmin(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+# class AdminChangeJobStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateVIew):
+
+# class FacRepShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
+# class ShowJobForFacRep(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+# class FacRepChangeJobStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateVIew):
+
+# class CccShowApplications(LoginRequiredMixin, UserPassesTestMixin, ListView):
+# class ShowApplicationForFacRep(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+# class FacRepChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateVIew):
+
+# class StudentShowApplications(LoginRequiredMixin, UserPassesTestMixin, ListView):
+# class ShowApplicationForStudent(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+# class StudentShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+# class StudentApplyForJob(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+# class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+
+
+# class AcademicAdvisorShowAssignedInternships
+# class AcademicAdvisorViewProgressReport
+# class AcademicAdvisorEvaluateProgressReport

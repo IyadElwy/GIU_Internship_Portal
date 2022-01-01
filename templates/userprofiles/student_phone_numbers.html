@@ -19,7 +19,11 @@
                 {% for number in student_phone_list %}
                     <h3><strong>Number:</strong></h3>
                     <h4>{{ number }}</h4>
-                    <a class="no_underline" href="{% url 'delete_student_phone' number.pk %}">Delete</a>
+
+                    {% if user.is_student %}
+                        <a class="no_underline" href="{% url 'delete_student_phone' number.pk %}">Delete</a>
+                    {% endif %}
+
                     <br>
                     <br>
                 {% endfor %}

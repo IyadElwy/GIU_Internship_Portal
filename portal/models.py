@@ -18,24 +18,27 @@ class ReviewProfile(models.Model):
 class Job(models.Model):
     job_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=30)
-    job_description = models.TextField(max_length=50)
+    job_description = models.TextField(max_length=1000)
     department = models.CharField(max_length=20)
     job_start_date = models.DateField()
     job_end_date = models.DateField()
     application_deadline = models.DateField()
     num_of_available_internships = models.PositiveIntegerField()
     salary_range = models.CharField(max_length=20)
-    qualifications = models.TextField(max_length=100)
+    qualifications = models.TextField(max_length=500)
     job_location = models.CharField(max_length=20)
-    application_link = models.CharField(max_length=50)
-    application_email = models.CharField(max_length=50)
+    application_link = models.CharField(max_length=50, null=True, blank=True)
+    application_email = models.CharField(max_length=50, null=True, blank=True)
     job_type = models.CharField(max_length=30)
-    employer_id = models.OneToOneField(user_models.Employer, on_delete=models.DO_NOTHING)
-    admin_id = models.OneToOneField(user_models.GIUAdmin, on_delete=models.DO_NOTHING)
-    visibility = models.BooleanField(default=False, blank=True)
-    reason = models.TextField(max_length=100)
+    employer_id = models.ForeignKey(user_models.Employer, on_delete=models.DO_NOTHING)
     allowed_faculties = models.TextField(max_length=300)
     required_semesters = models.CharField(max_length=20)
+    # for later elegibility
+    aa_id = models.OneToOneField(user_models.AcademicAdvisor, on_delete=models.DO_NOTHING, null=True, blank=True)
+    faculty_rep = models.OneToOneField(user_models.FacultyRepresentative, on_delete=models.DO_NOTHING, null=True,
+                                       blank=True)
+    visibility_fac_rep = models.BooleanField(default=False, blank=True)
+    visibility_admin = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.title
@@ -43,13 +46,6 @@ class Job(models.Model):
     @property
     def duration(self):
         return self.job_end_date.month - self.job_start_date.month
-
-
-class IndustrialInternship(models.Model):
-    industrial_internship_ID = models.OneToOneField(Job, primary_key=True, on_delete=models.DO_NOTHING)
-    industrial_Internship_status = models.CharField(max_length=20)
-    aa_id = models.OneToOneField(user_models.AcademicAdvisor, on_delete=models.DO_NOTHING)
-    faculty_rep = models.OneToOneField(user_models.FacultyRepresentative, on_delete=models.DO_NOTHING)
 
 
 class Application(models.Model):
@@ -66,7 +62,7 @@ class Application(models.Model):
 
 class Eligible(models.Model):
     student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
-    II_id = models.OneToOneField(IndustrialInternship, on_delete=models.DO_NOTHING)
+    job_id = models.OneToOneField(Job, on_delete=models.DO_NOTHING)
     coc_id = models.OneToOneField(user_models.CareerOfficeCoordinator, on_delete=models.DO_NOTHING)
     eligibility = models.BooleanField()
 
@@ -74,7 +70,7 @@ class Eligible(models.Model):
         return f'{self.student_id.user.username} eligible: {self.eligibility}'
 
     class Meta:
-        unique_together = (('student_id', 'II_id'),)
+        unique_together = (('student_id', 'job_id'),)
 
 
 class ProgressReport(models.Model):

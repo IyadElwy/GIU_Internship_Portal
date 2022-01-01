@@ -31,11 +31,9 @@
                     <li><a href="#" class="nav-link px-2 text-white"></a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Companies</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Jobs</a></li>
-                    {% if user.is_authenticated and user.is_student or user.is_employer %}
-                        <li><a href="#" class="nav-link px-2 text-white">Jobs</a></li>
-                    {% endif %}
                     {% block giuwebsite %}{% endblock giuwebsite %}
                     <li><a href="{% url 'article_list' %}" class="nav-link px-2 text-white">News</a></li>
+                    <li><a href="{% url 'help' %}" class="nav-link px-2 text-white">Help</a></li>
 
                 </ul>
 

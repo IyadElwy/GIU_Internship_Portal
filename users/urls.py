@@ -5,7 +5,7 @@ urlpatterns = [
     # Signup urls
     path('student/signup/', views.StudentSignUpView.as_view(), name='student_signup'),
     path('employer/signup/', views.EmployerSignUpView.as_view(), name='employer_signup'),
-    path('admin/signup/', views.GIUAdminSignUpView.as_view(), name='admin_signup'),
+    path('giuadmin/signup/', views.GIUAdminSignUpView.as_view(), name='admin_signup'),
     path('facultyrepresentative/signup/', views.FacultyRepresentativeSignUpView.as_view(),
          name='faculty_representative_signup'),
     path('academicadvisor/signup/', views.AcademicAdvisorSignUpView.as_view(),
@@ -15,7 +15,7 @@ urlpatterns = [
     # View Profile urls
     path('student/<int:pk>/', views.StudentProfileView.as_view(), name='student_profile'),
     path('employer/<int:pk>/', views.EmployerProfileView.as_view(), name='employer_profile'),
-    path('admin/<int:pk>/', views.AdminProfileView.as_view(), name='admin_profile'),
+    path('giuadmin/<int:pk>/', views.AdminProfileView.as_view(), name='admin_profile'),
     path('facultyrepresentative/<int:pk>/', views.FacultyRepresentativeProfileView.as_view(),
          name='facrep_profile'),
     path('academicadvisor/<int:pk>/', views.AcademicAdvisorProfileView.as_view(), name='acadadv_profile'),
@@ -49,13 +49,14 @@ urlpatterns = [
     path('employer/<int:pk>/profilestatus/', views.EmployerProfileStatus.as_view(), name='employer_profile_status'),
 
     # portal
-    path('employer/<int:pk>/', include('portal.urls')),
-    path('admin/<int:pk>/employers/', include('portal.urls')),
-    path('student/<int:pk>/', include('portal.urls')),
-    path('facultyrepresentative/<int:pk>/', include('portal.urls')),
-    path('academicadvisor/<int:pk>/', include('portal.urls')),
-    path('careerofficeecoordinator/<int:pk>/', include('portal.urls')),
+    path('employer/<int:pk>/employer_portal/', include('employer.urls')),
+    path('giuadmin/<int:pk>/admin_portal/', include('giuadmin.urls')),
+    # path('student/<int:pk>/student_portal/', include('portal.urls')),
+    # path('facultyrepresentative/<int:pk>/facrep_portal/', include('portal.urls')),
+    # path('academicadvisor/<int:pk>/acadadv_portal/', include('portal.urls')),
+    # path('careerofficeecoordinator/<int:pk>/careeroc_portal/', include('portal.urls')),
+
 
     # news
-    path('admin/<int:pk>/news/', include('news.urls')),
+    path('giuadmin/<int:pk>/news/', include('news.urls')),
 ]
