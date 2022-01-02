@@ -39,6 +39,7 @@ class Job(models.Model):
                                        blank=True)
     visibility_fac_rep = models.BooleanField(default=False, blank=True)
     visibility_admin = models.BooleanField(default=False, blank=True)
+    has_ended = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.title
@@ -52,6 +53,7 @@ class Application(models.Model):
     student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
     job_id = models.OneToOneField(Job, on_delete=models.DO_NOTHING)
     application_status = models.CharField(max_length=20)
+    visibility_Coc = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return f'{self.student_id.user.username} applies to {self.job_id.title}'
@@ -64,7 +66,7 @@ class Eligible(models.Model):
     student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
     job_id = models.OneToOneField(Job, on_delete=models.DO_NOTHING)
     coc_id = models.OneToOneField(user_models.CareerOfficeCoordinator, on_delete=models.DO_NOTHING)
-    eligibility = models.BooleanField()
+    eligibility = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return f'{self.student_id.user.username} eligible: {self.eligibility}'
@@ -76,10 +78,11 @@ class Eligible(models.Model):
 class ProgressReport(models.Model):
     student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
     academic_advisor_id = models.OneToOneField(user_models.AcademicAdvisor, on_delete=models.DO_NOTHING)
-    progress_report_date = models.DateField()
-    numeric_state = models.PositiveIntegerField()
-    evaluation = models.TextField(max_length=300)
-    progress_report_description = models.CharField(max_length=100)
+    progress_report_date = models.DateField(null=True, blank=True)
+    numeric_state = models.PositiveIntegerField(default=0, blank=True)
+    evaluation = models.TextField(max_length=300, default='', blank=True)
+    progress_report_description = models.CharField(max_length=100, default='', blank=True)
+    should_be_filled_in = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
         return f'{self.student_id.user.username} report'

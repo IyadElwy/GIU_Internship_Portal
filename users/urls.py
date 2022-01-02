@@ -56,7 +56,6 @@ urlpatterns = [
     # path('academicadvisor/<int:pk>/acadadv_portal/', include('portal.urls')),
     # path('careerofficeecoordinator/<int:pk>/careeroc_portal/', include('portal.urls')),
 
-
     # news
     path('giuadmin/<int:pk>/news/', include('news.urls')),
 ]
