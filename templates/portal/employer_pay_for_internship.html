@@ -1,0 +1,165 @@
+{% extends 'userprofiles/employer_profile.html' %}
+{% load static %}
+
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block header_block %}
+
+    <link rel="stylesheet" href="{% static 'css/employerViewsApplications.css' %}">
+
+{% endblock header_block %}
+
+{% block profile_body %}
+
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right vh-100" id="sidebar-wrapper">
+            <div class="sidebar-heading">
+
+                <strong><h3>Ended Internships</h3></strong>
+
+            </div>
+            <div class="list-group list-group-flush overflow-auto h-100">
+
+                {% for job in employer_pay_for_internship %}
+                    {% if job.has_started == False and job.has_ended == True and job.job_id.employer_id.user == user %}
+                        <a href="#" id="application-sidebar-item" class="list-group-item
+                    list-group-item-action
+                    bg-light side_item">
+                            <strong>{{ job.student_id.user.first_name }} {{ job.student_id.user.last_name }}</strong>
+                            <p hidden>{{ job.job_id.pk }}</p>
+                            <p>{{ job.job_id.title }}</p>
+                        </a>
+
+                    {% endif %}
+                {% endfor %}
+                <br>
+            </div>
+        </div>
+
+        {% for job in employer_pay_for_internship %}
+
+            {% if job.has_started == False and job.has_ended == True and job.job_id.employer_id.user == user %}
+
+                <div class="page-content-wrapper {{ job.student_id.user.first_name }}
+{{ job.student_id.user.last_name }}-{{ job.job_id.pk }}"
+                     style="display: none">
+                    <div id="application-content" class="container-fluid application-content">
+                        <br>
+                        <div class="container">
+                            <div class="Jumbotron">
+                                <h1>{{ job.student_id.user.first_name }}
+                                    {{ job.student_id.user.last_name }}</h1>
+                                <h2>{{ job.job_id.title }}</h2>
+                                <p>Ended on {{ job.job_id.job_end_date }}</p>
+                            </div>
+                            <br>
+
+
+                            <div class="container">
+                                <div class="Jumbotron">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                                                <div class="card-header">View Job</div>
+                                                <div class="card-body text-primary">
+                                                    <p>View job details</p>
+                                                    <div class="container">
+                                                        <a href="#" class="no_underline ">
+                                                            <button type="button" style="margin-left: 70px; margin-right:
+                                                         80px" class="btn
+                                                        btn-primary">
+                                                                {{ job.job_id.title }}</button>
+                                                        </a>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                                                <div class="card-header">View Student Profile</div>
+                                                <div class="card-body text-primary">
+                                                    <p>Profile includes contact info, resume and more.</p>
+                                                    <div class="container">
+                                                        <a href="
+{% url 'generic_student_profile' job.student_id.pk %}"
+                                                           class="no_underline ">
+                                                            <button type="button" style="margin-left: 80px" class="btn
+                                                        btn-primary">
+                                                                Profile
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+
+                                            <div class="col">
+                                                <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                                                    <div class="card-header">Contact Student</div>
+                                                    <div class="card-body text-primary">
+                                                        <p>Agreed on a finxed salary? Pay here!</p>
+                                                        <div class="container">
+                                                            <a href="{% url 'payment' job.job_id.pk %}"
+                                                               class="no_underline ">
+                                                                <button type="button" style="margin-left: 100px"
+                                                                        class="btn
+                                                        btn-primary">
+                                                                    Pay
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="margin-left: 25px" class="col">
+                                                <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                                                    <div class="card-header">Contact Student</div>
+                                                    <div class="card-body text-primary">
+                                                        <p>Use the portal's messaging system to contact the
+                                                            student.</p>
+                                                        <div class="container">
+                                                            <a href="#" class="no_underline ">
+                                                                <button type="button" style="margin-left: 80px"
+                                                                        class="btn
+                                                        btn-primary">
+                                                                    Message
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <script src="{% static 'js/employerViewsApplications.js' %}"></script>
+
+
+{% endblock profile_body %}

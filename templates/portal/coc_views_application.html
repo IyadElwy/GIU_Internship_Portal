@@ -1,0 +1,186 @@
+{% extends 'userprofiles/careerofc_profile.html' %}
+{% load static %}
+
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block header_block %}
+
+    <link rel="stylesheet" href="{% static 'css/employerViewsApplications.css' %}">
+
+{% endblock header_block %}
+
+{% block profile_body %}
+
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right vh-100" id="sidebar-wrapper">
+            <div class="sidebar-heading">
+
+                <strong><h3>Applications</h3></strong>
+
+            </div>
+            <div class="list-group list-group-flush overflow-auto h-100">
+
+                {% for application in coc_views_application %}
+                    <a href="#" id="application-sidebar-item" class="list-group-item
+                    list-group-item-action
+                    bg-light side_item">
+                        <strong>{{ application.student_id.user.first_name }} {{ application.student_id.user.last_name }}</strong>
+                        <p hidden>{{ application.job_id.pk }}</p>
+                        <p>{{ application.job_id.title }} at {{ application.job_id.employer_id.company_name }}</p>
+                        {% if  application.visibility_for_employer == True %}
+                            <p>Status:<p style="color: green">Visible</p></p>
+                        {% else %}
+                            <p>Status: <p style="color: darkred">Not visible</p></p>
+                        {% endif %}
+                        {% if application.job_id.aa_id %}
+                            <p>Academic advisor: <p style="color:green;">assigned</p> </p>
+                        {% else %}
+                            <p>Academic advisor: <p style="color:darkred;">unassigned</p></p>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+                <br>
+            </div>
+            <br>
+            <br>
+        </div>
+
+        {% for application in coc_views_application %}
+
+            <div class="page-content-wrapper {{ application.student_id.user.first_name }}
+{{ application.student_id.user.last_name }}-{{ application.job_id.pk }}"
+                 style="display: none">
+                <div id="application-content" class="container-fluid application-content">
+                    <br>
+                    <div class="container">
+                        <div class="Jumbotron">
+                            <h1>{{ application.student_id.user.first_name }} {{ application.student_id.user.last_name }}</h1>
+                            <h2>Application for {{ application.job_id.title }}</h2>
+                            <p>on {{ application.application_date }}</p>
+                        </div>
+                        <br>
+
+
+                        <div class="container">
+                            <div class="Jumbotron">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card border-primary mb-3" style="max-width: 18rem;">
+                                            <div class="card-header">View Job</div>
+                                            <div class="card-body text-primary">
+                                                <p>View the job this student has applied to.</p>
+                                                <div class="container">
+                                                    <a href="#" class="no_underline ">
+                                                        <button type="button" style="margin-left: 70px; margin-right:
+                                                         80px" class="btn
+                                                        btn-primary">
+                                                            {{ application.job_id.title }}</button>
+                                                    </a>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card border-primary mb-3" style="max-width: 18rem;">
+                                            <div class="card-header">View Student Profile</div>
+                                            <div class="card-body text-primary">
+                                                <p>Profile includes contact info, resume and more.</p>
+                                                <div class="container">
+                                                    <a href="
+{% url 'generic_student_profile' application.student_id.pk %}"
+                                                       class="no_underline ">
+                                                        <button type="button" style="margin-left: 80px" class="btn
+                                                        btn-primary">
+                                                            Profile
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                                                <div class="card-header">Update Application Status</div>
+                                                <div class="card-body text-primary">
+                                                    <p>Update the application status of the student.</p>
+                                                    <div class="container">
+                                                        <a href="{% url 'coc_update_visibilty' application.pk %}"
+                                                           class="no_underline ">
+                                                            <button type="button" style="margin-left: 80px" class="btn
+                                                        btn-primary">
+                                                                Update
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-left: 25px" class="col">
+                                            <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                                                <div class="card-header">Contact Student</div>
+                                                <div class="card-body text-primary">
+                                                    <p>Use the portal's messaging system to contact the student.</p>
+                                                    <div class="container">
+                                                        <a href="#" class="no_underline ">
+                                                            <button type="button" style="margin-left: 80px" class="btn
+                                                        btn-primary">
+                                                                Message
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                                                    <div class="card-header">Assign Academic Advisor</div>
+                                                    <div class="card-body text-primary">
+                                                        <p>Assign an Academic Advisor that will ensure the intern
+                                                            gets the most experience out of his work.</p>
+                                                        <div class="container">
+                                                            <a href="
+{% url 'coc_assigns_aa' application.job_id.pk %}"
+                                                               class="no_underline ">
+                                                                <button type="button" style="margin-left: 80px" class="btn
+                                                        btn-primary">
+                                                                    Assign
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <script src="{% static 'js/employerViewsApplications.js' %}"></script>
+
+
+{% endblock profile_body %}

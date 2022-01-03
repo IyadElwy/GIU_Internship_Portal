@@ -1,0 +1,124 @@
+{% extends 'userprofiles/student_profile.html' %}
+{% load static %}
+
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block header_block %}
+
+    <link rel="stylesheet" href="{% static 'css/employerViewsApplications.css' %}">
+
+{% endblock header_block %}
+
+{% block profile_body %}
+
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right vh-100" id="sidebar-wrapper">
+            <div class="sidebar-heading">
+
+                <h3><strong>Active Internship</strong></h3>
+
+            </div>
+            <div class="list-group list-group-flush overflow-auto h-100">
+
+                {% for application in student_view_past_internships %}
+
+                    {% if application.has_ended == True and application.has_started == False and application.student_id.user == user %}
+                        <a href="#" id="application-sidebar-item" class="list-group-item
+                    list-group-item-action
+                    bg-light side_item">
+                            <strong>{{ application.student_id.user.first_name }} {{ application.student_id.user.last_name }}</strong>
+                            <p hidden>{{ application.job_id.pk }}</p>
+                            <p>{{ application.job_id.title }}</p>
+
+                        </a>
+                    {% endif %}
+                {% endfor %}
+                <br>
+            </div>
+            <br>
+            <br>
+        </div>
+
+        <br>
+
+
+        {% for application in student_view_past_internships %}
+
+            {% if application.has_ended == True and application.has_started == False  and application.student_id.user == user %}
+                <div class="page-content-wrapper {{ application.student_id.user.first_name }}
+{{ application.student_id.user.last_name }}-{{ application.job_id.pk }}"
+                     style="display: none">
+                    <div id="application-content" class="container-fluid application-content">
+                        <br>
+                        <div class="container">
+                            <div class="Jumbotron">
+                                <h1>{{ application.student_id.user.first_name }} {{ application.student_id.user.last_name }}</h1>
+                                <h2>Application for {{ application.job_id.title }}</h2>
+                                <p>Ended on {{ application.job_id.job_end_date }}</p>
+                            </div>
+                            <br>
+
+
+                            <div class="container">
+                                <div class="Jumbotron">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                                                <div class="card-header">View Job</div>
+                                                <div class="card-body text-primary">
+                                                    <p>Show the job you've applied to.</p>
+                                                    <div class="container">
+                                                        <a href="#" class="no_underline ">
+                                                            <button type="button" style="margin-left: 70px; margin-right:
+                                                         80px" class="btn
+                                                        btn-primary">
+                                                                {{ application.job_id.title }}</button>
+                                                        </a>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                                                <div class="card-header">View Company Profile</div>
+                                                <div class="card-body text-primary">
+                                                    <p>Profile includes all info needed.</p>
+                                                    <div class="container">
+                                                        <a href="
+{% url 'generic_employer_profile' application.job_id.employer_id.pk %}"
+                                                           class="no_underline ">
+                                                            <button type="button" style="margin-left: 80px" class="btn
+                                                        btn-primary">
+                                                                Company
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <script src="{% static 'js/employerViewsApplications.js' %}"></script>
+
+
+{% endblock profile_body %}

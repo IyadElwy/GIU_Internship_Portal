@@ -1,0 +1,48 @@
+{% extends 'userprofiles/academicadv_profile.html' %}
+
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Report</th>
+            <th scope="col">User</th>
+            <th scope="col">Evaluated</th>
+            <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for report in acadamic_adv_views_progress_reports %}
+
+            <tr class="table-warning">
+                <td><a class="no_underline" href="
+            {% url 'academic_read_progress_reports' report.student_id.pk %}"
+                >{{ report.progress_report_title }}</a>
+                </td>
+                <td><a class="no_underline" href="{% url 'generic_student_profile' report.student_id.user.pk %}">
+                    @{{ report.student_id.user.username }}</a></td>
+
+                <td><a class="no_underline" href="#">Evaluate</a></td>
+                <td>{{ report.progress_report_date }}</td>
+            </tr>
+
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock profile_body %}
+
+
+
+
