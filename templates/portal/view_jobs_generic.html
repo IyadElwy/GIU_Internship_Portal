@@ -1,0 +1,40 @@
+{% extends 'home.html' %}
+
+{% block content %}
+    <div class="container my-1">
+        <div class="row">
+            <div class="col-4">
+                <div class="p-5"><h4>Filter </h4></div>
+            </div>
+
+
+            <div class="col-8">
+                <div class="p-5"><h3>Explore Internships near you</h3>
+                    <br>
+                    <div class="row">
+
+                        {% for job in generic_job_view %}
+                            <div class="col-lg-4">
+                                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                                    <div class="card-header"><a href="https://www."
+                                                                style="color: black; background-color : transparent;
+                                                                text-decoration:none"></a>
+                                        {{ job.employer_id.company_name }}</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="https://www."
+                                                                  style="color: black; background-color : transparent; text-decoration:none">{{ job.title }}</a>
+                                        </h5>
+                                        <p class="card-text maxle">{{ job.job_description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
