@@ -2,9 +2,61 @@
 
 {% block content %}
     <div class="container my-1">
+
         <div class="row">
+
+
             <div class="col-4">
-                <div class="p-5"><h4>Filter </h4></div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <div class="card border-primary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Filter</div>
+                    <div class="card-body text-primary">
+
+                        <form action="" method="get">
+                            <label for="inputState">Required semesters</label>
+                            <select id="inputState" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                            </select>
+                            <br>
+                            <label for="inputState">Faculty</label>
+                            <select id="inputState" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>CS</option>
+                                <option>Business</option>
+                                <option>Engineering</option>
+                                <option>Design</option>
+                                <option>Architecture</option>
+                                <option>Pharmaceutical</option>
+                            </select>
+                            <br>
+
+
+                            <button class="btn btn-success" type="submit">Submit</button>
+
+
+                        </form>
+
+
+                    </div>
+                </div>
             </div>
 
 
@@ -14,17 +66,20 @@
                     <div class="row">
 
                         {% for job in generic_job_view %}
+
                             <div class="col-lg-4">
-                                <div class="card bg-light mb-3" style="max-width: 18rem;">
-                                    <div class="card-header"><a href="https://www."
+
+                                <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                                    <div class="card-header"><a href="#"
                                                                 style="color: black; background-color : transparent;
-                                                                text-decoration:none"></a>
+                                                                                                text-decoration:none"></a>
                                         {{ job.employer_id.company_name }}</div>
                                     <div class="card-body">
-                                        <h5 class="card-title"><a href="https://www."
-                                                                  style="color: black; background-color : transparent; text-decoration:none">{{ job.title }}</a>
+                                        <h5 class="card-title"><a href="#"
+                                                                  style="color: white; background-color : transparent;
+                                                                                                  text-decoration:none">{{ job.title }}</a>
                                         </h5>
-                                        <p class="card-text maxle">{{ job.job_description }}</p>
+                                        <p class="card-text maxle">{{ job.job_description|slice:":50" }}...</p>
                                     </div>
                                 </div>
                             </div>
@@ -35,6 +90,8 @@
 
                 </div>
             </div>
+
         </div>
+
     </div>
 {% endblock content %}

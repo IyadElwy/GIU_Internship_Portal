@@ -40,7 +40,7 @@ class Student(models.Model):
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     company_name = models.CharField(max_length=20)
-    employer_address = models.CharField(max_length=40)
+    employer_address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
     fax_number = models.CharField(max_length=50, null=True, blank=True)
     website = models.CharField(max_length=50)
