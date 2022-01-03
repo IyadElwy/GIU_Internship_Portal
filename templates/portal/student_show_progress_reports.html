@@ -1,0 +1,73 @@
+{% extends 'userprofiles/academicadv_profile.html' %}
+
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+
+    <div class="container">
+        <a href="{% url 'student_fills_in_report' std.pk %}"
+           class="no_underline">
+            <button type="button" class="btn btn-success">Fill in progress report</button>
+        </a>
+
+    </div>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Report</th>
+            <th scope="col">Evaluation</th>
+            <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for report in reports %}
+
+            {% if report.evaluation %}
+
+                <tr class="table-success">
+                    <td><a class="no_underline" href="
+            {% url 'student_views_progress_report' report.pk %}"
+                    >{{ report.progress_report_title }}</a>
+                    </td>
+                    <td><a class="no_underline" href="{% url 'student_views_evaluation' report.pk %}">Show</a></td>
+                    <td>{{ report.progress_report_date }}</td>
+                </tr>
+
+            {% else %}
+
+                <tr class="table-warning">
+                    <td><a class="no_underline" href="
+            {% url 'student_views_progress_report' report.pk %}"
+                    >{{ report.progress_report_title }}</a>
+                    </td>
+                    <td><a class="no_underline" href="{% url 'student_views_evaluation' report.pk %}">Show</a></td>
+                    <td>{{ report.progress_report_date }}</td>
+                </tr>
+
+
+
+            {% endif %}
+
+
+
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+
+
+{% endblock profile_body %}
+
+
+
+

@@ -1,0 +1,37 @@
+{% extends 'userprofiles/academicadv_profile.html' %}
+
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+    </div>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <br>
+    <div class="container">
+
+        <div class="jumbotron">
+
+            <h1>{{ student_show_progress_report.progress_report_title }}</h1>
+            <p>{{ student_show_progress_report.progress_report_date }}</p>
+            <br>
+            <br>
+            <p>{{ student_show_progress_report.progress_report_description }}</p>
+            <p>- {{ student_show_progress_report.student_id.user.first_name }}
+                {{ student_show_progress_report.student_id.user.last_name }}</p>
+
+        </div>
+
+    </div>
+
+
+
+{% endblock profile_body %}
+
+
+
+
