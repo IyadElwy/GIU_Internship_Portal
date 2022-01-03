@@ -244,9 +244,12 @@ class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTest
         status = form.cleaned_data['application_status']
         if status == 'Accepted':
             form.instance.has_started = True
-            ProgressReport.objects.create(student_id=self.object.student_id, application_id=self.object.pk,
+            ProgressReport.objects.create(student_id=self.object.student_id,
                                           academic_advisor_id=self.object.job_id.aa_id,
-                                          progress_report_title='Initial Report').save()
+                                          progress_report_title='Initial Report',
+                                          progress_report_description='This is your first progress report. It '
+                                                                      'is meant to serve as a key to indicate '
+                                                                      'the acceptance of your internship/').save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -481,10 +484,18 @@ class StudentConfirmApply(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 class StudentShowProgressReports(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = ProgressReport
+    model = models.Student
     template_name = 'portal/student_show_progress_reports.html'
     context_object_name = 'student_show_progress_reports'
     login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentShowProgressReports, self).get_context_data(**kwargs)
+        std = models.Student(user=self.request.user)
+        reports = ProgressReport.objects.filter(student_id=std)
+        context['reports'] = reports
+        context['std'] = std
+        return context
 
     def test_func(self):
         return self.request.user.is_student
@@ -501,14 +512,20 @@ class StudentShowProgressReport(LoginRequiredMixin, UserPassesTestMixin, DetailV
 
 
 class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    fields = ('progress_report_title', 'should_be_filled_in', 'progress_report_description', 'numeric_state')
+    model = ProgressReport
     template_name = 'portal/student_fills_in_progress_report.html'
+    fields = ('progress_report_title', 'progress_report_description', 'numeric_state')
     context_object_name = 'student_fills_in_progress_report'
     login_url = 'login'
+    success_url = 'student_views_progress_reports'
 
     def form_valid(self, form):
-        form.instance.progress_report_date = datetime.date.today()
+        std = models.Student(user=self.request.user)
+        form.instance.student_id = std
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('student_views_progress_reports', kwargs={"pk": self.request.user.pk})
 
     def test_func(self):
         return self.request.user.is_student
@@ -550,6 +567,20 @@ class AcademicAdvisorEvaluateProgressReport(LoginRequiredMixin, UserPassesTestMi
     template_name = 'portal/academic_advisor_evaluates_progress_report.html'
     context_object_name = 'academic_advisor_evaluates_progress_report'
     login_url = 'login'
+    success_url = 'academic_adv_list_progress_reports'
+
+    def get_success_url(self):
+        return reverse('academic_adv_list_progress_reports', kwargs={"pk": self.request.user.pk})
 
     def test_func(self):
         return self.request.user.is_academic_advisor
+
+
+class StudentReadsEvaluation(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = ProgressReport
+    template_name = 'portal/studentreadsevaluation.html'
+    context_object_name = 'student_reads_evaluatioon'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user.is_student

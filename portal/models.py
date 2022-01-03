@@ -68,18 +68,13 @@ class Application(models.Model):
 
 
 class ProgressReport(models.Model):
-    student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
-    application_id = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
-    academic_advisor_id = models.OneToOneField(user_models.AcademicAdvisor, on_delete=models.DO_NOTHING)
+    progress_report_id = models.AutoField(primary_key=True)
+    student_id = models.ForeignKey(user_models.Student, on_delete=models.DO_NOTHING)
     progress_report_title = models.CharField(max_length=100, blank=True)
     progress_report_date = models.DateField(default=datetime.datetime.today(), blank=True)
     numeric_state = models.PositiveIntegerField(default=0, blank=True)
     evaluation = models.TextField(max_length=300, default='', blank=True)
     progress_report_description = models.TextField(max_length=1000, default='', blank=True)
-    should_be_filled_in = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
         return f'{self.student_id.user.username} report'
-
-    class Meta:
-        unique_together = (('student_id', 'academic_advisor_id'),)

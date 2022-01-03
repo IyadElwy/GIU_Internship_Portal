@@ -22,18 +22,36 @@
         <tbody>
         {% for report in acadamic_adv_views_progress_reports %}
 
-            <tr class="table-warning">
-                <td><a class="no_underline" href="
-            {% url 'academic_read_progress_reports' report.student_id.pk %}"
-                >{{ report.progress_report_title }}</a>
-                </td>
-                <td><a class="no_underline" href="{% url 'generic_student_profile' report.student_id.user.pk %}">
-                    @{{ report.student_id.user.username }}</a></td>
+            {% if report.evaluation %}
+                <tr class="table-success">
+                    <td><a class="no_underline" href="
+            {% url 'academic_read_progress_report' report.pk %}"
+                    >{{ report.progress_report_title }}</a>
+                    </td>
+                    <td><a class="no_underline" href="{% url 'generic_student_profile' report.student_id.user.pk %}">
+                        @{{ report.student_id.user.username }}</a></td>
 
-                <td><a class="no_underline" href="#">Evaluate</a></td>
-                <td>{{ report.progress_report_date }}</td>
-            </tr>
+                    <td><a class="no_underline" href="
+{% url 'academic_advisor_evaluates_progress_report' report.pk %}">Evaluate</a></td>
+                    <td>{{ report.progress_report_date }}</td>
+                </tr>
+            {% else %}
+                <tr class="table-warning">
+                    <td><a class="no_underline" href="
+            {% url 'academic_read_progress_report' report.pk %}"
+                    >{{ report.progress_report_title }}</a>
+                    </td>
+                    <td><a class="no_underline" href="{% url 'generic_student_profile' report.student_id.user.pk %}">
+                        @{{ report.student_id.user.username }}</a></td>
 
+                    <td><a class="no_underline" href="
+{% url 'academic_advisor_evaluates_progress_report' report.pk %}">Evaluate</a></td>
+                    <td>{{ report.progress_report_date }}</td>
+                </tr>
+
+
+
+            {% endif %}
 
         {% endfor %}
         </tbody>
