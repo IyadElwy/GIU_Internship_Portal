@@ -115,6 +115,23 @@ class StudentProfileViewGeneric(DetailView):
     login_url = 'login'
 
 
+class StudentPhoneViewGeneric(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = models.StudentPhoneNumbers
+    template_name = 'portal/student_phone_numbers.html'
+    context_object_name = 'student_phone_list_generic'
+    login_url = 'login'
+
+    def get_queryset(self):
+        std = models.Student(user=self.request.user)
+        queryset = models.StudentPhoneNumbers.objects.filter(student_id=self.kwargs['pk'])
+        return queryset
+
+    def test_func(self):
+        return self.request.user.is_employer or \
+               self.request.user.is_academic_advisor or self.request.user.is_career_office_coordinator or \
+               self.request.user.is_faculty_representative or self.request.user.is_admin
+
+
 class ListAcademicAdvisorAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = models.AcademicAdvisor
     template_name = 'portal/list_academic_advsior_admin.html'

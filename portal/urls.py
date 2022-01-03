@@ -8,6 +8,7 @@ urlpatterns = [
     path('employer/', views.EmployerProfileViewGeneric.as_view(), name='generic_employer_profile'),
     path('student/', views.StudentProfileViewGeneric.as_view(), name='generic_student_profile'),
     path('student/resume/', ShowResumeView.as_view(), name='generic_student_resume'),
+    path('student/phones/', views.StudentPhoneViewGeneric.as_view(), name='generic_student_phone'),
     path('employer/contactperson/', views.ShowContactPersonGeneric.as_view(), name='generic_contact_person'),
     path('employer/hrdirector/', views.ShowHRDirectorGeneric.as_view(), name='generic_hr_director'),
     path('coclistacademicadvisor/', views.ListAcademicAdvisorCOC.as_view(), name='list_academic_advisor_coc'),

@@ -32,7 +32,7 @@
                         <p><strong>Major: </strong> {{ student_profile_view_generic.major }}</p>
                         <p><strong>Gpa: </strong> {{ student_profile_view_generic.gpa }}</p>
                         <p><a class="no_underline"
-                              href="{% url 'student_phone_detail' student_profile_view_generic.pk %}">Phone
+                              href="{% url 'generic_student_phone' student_profile_view_generic.user.pk %}">Phone
                             Numbers</a>
                         </p>
 

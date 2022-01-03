@@ -1,0 +1,36 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Student{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <br>
+    <div class="container">
+        <h1>Phone Numbers</h1>
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+
+                {% for number in student_phone_list_generic %}
+                    <h3><strong>Number:</strong></h3>
+                    <h4>{{ number }}</h4>
+
+                    <br>
+                    <br>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+{% endblock profile_body %}
+
+

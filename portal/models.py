@@ -69,7 +69,7 @@ class Application(models.Model):
 
 class ProgressReport(models.Model):
     progress_report_id = models.AutoField(primary_key=True)
-    student_id = models.ForeignKey(user_models.Student, on_delete=models.DO_NOTHING)
+    student_id = models.ForeignKey(user_models.Student, on_delete=models.CASCADE)
     progress_report_title = models.CharField(max_length=100, blank=True)
     progress_report_date = models.DateField(default=datetime.datetime.today(), blank=True)
     numeric_state = models.PositiveIntegerField(default=0, blank=True)
