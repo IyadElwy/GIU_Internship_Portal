@@ -41,7 +41,16 @@
         <a class="nav-link" href="#">Show posted jobs</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Show Applications</a>
+        <a class="nav-link" href="{% url 'employer_show_applicationsByComp' employer_profile_view.pk %}">Show
+            Applications</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'employer_show_activeInternships' employer_profile_view.pk %}">Show
+            Active Internships</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'employer_pays_students' employer_profile_view.pk %}">
+            Ended Internships</a>
     </li>
 
 

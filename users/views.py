@@ -231,14 +231,11 @@ class StudentProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user.pk == self.get_object().pk
 
 
-class StudentPhoneView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class StudentPhoneView(LoginRequiredMixin, ListView):
     model = models.StudentPhoneNumbers
     template_name = 'userprofiles/student_phone_numbers.html'
     context_object_name = 'student_phone_list'
     login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_student or self.request.user.is_admin
 
 
 class AddStudentPhoneView(LoginRequiredMixin, CreateView):

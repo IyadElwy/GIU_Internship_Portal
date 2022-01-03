@@ -51,10 +51,10 @@ urlpatterns = [
     # portal
     path('employer/<int:pk>/employer_portal/', include('employer.urls')),
     path('giuadmin/<int:pk>/admin_portal/', include('giuadmin.urls')),
-    # path('student/<int:pk>/student_portal/', include('portal.urls')),
-    # path('facultyrepresentative/<int:pk>/facrep_portal/', include('portal.urls')),
-    # path('academicadvisor/<int:pk>/acadadv_portal/', include('portal.urls')),
-    # path('careerofficeecoordinator/<int:pk>/careeroc_portal/', include('portal.urls')),
+    path('student/<int:pk>/student_portal/', include('student.urls')),
+    # path('facultyrepresentative/<int:pk>/facrep_portal/', include('fac_rep.urls')),
+    path('academicadvisor/<int:pk>/acadadv_portal/', include('acad_adv.urls')),
+    path('careerofficeecoordinator/<int:pk>/careeroc_portal/', include('career_oc.urls')),
 
     # news
     path('giuadmin/<int:pk>/news/', include('news.urls')),

@@ -88,7 +88,7 @@ class DeleteResumeView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return get_object_or_404(queryset, student_id=self.kwargs['pk'])
 
 
-class ShowResumeView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class ShowResumeView(LoginRequiredMixin, DetailView):
     model = CvBuilder
     template_name = 'cvbuilder/show_resume.html'
     context_object_name = 'resume_show_view'
@@ -97,9 +97,6 @@ class ShowResumeView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def get_success_url(self):
         return reverse('resumehome', kwargs={'pk': self.request.user.pk})
-
-    def test_func(self):
-        return self.get_object().student_id.user.pk == self.request.user.pk or self.request.user.is_admin
 
     def get_object(self, queryset=None):
         if queryset is None:

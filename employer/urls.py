@@ -7,4 +7,13 @@ urlpatterns = [
     path('job_post_success/', views.EmployerJobPostSuccessful.as_view(), name='employer_job_post_successful'),
     path('profilenotaccepted/', views.EmployerStatusNotAccepted.as_view(),
          name='employer_status_not_accepted'),
+    path('applications/', views.ShowAllApplicationsByCompany.as_view(), name='employer_show_applicationsByComp'),
+    path('activeinternships/', views.EmployerShowAllActiveInternships.as_view(),
+         name='employer_show_activeInternships'),
+    path('activeinternships/endinternship', views.EmployerEndInternship.as_view(),
+         name='employer_ends_internship'),
+    path('applications/updatestatus', views.EmployerChangesStudentApplicationStatus.as_view(),
+         name='employer_changes_application_status'),
+    path('paystudents/', views.EmployerPayStudentForInternship.as_view(), name='employer_pays_students'),
+    path('paystudents/payment', views.PaymentView.as_view(), name='payment'),
 ]

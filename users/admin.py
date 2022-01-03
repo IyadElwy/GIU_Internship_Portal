@@ -29,7 +29,6 @@ admin.site.register(models.ContactPerson)
 admin.site.register(models.HRDirector)
 
 admin.site.register(portal_models.Application)
-admin.site.register(portal_models.Eligible)
 admin.site.register(portal_models.ProgressReport)
 admin.site.register(portal_models.Job)
 admin.site.register(portal_models.ReviewProfile)

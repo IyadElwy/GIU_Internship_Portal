@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from users import models as user_models
 
@@ -34,12 +36,11 @@ class Job(models.Model):
     allowed_faculties = models.TextField(max_length=300)
     required_semesters = models.CharField(max_length=20)
     # for later elegibility
-    aa_id = models.OneToOneField(user_models.AcademicAdvisor, on_delete=models.DO_NOTHING, null=True, blank=True)
-    faculty_rep = models.OneToOneField(user_models.FacultyRepresentative, on_delete=models.DO_NOTHING, null=True,
-                                       blank=True)
+    aa_id = models.ForeignKey(user_models.AcademicAdvisor, null=True, blank=True, on_delete=models.DO_NOTHING)
     visibility_fac_rep = models.BooleanField(default=False, blank=True)
     visibility_admin = models.BooleanField(default=False, blank=True)
-    has_ended = models.BooleanField(default=False, blank=True)
+
+    # active_student= models.ForeignKey(user_models.Student, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.title
@@ -50,10 +51,14 @@ class Job(models.Model):
 
 
 class Application(models.Model):
-    student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
-    job_id = models.OneToOneField(Job, on_delete=models.DO_NOTHING)
-    application_status = models.CharField(max_length=20)
-    visibility_Coc = models.BooleanField(default=False, blank=True)
+    application_id = models.AutoField(primary_key=True)
+    student_id = models.ForeignKey(user_models.Student, on_delete=models.DO_NOTHING)
+    job_id = models.ForeignKey(Job, on_delete=models.DO_NOTHING)
+    application_status = models.CharField(max_length=20, default='In review', blank=True)
+    visibility_for_employer = models.BooleanField(default=False, blank=True)
+    application_date = models.DateField(default=datetime.datetime.today(), blank=True)
+    has_ended = models.BooleanField(default=False, blank=True)
+    has_started = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return f'{self.student_id.user.username} applies to {self.job_id.title}'
@@ -62,26 +67,15 @@ class Application(models.Model):
         unique_together = (('student_id', 'job_id'),)
 
 
-class Eligible(models.Model):
-    student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
-    job_id = models.OneToOneField(Job, on_delete=models.DO_NOTHING)
-    coc_id = models.OneToOneField(user_models.CareerOfficeCoordinator, on_delete=models.DO_NOTHING)
-    eligibility = models.BooleanField(default=False, blank=True)
-
-    def __str__(self):
-        return f'{self.student_id.user.username} eligible: {self.eligibility}'
-
-    class Meta:
-        unique_together = (('student_id', 'job_id'),)
-
-
 class ProgressReport(models.Model):
     student_id = models.OneToOneField(user_models.Student, on_delete=models.DO_NOTHING, primary_key=True)
+    application_id = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
     academic_advisor_id = models.OneToOneField(user_models.AcademicAdvisor, on_delete=models.DO_NOTHING)
-    progress_report_date = models.DateField(null=True, blank=True)
+    progress_report_title = models.CharField(max_length=100, blank=True)
+    progress_report_date = models.DateField(default=datetime.datetime.today(), blank=True)
     numeric_state = models.PositiveIntegerField(default=0, blank=True)
     evaluation = models.TextField(max_length=300, default='', blank=True)
-    progress_report_description = models.CharField(max_length=100, default='', blank=True)
+    progress_report_description = models.TextField(max_length=1000, default='', blank=True)
     should_be_filled_in = models.BooleanField(default=True, blank=True)
 
     def __str__(self):

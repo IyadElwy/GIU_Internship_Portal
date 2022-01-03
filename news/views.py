@@ -9,6 +9,7 @@ class ArticleListView(ListView):
     model = Article
     template_name = 'news/article_list.html'
     context_object_name = 'article_list_view'
+    queryset = Article.objects.order_by('-date')
 
 
 class ArticleDetailView(DetailView):

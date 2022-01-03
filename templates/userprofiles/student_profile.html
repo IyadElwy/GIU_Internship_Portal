@@ -12,13 +12,18 @@
         <a class="nav-link" href="{% url 'resumehome' student_profile_view.user.pk %}">Resume</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Applications</a>
+        <a class="nav-link" href="#">Apply</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Active Internship</a>
+        <a class="nav-link" href="{% url 'student_show_applications' student_profile_view.pk %}">Applications</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Past Internships</a>
+        <a class="nav-link" href="{% url 'student_show_active_internships' student_profile_view.pk %}">Active
+            Internship</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'student_show_past_internships' student_profile_view.pk %}">Past
+            Internships</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Progress Reports</a>

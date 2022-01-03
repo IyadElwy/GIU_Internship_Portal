@@ -19,7 +19,9 @@
 
 
                 {% if employer_profile_view.review_status == 'In review' %}
-                    <h3><strong>Status: </strong>{{ employer_profile_view.review_status }}</h3>
+                    <h3><strong>Status: </strong>
+                        <h3 style="color: lightslategrey">{{ employer_profile_view.review_status }}</h3>
+                    </h3>
                     <h4>Just hold on a little longer but be sure that your profile is under review and that you'll have
                         your
                         answer very soon.</h4>
@@ -27,12 +29,15 @@
 
                     <h3><strong>By: </strong>{{ employer_profile_view.admin_id.user.email }}</h3>
                     {% if employer_profile_view.review_status == 'Rejected' %}
-                        <h3><strong>Status: </strong>{{ employer_profile_view.review_status }}</h3>
+                        <h3><strong>Status: </strong>
+                        <h3 style="color: darkred">{{ employer_profile_view.review_status }}</h3>
+                    </h3>
 
                         <h3><strong>Reason: </strong></h3> <p>{{ employer_profile_view.reason }}</p>
                     {% else %}
-                        <h3><strong>Status: </strong>{{ employer_profile_view.review_status }}</h3>
-
+                        <h3><strong>Status: </strong>
+                        <h3 style="color: green">{{ employer_profile_view.review_status }}</h3>
+                    </h3>
                         <h3>Your profile was reviewed and accepted!</h3>
                         <h4>Feel free to post jobs and search for great candidates for your company.
                         </h4>

@@ -1,13 +1,11 @@
 import datetime
 
 from django.conf import settings
-from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users import models
-from .models import ReviewProfile, Job, ProgressReport, Eligible, Application
-from django.dispatch import receiver
+from .models import ReviewProfile, Job, ProgressReport, Application
 
 
 class HomePageView(TemplateView):
@@ -213,6 +211,12 @@ class ShowAllApplicationsByCompany(LoginRequiredMixin, UserPassesTestMixin, List
     template_name = 'portal/employer_views_all_applications_by_company.html'
     context_object_name = 'employer_views_all_applications_by_company'
     login_url = 'login'
+    queryset = Application.objects.order_by('application_date')
+
+    def get_context_data(self, **kwargs):
+        context = super(ShowAllApplicationsByCompany, self).get_context_data(**kwargs)
+        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+        return context
 
     def test_func(self):
         return self.request.user.is_employer
@@ -228,16 +232,6 @@ class ShowAllApplicationsByJob(LoginRequiredMixin, UserPassesTestMixin, ListView
         return self.request.user.is_employer
 
 
-class EmployerViewsApplication(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Application
-    template_name = 'portal/employer_views_application.html'
-    context_object_name = 'employer_views_application'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_employer
-
-
 class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Application
     fields = ('application_status',)
@@ -245,6 +239,15 @@ class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTest
     context_object_name = 'employer_changes_application_status'
     login_url = 'login'
     success_url = reverse_lazy('employer_profile')
+
+    def form_valid(self, form):
+        status = form.cleaned_data['application_status']
+        if status == 'Accepted':
+            form.instance.has_started = True
+            ProgressReport.objects.create(student_id=self.object.student_id, application_id=self.object.pk,
+                                          academic_advisor_id=self.object.job_id.aa_id,
+                                          progress_report_title='Initial Report').save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('employer_profile', args=[self.request.user.pk])
@@ -254,7 +257,7 @@ class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTest
 
 
 class EmployerShowAllActiveInternships(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = Job
+    model = Application
     template_name = 'portal/employer_view_all_active_internships.html'
     context_object_name = 'employer_view_active_internships'
     login_url = 'login'
@@ -263,35 +266,39 @@ class EmployerShowAllActiveInternships(LoginRequiredMixin, UserPassesTestMixin, 
         return self.request.user.is_employer
 
 
-# see all info about job and student as well as option to end the internship and or pay
-class EmployerShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/employer_view_active_internship.html'
-    context_object_name = 'employer_view_active_internship'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_employer
-
-
-class EmployerEndInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
+# put option to pay
+class EmployerEndInternship(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Application
     template_name = 'portal/employer_end_active_internship.html'
     context_object_name = 'employer_end_active_internship'
     login_url = 'login'
+    fields = ('has_ended',)
+    success_url = 'employer_profile'
+
+    def get_success_url(self):
+        return reverse('employer_profile', args=[self.request.user.pk])
+
+    def form_valid(self, form):
+        form.instance.has_started = False
+        return super().form_valid(form)
 
     def test_func(self):
         return self.request.user.is_employer
 
 
-class EmployerPayStudentForInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
+class EmployerPayStudentForInternship(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Application
     template_name = 'portal/employer_pay_for_internship.html'
     context_object_name = 'employer_pay_for_internship'
     login_url = 'login'
 
     def test_func(self):
         return self.request.user.is_employer
+
+
+class PaymentView(TemplateView):
+    template_name = 'portal/payment.html'
+    context_object_name = 'employer_pay'
 
 
 class AdminShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -374,26 +381,16 @@ class CocShowApplications(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return self.request.user.is_career_office_coordinator
 
 
-class ShowApplicationForCoc(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class CocUpdateStudentApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Application
-    template_name = 'portal/coc_views_application.html'
-    context_object_name = 'coc_views_application'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_career_office_coordinator
-
-
-class CocAcceptStudentApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Application
-    fields = ('visibility_Coc',)
+    fields = ('visibility_for_employer',)
     template_name = 'portal/coc_changes_application_status.html'
     context_object_name = 'coc_changes_application_status'
     login_url = 'login'
-    success_url = reverse_lazy('coc_assigns_aa')
+    success_url = reverse_lazy('coc_show_applications')
 
     def get_success_url(self):
-        return reverse('coc_assigns_aa', args=[self.request.user.pk])
+        return reverse('coc_show_applications', args=[self.request.user.pk])
 
     def test_func(self):
         return self.request.user.is_career_office_coordinator
@@ -406,10 +403,10 @@ class CocAssignsAcademicAdviserToJob(LoginRequiredMixin, UserPassesTestMixin, Up
     fields = ('aa_id',)
     login_url = 'login'
     template_name = 'portal/coc_assigns_aa_to_job.html'
-    success_url = reverse_lazy('coc_view_all_applications')
+    success_url = reverse_lazy('coc_show_applications')
 
     def get_success_url(self):
-        return reverse('coc_view_all_applications', args=[self.request.user.pk])
+        return reverse('coc_show_applications', args=[self.request.user.pk])
 
     def test_func(self):
         return self.request.user.is_career_office_coordinator
@@ -425,19 +422,9 @@ class StudentShowApplications(LoginRequiredMixin, UserPassesTestMixin, ListView)
         return self.request.user.is_student
 
 
-class ShowApplicationForStudent(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Application
-    template_name = 'portal/student_views_application.html'
-    context_object_name = 'student_views_application'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_student
-
-
 # here they can add, view progress reports
-class StudentShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
+class StudentShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Application
     template_name = 'portal/student_view_active_internship.html'
     context_object_name = 'student_view_active_internship'
     login_url = 'login'
@@ -447,19 +434,9 @@ class StudentShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, Detai
 
 
 class StudentShowPastInternships(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = Job
+    model = Application
     template_name = 'portal/student_view_past_internships.html'
     context_object_name = 'student_view_past_internships'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_student
-
-
-class StudentShowPastInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/student_view_past_internship.html'
-    context_object_name = 'student_view_past_internship'
     login_url = 'login'
 
     def test_func(self):
@@ -523,9 +500,8 @@ class StudentShowProgressReport(LoginRequiredMixin, UserPassesTestMixin, DetailV
         return self.request.user.is_student
 
 
-class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = ProgressReport
-    fields = ('progress_report_description', 'numeric_state')
+class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    fields = ('progress_report_title', 'should_be_filled_in', 'progress_report_description', 'numeric_state')
     template_name = 'portal/student_fills_in_progress_report.html'
     context_object_name = 'student_fills_in_progress_report'
     login_url = 'login'
@@ -538,20 +514,10 @@ class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, Updat
         return self.request.user.is_student
 
 
-class AcademicAdvisorShowAssignedInternships(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = Job
-    template_name = 'portal/acadamic_adv_views_assigned_internships.html'
+class AcademicAdvisorShowAssignedStudents(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Application
+    template_name = 'portal/acadamic_adv_view_assigned_internships.html'
     context_object_name = 'acadamic_adv_views_assigned_internships'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_academic_advisor
-
-
-class AcademicAdvisorShowAssignedInternship(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/acadamic_adv_views_assigned_internship.html'
-    context_object_name = 'acadamic_adv_views_assigned_internship'
     login_url = 'login'
 
     def test_func(self):
@@ -568,20 +534,10 @@ class AcademicAdvisorListProgressReports(LoginRequiredMixin, UserPassesTestMixin
         return self.request.user.is_academic_advisor
 
 
-class AcademicAdvisorCreateProgressReport(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    model = ProgressReport
-    template_name = 'portal/acadamic_adv_create_progress_report.html'
-    context_object_name = 'acadamic_adv_create_progress_report'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_academic_advisor
-
-
 class AcademicAdvisorViewProgressReport(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ProgressReport
-    template_name = 'portal/acadamic_adv_create_progress_report'
-    context_object_name = 'acadamic_adv_create_progress_report'
+    template_name = 'portal/acadamic_adv_read_progress_report.html'
+    context_object_name = 'acadamic_adv_read_progress_report'
     login_url = 'login'
 
     def test_func(self):
