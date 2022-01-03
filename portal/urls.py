@@ -12,6 +12,7 @@ urlpatterns = [
     path('employer/contactperson/', views.ShowContactPersonGeneric.as_view(), name='generic_contact_person'),
     path('employer/hrdirector/', views.ShowHRDirectorGeneric.as_view(), name='generic_hr_director'),
     path('coclistacademicadvisor/', views.ListAcademicAdvisorCOC.as_view(), name='list_academic_advisor_coc'),
+    path('viewjobs', views.ViewJobsGeneric.as_view(), name='generic_job_view'),
 
     # homepage
     path('', views.HomePageView.as_view(), name='home'),

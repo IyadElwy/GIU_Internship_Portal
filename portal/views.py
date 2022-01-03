@@ -319,6 +319,12 @@ class PaymentView(TemplateView):
     context_object_name = 'employer_pay'
 
 
+class ViewJobsGeneric(ListView):
+    model = Job
+    template_name = 'portal/view_jobs_generic.html'
+    context_object_name = 'generic_job_view'
+    
+
 class AdminShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Job
     template_name = 'portal/admin_views_all_jobs.html'
