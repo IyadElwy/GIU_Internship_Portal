@@ -1,4 +1,5 @@
 {% extends 'home.html' %}
+{% load static %}
 
 {% block content %}
     <div class="container my-1">
@@ -19,7 +20,7 @@
 
                         <form action="" method="get">
                             <label for="inputState">Required semesters</label>
-                            <select id="inputState" class="form-control">
+                            <select id="inputState" class="form-control required_semester_class_box">
                                 <option selected>Choose...</option>
                                 <option>0</option>
                                 <option>1</option>
@@ -35,21 +36,28 @@
                                 <option>11</option>
                                 <option>12</option>
                             </select>
-                            <br>
-                            <label for="inputState">Faculty</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>CS</option>
-                                <option>Business</option>
-                                <option>Engineering</option>
-                                <option>Design</option>
-                                <option>Architecture</option>
-                                <option>Pharmaceutical</option>
-                            </select>
-                            <br>
+                            <div id="faculty_input">
+                                <br>
+                                <div class="fac_input_class">
+                                    <label for="inputState">Faculty</label>
+                                    <select id="inputState" class="form-control choosebox">
+                                        <option selected>Choose...</option>
+                                        <option>CS</option>
+                                        <option>Business</option>
+                                        <option>Engineering</option>
+                                        <option>Design</option>
+                                        <option>Architecture</option>
+                                        <option>Pharmaceutical</option>
+                                    </select>
 
+                                </div>
+                                <br>
 
-                            <button class="btn btn-success" type="submit">Submit</button>
+                            </div>
+                            <button id="filter_btn_add_fac" class="btn btn-outline-success" type="button">Add
+                                faculty
+                            </button>
+                            <button id="searchbutton" class="btn btn-success" type="button">Search</button>
 
 
                         </form>
@@ -61,13 +69,15 @@
 
 
             <div class="col-8">
-                <div class="p-5"><h3>Explore Internships near you</h3>
+                <div class="p-5"><h2>Explore Internships near you</h2>
                     <br>
                     <div class="row">
 
                         {% for job in generic_job_view %}
 
-                            <div class="col-lg-4">
+                            <div id="{{ job.pk }}" class="col-lg-4 job_box" style="display: block">
+                                <p hidden class="required_semester">{{ job.required_semesters }}</p>
+                                <p hidden class="faculty">{{ job.allowed_faculties }}</p>
 
                                 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                                     <div class="card-header"><a href="#"
@@ -94,4 +104,6 @@
         </div>
 
     </div>
+
+    <script src="{% static 'js/filter_jobs.js' %}"></script>
 {% endblock content %}

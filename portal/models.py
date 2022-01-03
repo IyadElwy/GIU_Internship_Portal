@@ -50,6 +50,8 @@ class Job(models.Model):
         return self.job_end_date.month - self.job_start_date.month
 
 
+
+
 class Application(models.Model):
     application_id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(user_models.Student, on_delete=models.DO_NOTHING)
