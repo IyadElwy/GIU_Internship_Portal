@@ -26,6 +26,7 @@
             <div class="list-group list-group-flush overflow-auto h-100">
 
                 {% for application in coc_views_application %}
+
                     <a href="#" id="application-sidebar-item" class="list-group-item
                     list-group-item-action
                     bg-light side_item">
@@ -33,21 +34,23 @@
                         <p hidden>{{ application.job_id.pk }}</p>
                         <p>{{ application.job_id.title }} at {{ application.job_id.employer_id.company_name }}</p>
                         {% if  application.visibility_for_employer == True %}
-                            <p>Status:<p style="color: green">Visible</p></p>
+                            <p>Status:<p style="color: green">Visible</p>
                         {% else %}
-                            <p>Status: <p style="color: darkred">Not visible</p></p>
+                            <p>Status: <p style="color: darkred">Not visible</p>
                         {% endif %}
                         {% if application.job_id.aa_id %}
-                            <p>Academic advisor: <p style="color:green;">assigned</p> </p>
+                            <p>Academic advisor: <p style="color:green;">assigned</p>
                         {% else %}
-                            <p>Academic advisor: <p style="color:darkred;">unassigned</p></p>
+                            <p>Academic advisor: <p style="color:darkred;">unassigned</p>
                         {% endif %}
                     </a>
+
+                    <br>
+                    <br>
+
                 {% endfor %}
-                <br>
+
             </div>
-            <br>
-            <br>
         </div>
 
         {% for application in coc_views_application %}
@@ -75,7 +78,8 @@
                                             <div class="card-body text-primary">
                                                 <p>View the job this student has applied to.</p>
                                                 <div class="container">
-                                                    <a href="#" class="no_underline ">
+                                                    <a href="{% url 'job_generic' application.job_id.pk %}"
+                                                       class="no_underline ">
                                                         <button type="button" style="margin-left: 70px; margin-right:
                                                          80px" class="btn
                                                         btn-primary">
@@ -112,13 +116,23 @@
                                                 <div class="card-body text-primary">
                                                     <p>Update the application status of the student.</p>
                                                     <div class="container">
-                                                        <a href="{% url 'coc_update_visibilty' application.pk %}"
-                                                           class="no_underline ">
-                                                            <button type="button" style="margin-left: 80px" class="btn
+                                                        {% if application.job_id.aa_id %}
+                                                            <a href="{% url 'coc_update_visibilty' application.pk %}"
+                                                               class="no_underline ">
+
+                                                                <button type="button" style="margin-left: 80px" class="btn
                                                         btn-primary">
-                                                                Update
-                                                            </button>
-                                                        </a>
+                                                                    Update
+                                                                </button>
+                                                            </a>
+                                                        {% else %}
+
+                                                            <p style="color:darkred;margin-left: 40px">Assign advisor
+                                                                first</p>
+
+                                                        {% endif %}
+
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,11 +158,10 @@
                                                 <div class="card border-secondary mb-3" style="max-width: 18rem;">
                                                     <div class="card-header">Assign Academic Advisor</div>
                                                     <div class="card-body text-primary">
-                                                        <p>Assign an Academic Advisor that will ensure the intern
-                                                            gets the most experience out of his work.</p>
+                                                        <p>Assign an Academic Advisor to the student.</p>
                                                         <div class="container">
                                                             <a href="
-{% url 'coc_assigns_aa' application.job_id.pk %}"
+                                                            {% url 'coc_assigns_aa' application.job_id.pk %}"
                                                                class="no_underline ">
                                                                 <button type="button" style="margin-left: 80px" class="btn
                                                         btn-primary">

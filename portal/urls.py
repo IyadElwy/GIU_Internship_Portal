@@ -13,9 +13,11 @@ urlpatterns = [
     path('employer/hrdirector/', views.ShowHRDirectorGeneric.as_view(), name='generic_hr_director'),
     path('coclistacademicadvisor/', views.ListAcademicAdvisorCOC.as_view(), name='list_academic_advisor_coc'),
     path('viewjobs', views.ViewJobsGeneric.as_view(), name='generic_job_view'),
+    path('viewjobs/job', views.GenericJobView.as_view(), name='job_generic'),
 
     # homepage
     path('', views.HomePageView.as_view(), name='home'),
+    path('companies/', views.ShowCompanies.as_view(), name='allcompanies'),
     path('help/', views.HelpPageView.as_view(), name='help'),
 
 ]

@@ -69,35 +69,30 @@
 
 
             <div class="col-8">
-                <div class="p-5"><h2>Explore Internships near you</h2>
+                <div class="p-5"><h2>Posted Jobs</h2>
                     <br>
                     <div class="row">
 
+                        {% for job in employer_views_jobs %}
 
-                        {% for job in generic_job_view %}
+                            <div id="{{ job.pk }}" class="col-lg-4 job_box" style="display: block">
+                                <p hidden class="required_semester">{{ job.required_semesters }}</p>
+                                <p hidden class="faculty">{{ job.allowed_faculties }}</p>
 
-                            {% if job.visibility_admin and job.visibility_fac_rep  and job.post_is_up %}
-
-                                <div id="{{ job.pk }}" class="col-lg-4 job_box" style="display: block">
-                                    <p hidden class="required_semester">{{ job.required_semesters }}</p>
-                                    <p hidden class="faculty">{{ job.allowed_faculties }}</p>
-
-                                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                                        <div class="card-header"><a href="#"
-                                                                    style="color: black; background-color : transparent;
+                                <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                                    <div class="card-header"><a href="#"
+                                                                style="color: black; background-color : transparent;
                                                                                                 text-decoration:none"></a>
-                                            {{ job.employer_id.company_name }}</div>
-                                        <div class="card-body">
-                                            <h5 class="card-title"><a href="{% url 'job_generic' job.pk %}"
-                                                                      style="color: white; background-color : transparent;
+                                        {{ job.employer_id.company_name }}</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="{% url 'employer_show_job' job.pk %}"
+                                                                  style="color: white; background-color : transparent;
                                                                                                   text-decoration:none">{{ job.title }}</a>
-                                            </h5>
-                                            <p class="card-text maxle">{{ job.job_description|slice:":50" }}...</p>
-                                        </div>
+                                        </h5>
+                                        <p class="card-text maxle">{{ job.job_description|slice:":50" }}...</p>
                                     </div>
                                 </div>
-
-                            {% endif %}
+                            </div>
 
                         {% endfor %}
 

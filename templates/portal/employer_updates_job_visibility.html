@@ -1,0 +1,37 @@
+{% extends 'userprofiles/profile_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block profiletyple %}Employer{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <br>
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1>Edit Job</h1>
+                <br>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <br>
+                    <button class="btn btn-success ml-2" type="submit">Update</button>
+                </form>
+                <br>
+
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+{% endblock profile_body %}
+
+

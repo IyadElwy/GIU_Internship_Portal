@@ -32,15 +32,16 @@ class Job(models.Model):
     application_link = models.CharField(max_length=50, null=True, blank=True)
     application_email = models.CharField(max_length=50, null=True, blank=True)
     job_type = models.CharField(max_length=30)
-    employer_id = models.ForeignKey(user_models.Employer, on_delete=models.DO_NOTHING)
+    employer_id = models.ForeignKey(user_models.Employer, on_delete=models.CASCADE)
     allowed_faculties = models.TextField(max_length=300)
     required_semesters = models.CharField(max_length=20)
     # for later elegibility
     aa_id = models.ForeignKey(user_models.AcademicAdvisor, null=True, blank=True, on_delete=models.DO_NOTHING)
     visibility_fac_rep = models.BooleanField(default=False, blank=True)
-    visibility_admin = models.BooleanField(default=False, blank=True)
+    visibility_admin = models.BooleanField(default=False, blank=True, verbose_name='Visibility')
 
-    # active_student= models.ForeignKey(user_models.Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    active_student = models.OneToOneField(user_models.Student, null=True, blank=True, on_delete=models.DO_NOTHING)
+    post_is_up = models.BooleanField(default=True, verbose_name='Visible')
 
     def __str__(self):
         return self.title
@@ -50,12 +51,10 @@ class Job(models.Model):
         return self.job_end_date.month - self.job_start_date.month
 
 
-
-
 class Application(models.Model):
     application_id = models.AutoField(primary_key=True)
-    student_id = models.ForeignKey(user_models.Student, on_delete=models.DO_NOTHING)
-    job_id = models.ForeignKey(Job, on_delete=models.DO_NOTHING)
+    student_id = models.ForeignKey(user_models.Student, on_delete=models.CASCADE)
+    job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
     application_status = models.CharField(max_length=20, default='In review', blank=True)
     visibility_for_employer = models.BooleanField(default=False, blank=True)
     application_date = models.DateField(default=datetime.datetime.today(), blank=True)
@@ -71,7 +70,9 @@ class Application(models.Model):
 
 class ProgressReport(models.Model):
     progress_report_id = models.AutoField(primary_key=True)
+    application_id = models.ForeignKey(Application, on_delete=models.CASCADE, null=True)
     student_id = models.ForeignKey(user_models.Student, on_delete=models.CASCADE)
+    academic_advisor_id = models.ForeignKey(user_models.AcademicAdvisor, on_delete=models.CASCADE, null=True)
     progress_report_title = models.CharField(max_length=100, blank=True)
     progress_report_date = models.DateField(default=datetime.datetime.today(), blank=True)
     numeric_state = models.PositiveIntegerField(default=0, blank=True)

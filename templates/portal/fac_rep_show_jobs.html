@@ -1,0 +1,70 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Faculty Representative{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Job Title</th>
+            <th scope="col">Company Name</th>
+            <th scope="col">Job Type</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for job in fac_rep_show_jobs %}
+            {% if faculty_rep in job.allowed_faculties %}
+
+                {% if job.visibility_fac_rep == False %}
+                    <tr class="table-danger">
+                        <td><a class="no_underline" href="{% url 'job_generic' job.pk %}">{{ job.title }}</a></td>
+                        <td><a class="no_underline" href="{% url 'generic_employer_profile' job.employer_id.pk %}"
+                        >{{ job.employer_id.company_name }}</a></td>
+                        <td>{{ job.job_type }}</td>
+                        <td>
+                            <a class="no_underline" href="{% url 'fac_rep_change_job_status' job.pk %}">
+                                <button class="btn btn-success ml-2" type="submit">Accept</button>
+                            </a>
+                        </td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr class="table-success">
+                        <td><a class="no_underline" href="{% url 'job_generic' job.pk %}">{{ job.title }}</a></td>
+                        <td><a class="no_underline" href="{% url 'generic_employer_profile' job.employer_id.pk %}"
+                        >{{ job.employer_id.company_name }}</a></td>
+                        <td>{{ job.job_type }}</td>
+                        <td>
+                            <a class="no_underline" href="{% url 'fac_rep_change_job_status' job.pk %}">
+                                <button class="btn btn-warning ml-2" type="submit">Hide</button>
+                            </a>
+                        </td>
+
+                    </tr>
+
+
+                {% endif %}
+
+
+            {% endif %}
+
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <br>
+    <br>
+    <br>
+{% endblock profile_body %}

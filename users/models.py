@@ -4,8 +4,10 @@ from datetime import datetime
 from django.urls import reverse_lazy
 from django.conf import settings
 
-
 # Parent User
+import users
+
+
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
     is_employer = models.BooleanField(default=False)
@@ -16,25 +18,6 @@ class User(AbstractUser):
 
 
 # All users
-class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    middle_name = models.CharField(max_length=20)
-    student_university_id = models.PositiveIntegerField()
-    birthdate = models.DateField()
-    semester = models.IntegerField()
-    faculty = models.CharField(max_length=20)
-    major = models.CharField(max_length=20)
-    gpa = models.DecimalField(decimal_places=2, max_digits=3)
-    student_address = models.CharField(max_length=10)
-    has_cv = models.BooleanField(default=False, blank=True)
-    cover_letter = models.TextField(max_length=1000, default='', blank=True)
-
-    @property
-    def age(self):
-        return datetime.now().year - self.birthdate.year
-
-    def __str__(self):
-        return self.user.username
 
 
 class Employer(models.Model):
@@ -69,12 +52,35 @@ class FacultyRepresentative(models.Model):
     faculty = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.user.username
+        return self.faculty
 
 
 class AcademicAdvisor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     faculty = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    middle_name = models.CharField(max_length=20)
+    student_university_id = models.PositiveIntegerField()
+    birthdate = models.DateField()
+    semester = models.IntegerField()
+    faculty = models.CharField(max_length=20)
+    major = models.CharField(max_length=20)
+    gpa = models.DecimalField(decimal_places=2, max_digits=3)
+    student_address = models.CharField(max_length=10)
+    has_cv = models.BooleanField(default=False, blank=True)
+    cover_letter = models.TextField(max_length=1000, default='', blank=True)
+
+    # current_aa = models.ForeignKey(AcademicAdvisor, on_delete=models.DO_NOTHING, null=True, blank=True)
+
+    @property
+    def age(self):
+        return datetime.now().year - self.birthdate.year
 
     def __str__(self):
         return self.user.username

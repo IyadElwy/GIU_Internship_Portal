@@ -15,6 +15,7 @@
         <tr>
             <th scope="col">Report</th>
             <th scope="col">User</th>
+            <th scope="col">Job</th>
             <th scope="col">Evaluated</th>
             <th scope="col">Date</th>
         </tr>
@@ -22,37 +23,50 @@
         <tbody>
         {% for report in acadamic_adv_views_progress_reports %}
 
-            {% if report.evaluation %}
-                <tr class="table-success">
-                    <td><a class="no_underline" href="
+            {% if report.academic_advisor_id.user == user and report.application_id.has_started %}
+
+                {% if report.evaluation %}
+                    <tr class="table-success">
+                        <td><a class="no_underline" href="
             {% url 'academic_read_progress_report' report.pk %}"
-                    >{{ report.progress_report_title }}</a>
-                    </td>
-                    <td><a class="no_underline" href="{% url 'generic_student_profile' report.student_id.user.pk %}">
-                        @{{ report.student_id.user.username }}</a></td>
+                        >{{ report.progress_report_title }}</a>
+                        </td>
+                        <td><a class="no_underline"
+                               href="{% url 'generic_student_profile' report.student_id.user.pk %}">
+                            @{{ report.student_id.user.username }}</a></td>
+                        <td><a class="no_underline"
+                               href="{% url 'job_generic' report.application_id.job_id.pk %}"
+                        >{{ report.application_id.job_id.title }}</a></td>
 
-                    <td><a class="no_underline" href="
+                        <td><a class="no_underline" href="
 {% url 'academic_advisor_evaluates_progress_report' report.pk %}">Evaluate</a></td>
-                    <td>{{ report.progress_report_date }}</td>
-                </tr>
-            {% else %}
-                <tr class="table-warning">
-                    <td><a class="no_underline" href="
+                        <td>{{ report.progress_report_date }}</td>
+                    </tr>
+                {% else %}
+                    <tr class="table-warning">
+                        <td><a class="no_underline" href="
             {% url 'academic_read_progress_report' report.pk %}"
-                    >{{ report.progress_report_title }}</a>
-                    </td>
-                    <td><a class="no_underline" href="{% url 'generic_student_profile' report.student_id.user.pk %}">
-                        @{{ report.student_id.user.username }}</a></td>
+                        >{{ report.progress_report_title }}</a>
+                        </td>
+                        <td><a class="no_underline"
+                               href="{% url 'generic_student_profile' report.student_id.user.pk %}">
+                            @{{ report.student_id.user.username }}</a></td>
 
-                    <td><a class="no_underline" href="
+                        <td><a class="no_underline"
+                               href="{% url 'job_generic' report.application_id.job_id.pk %}"
+                        >{{ report.application_id.job_id.title }}</a></td>
+
+                        <td><a class="no_underline" href="
 {% url 'academic_advisor_evaluates_progress_report' report.pk %}">Evaluate</a></td>
-                    <td>{{ report.progress_report_date }}</td>
-                </tr>
+                        <td>{{ report.progress_report_date }}</td>
+                    </tr>
 
+
+
+                {% endif %}
 
 
             {% endif %}
-
         {% endfor %}
         </tbody>
     </table>

@@ -38,7 +38,7 @@
         {% endif %}
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Show posted jobs</a>
+        <a class="nav-link" href="{% url 'employer_show_posted_jobs' employer_profile_view.pk %}">Show posted jobs</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{% url 'employer_show_applicationsByComp' employer_profile_view.pk %}">Show

@@ -76,7 +76,8 @@
                                                 <div class="card-body text-primary">
                                                     <p>View the job this student has applied to.</p>
                                                     <div class="container">
-                                                        <a href="#" class="no_underline ">
+                                                        <a href="{% url 'job_generic' application.job_id.pk %}"
+                                                           class="no_underline ">
                                                             <button type="button" style="margin-left: 70px; margin-right:
                                                          80px" class="btn
                                                         btn-primary">

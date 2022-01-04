@@ -30,34 +30,36 @@
 
         {% for report in reports %}
 
-            {% if report.evaluation %}
+            {% if report.application_id.has_started %}
 
-                <tr class="table-success">
-                    <td><a class="no_underline" href="
+                {% if report.evaluation %}
+
+                    <tr class="table-success">
+                        <td><a class="no_underline" href="
             {% url 'student_views_progress_report' report.pk %}"
-                    >{{ report.progress_report_title }}</a>
-                    </td>
-                    <td><a class="no_underline" href="{% url 'student_views_evaluation' report.pk %}">Show</a></td>
-                    <td>{{ report.progress_report_date }}</td>
-                </tr>
+                        >{{ report.progress_report_title }}</a>
+                        </td>
+                        <td><a class="no_underline" href="{% url 'student_views_evaluation' report.pk %}">Show</a></td>
+                        <td>{{ report.progress_report_date }}</td>
+                    </tr>
 
-            {% else %}
+                {% else %}
 
-                <tr class="table-warning">
-                    <td><a class="no_underline" href="
+                    <tr class="table-warning">
+                        <td><a class="no_underline" href="
             {% url 'student_views_progress_report' report.pk %}"
-                    >{{ report.progress_report_title }}</a>
-                    </td>
-                    <td><a class="no_underline" href="{% url 'student_views_evaluation' report.pk %}">Show</a></td>
-                    <td>{{ report.progress_report_date }}</td>
-                </tr>
+                        >{{ report.progress_report_title }}</a>
+                        </td>
+                        <td><a class="no_underline" href="{% url 'student_views_evaluation' report.pk %}">Show</a></td>
+                        <td>{{ report.progress_report_date }}</td>
+                    </tr>
 
+
+
+                {% endif %}
 
 
             {% endif %}
-
-
-
         {% endfor %}
 
 

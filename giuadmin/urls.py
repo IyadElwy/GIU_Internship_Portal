@@ -15,6 +15,8 @@ urlpatterns = [path('adminlistemployers/', views.ListEmployeesViewAdmin.as_view(
                     name='admin_delete_academic_advisor'),
                path('adminlistcareeroc/', views.ListCareerOCAdmin.as_view(), name='list_career_oc_admin'),
                path('adminlistcareeroc/delete/', views.UserDeleteView.as_view(), name='admin_delete_career_oc_admin'),
+               path('listjobs/', views.AdminShowJobs.as_view(), name='admin_views_jobs'),
+               path('listjobs/changejobstatus', views.AdminChangeJobStatus.as_view(), name='admin_change_job_status'),
 
                # generic
                path('admin_view/generic/', include('portal.urls')),

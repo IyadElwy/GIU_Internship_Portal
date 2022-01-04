@@ -29,7 +29,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="{% url 'home' %}" class="nav-link px-2 text-secondary">GIU Internship Portal</a></li>
                     <li><a href="#" class="nav-link px-2 text-white"></a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">Companies</a></li>
+                    <li><a href="{% url 'allcompanies' %}" class="nav-link px-2 text-white">Companies</a></li>
                     <li><a href="{% url 'generic_job_view' %}" class="nav-link px-2 text-white">Jobs</a></li>
                     {% block giuwebsite %}{% endblock giuwebsite %}
                     <li><a href="{% url 'article_list' %}" class="nav-link px-2 text-white">News</a></li>

@@ -14,6 +14,18 @@ class HelpPageView(TemplateView):
     template_name = 'help.html'
 
 
+class ShowCompanies(ListView):
+    template_name = 'companies.html'
+    model = models.Employer
+    context_object_name = 'all_companies'
+
+
+class GenericJobView(DetailView):
+    model = Job
+    template_name = 'portal/generic_job.html'
+    context_object_name = 'generic_job'
+
+
 class ListEmployeesViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = models.Employer
     template_name = 'portal/list_employees.html'
@@ -30,7 +42,6 @@ class EmployerProfileViewGeneric(DetailView):
     api_key_places = settings.POSITION_API
     template_name = 'portal/employer_profile.html'
     context_object_name = 'employer_profile_view_generic'
-    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(EmployerProfileViewGeneric, self).get_context_data(**kwargs)
@@ -120,7 +131,7 @@ class StudentPhoneViewGeneric(LoginRequiredMixin, UserPassesTestMixin, ListView)
     login_url = 'login'
 
     def get_queryset(self):
-        std = models.Student(user=self.request.user)
+        # std = models.Student(user=self.request.user)
         queryset = models.StudentPhoneNumbers.objects.filter(student_id=self.kwargs['pk'])
         return queryset
 
@@ -207,6 +218,10 @@ class ShowPostedJobsEmployerView(LoginRequiredMixin, UserPassesTestMixin, ListVi
     context_object_name = 'employer_views_jobs'
     login_url = 'login'
 
+    def get_queryset(self):
+        emp = models.Employer(user=self.request.user)
+        return Job.objects.filter(employer_id=emp)
+
     def test_func(self):
         return self.request.user.is_employer
 
@@ -218,7 +233,42 @@ class ShowJobForEmployer(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = 'login'
 
     def test_func(self):
-        return self.request.user.is_employer and self.get_object().user == self.request.user
+        return self.request.user.is_employer
+
+
+class EmployerUpdateJob(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Job
+    fields = ('title', 'job_description', 'department', 'job_start_date', 'job_end_date', 'application_deadline',
+              'num_of_available_internships', 'salary_range', 'qualifications', 'job_location', 'job_type',
+              'allowed_faculties', 'required_semesters', 'application_link',
+              'application_email')
+    template_name = 'portal/employer_updates_job.html'
+    context_object_name = 'employer_edits_job'
+    login_url = 'login'
+    success_url = 'employer_show_job'
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('employer_show_job', kwargs={"pk": pk})
+
+    def test_func(self):
+        return self.request.user.is_employer
+
+
+class EmployerUpdateJobVisibility(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Job
+    fields = ('post_is_up',)
+    template_name = 'portal/employer_updates_job_visibility.html'
+    context_object_name = 'employer_edits_job'
+    login_url = 'login'
+    success_url = 'employer_show_job'
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse('employer_show_job', kwargs={"pk": pk})
+
+    def test_func(self):
+        return self.request.user.is_employer
 
 
 class ShowAllApplicationsByCompany(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -237,14 +287,14 @@ class ShowAllApplicationsByCompany(LoginRequiredMixin, UserPassesTestMixin, List
         return self.request.user.is_employer
 
 
-class ShowAllApplicationsByJob(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = Application
-    template_name = 'portal/employer_views_all_applications_by_job.html'
-    context_object_name = 'employer_views_all_applications_by_job'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_employer
+# class ShowAllApplicationsByJob(LoginRequiredMixin, UserPassesTestMixin, ListView):
+#     model = Application
+#     template_name = 'portal/employer_views_all_applications_by_job.html'
+#     context_object_name = 'employer_views_all_applications_by_job'
+#     login_url = 'login'
+#
+#     def test_func(self):
+#         return self.request.user.is_employer
 
 
 class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -259,7 +309,11 @@ class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTest
         status = form.cleaned_data['application_status']
         if status == 'Accepted':
             form.instance.has_started = True
+            std = self.object.student_id
+            form.instance.student_id = std
+            # models.Student.objects.filter(user=std.user).update(current_aa=self.object.job_id.aa_id)
             ProgressReport.objects.create(student_id=self.object.student_id,
+                                          application_id=self.object,
                                           academic_advisor_id=self.object.job_id.aa_id,
                                           progress_report_title='Initial Report',
                                           progress_report_description='This is your first progress report. It '
@@ -279,6 +333,9 @@ class EmployerShowAllActiveInternships(LoginRequiredMixin, UserPassesTestMixin, 
     template_name = 'portal/employer_view_all_active_internships.html'
     context_object_name = 'employer_view_active_internships'
     login_url = 'login'
+
+    # def get_queryset(self):
+    #     return self.object_list.filter(job)
 
     def test_func(self):
         return self.request.user.is_employer
@@ -323,7 +380,7 @@ class ViewJobsGeneric(ListView):
     model = Job
     template_name = 'portal/view_jobs_generic.html'
     context_object_name = 'generic_job_view'
-    
+
 
 class AdminShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Job
@@ -331,30 +388,37 @@ class AdminShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
     context_object_name = 'admin_views_all_jobs'
     login_url = 'login'
 
-    def test_func(self):
-        return self.request.user.is_admin
-
-
-class ShowJobForAdmin(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/admin_views_job.html'
-    context_object_name = 'admin_views_job'
-    login_url = 'login'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(AdminShowJobs, self).get_context_data(**kwargs)
+        adm = models.GIUAdmin(user=self.request.user)
+        context['admin_pk'] = adm
+        return context
 
     def test_func(self):
         return self.request.user.is_admin
+
+
+# class ShowJobForAdmin(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+#     model = Job
+#     template_name = 'portal/admin_views_job.html'
+#     context_object_name = 'admin_views_job'
+#     login_url = 'login'
+#
+#     def test_func(self):
+#         return self.request.user.is_admin
 
 
 class AdminChangeJobStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Job
     template_name = 'portal/admin_change_job_status.html'
     fields = ('visibility_admin',)
+
     context_object_name = 'admin_change_job_status'
     login_url = 'login'
-    success_url = reverse_lazy('admin_view_all_jobs')
+    success_url = reverse_lazy('admin_views_jobs')
 
     def get_success_url(self):
-        return reverse('admin_view_all_jobs', args=[self.request.user.pk])
+        return reverse('admin_views_jobs', args=[self.request.user.pk])
 
     def test_func(self):
         return self.request.user.is_admin
@@ -365,6 +429,12 @@ class FacRepShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = 'portal/fac_rep_show_jobs.html'
     context_object_name = 'fac_rep_show_jobs'
     login_url = 'login'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(FacRepShowJobs, self).get_context_data(**kwargs)
+        d = models.FacultyRepresentative.objects.all().filter(user=self.request.user)
+        context['faculty_rep'] = d[0].faculty
+        return context
 
     def test_func(self):
         return self.request.user.is_faculty_representative
@@ -382,14 +452,14 @@ class ShowJobForFacRep(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class FacRepChangeJobStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Job
-    template_name = 'portal/fac_rep_changes_job_status'
+    template_name = 'portal/fac_rep_changes_job_status.html'
     fields = ('visibility_fac_rep',)
     context_object_name = 'fac_rep_changes_job_status'
     login_url = 'login'
-    success_url = reverse_lazy('facrep_view_all_jobs')
+    success_url = reverse_lazy('fac_rep_views_jobs')
 
     def get_success_url(self):
-        return reverse('facrep_view_all_jobs', args=[self.request.user.pk])
+        return reverse('fac_rep_views_jobs', args=[self.request.user.pk])
 
     def test_func(self):
         return self.request.user.is_faculty_representative
@@ -501,6 +571,7 @@ class StudentConfirmApply(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
     def test_func(self):
+        # and job is visible for admin and faculty
         return self.request.user.is_student
 
 
@@ -535,7 +606,7 @@ class StudentShowProgressReport(LoginRequiredMixin, UserPassesTestMixin, DetailV
 class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ProgressReport
     template_name = 'portal/student_fills_in_progress_report.html'
-    fields = ('progress_report_title', 'progress_report_description', 'numeric_state')
+    fields = ('progress_report_title', 'progress_report_description')
     context_object_name = 'student_fills_in_progress_report'
     login_url = 'login'
     success_url = 'student_views_progress_reports'
@@ -543,6 +614,9 @@ class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, Creat
     def form_valid(self, form):
         std = models.Student(user=self.request.user)
         form.instance.student_id = std
+        std = models.Student(user=self.request.user)
+        pr = ProgressReport.objects.filter(student_id=std)[0]
+        form.instance.academic_advisor_id = pr.academic_advisor_id
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -592,6 +666,16 @@ class AcademicAdvisorEvaluateProgressReport(LoginRequiredMixin, UserPassesTestMi
 
     def get_success_url(self):
         return reverse('academic_adv_list_progress_reports', kwargs={"pk": self.request.user.pk})
+
+    def test_func(self):
+        return self.request.user.is_academic_advisor
+
+
+class AcademicAdvisorViewsStudentJob(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = Job
+    template_name = 'portal/academicadvisorviewsjob.html'
+    context_object_name = 'cademic_advisor_viewsjob'
+    login_url = 'login'
 
     def test_func(self):
         return self.request.user.is_academic_advisor

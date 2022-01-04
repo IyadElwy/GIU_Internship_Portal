@@ -1,0 +1,60 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+{% block profiletyple %}Admin{% endblock profiletyple %}
+
+{% block navitems %}
+    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
+
+{% endblock navitems %}
+
+{% block profile_body %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Job Title</th>
+            <th scope="col">Company Name</th>
+            <th scope="col">Job Type</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for job in admin_views_all_jobs %}
+            {% if job.visibility_admin == False %}
+                <tr class="table-danger">
+                    <td><a class="no_underline" href="{% url 'job_generic' job.pk %}">{{ job.title }}</a></td>
+                    <td><a class="no_underline" href="{% url 'generic_employer_profile' job.employer_id.pk %}"
+                    >{{ job.employer_id.company_name }}</a></td>
+                    <td>{{ job.job_type }}</td>
+                    <td>
+                        <a class="no_underline" href="{% url 'admin_change_job_status' job.pk %}">
+                            <button class="btn btn-success ml-2" type="submit">Accept</button>
+                        </a>
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr class="table-success">
+                    <td><a class="no_underline" href="{% url 'job_generic' job.pk %}">{{ job.title }}</a></td>
+                    <td><a class="no_underline" href="{% url 'generic_employer_profile' job.employer_id.pk %}"
+                    >{{ job.employer_id.company_name }}</a></td>
+                    <td>{{ job.job_type }}</td>
+                    <td>
+                        <a class="no_underline" href="{% url 'admin_change_job_status' job.pk %}">
+                            <button class="btn btn-warning ml-2" type="submit">Hide</button>
+                        </a>
+                    </td>
+
+                </tr>
+
+
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock profile_body %}

@@ -30,7 +30,8 @@
                         <a href="#" id="application-sidebar-item" class="list-group-item
                     list-group-item-action
                     bg-light side_item">
-                            <strong>{{ application.student_id.user.first_name }}
+                            <strong>
+                                {{ application.student_id.user.first_name }}
                                 {{ application.student_id.user.last_name }}</strong>
                             <p hidden>{{ application.pk }}</p>
                             <p>{{ application.job_id.title }}</p>
@@ -69,7 +70,8 @@
                                                 <div class="card-body text-primary">
                                                     <p>View job details</p>
                                                     <div class="container">
-                                                        <a href="#" class="no_underline ">
+                                                        <a href="{% url 'job_generic' application.job_id.pk %}"
+                                                           class="no_underline ">
                                                             <button type="button" style="margin-left: 70px; margin-right:
                                                          80px" class="btn
                                                         btn-primary">
