@@ -1,0 +1,6 @@
+Django==4.0
+python-dotenv==0.19.2
+pipreqs==0.4.11
+pillow==8.4.0
+django-crispy-forms==1.13.0
+cripsy-bootstrap5==0.6

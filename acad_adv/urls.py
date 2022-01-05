@@ -8,4 +8,5 @@ urlpatterns = [
          name='academic_read_progress_report'),
     path('showassignedinternships/evaluatesprogressreport/', views.AcademicAdvisorEvaluateProgressReport.as_view(),
          name='academic_advisor_evaluates_progress_report'),
+
 ]

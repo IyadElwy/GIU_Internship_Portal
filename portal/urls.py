@@ -14,6 +14,7 @@ urlpatterns = [
     path('coclistacademicadvisor/', views.ListAcademicAdvisorCOC.as_view(), name='list_academic_advisor_coc'),
     path('viewjobs', views.ViewJobsGeneric.as_view(), name='generic_job_view'),
     path('viewjobs/job', views.GenericJobView.as_view(), name='job_generic'),
+    path('messages/', include('messenger.urls')),
 
     # homepage
     path('', views.HomePageView.as_view(), name='home'),

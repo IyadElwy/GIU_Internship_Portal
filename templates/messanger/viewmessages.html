@@ -1,0 +1,55 @@
+{% extends 'userprofiles/profile_base.html' %}
+
+
+{% block navitems %}
+
+    <a class="no_underline" href="{% url 'send_new_message_page' user.pk %}">
+        <button class="btn btn-outline-info ml-2" type="button">Send New Message</button>
+    </a>
+{% endblock navitems %}
+
+{% block title %}Messages{% endblock title %}
+
+{% block content %}
+
+    <div class="container px-4 py-5" id="custom-cards" style="overflow-y: scroll;height: 450px;">
+
+
+        <div>
+
+            {% for msg in message_list_view %}
+
+
+                {% if msg.message_user == user %}
+
+                    <div class="h-100 p-5 text-white bg-dark rounded-3">
+                        <p>{{ msg.message }}</p>
+                        <br>
+                        <small><strong>{{ msg.message_user }}</strong></small>
+                        <small>-{{ msg.date_time }}</small>
+                    </div>
+
+                {% else %}
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                        <p>{{ msg.message }}</p>
+                        <br>
+                        <small><strong>{{ msg.message_user }}</strong></small>
+                        <small>-{{ msg.date_time }}</small>
+                    </div>
+
+                {% endif %}
+                <br>
+            {% endfor %}
+
+        </div>
+
+
+    </div>
+
+    <br>
+
+
+
+{% endblock content %}
+
+

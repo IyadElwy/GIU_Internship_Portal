@@ -14,6 +14,7 @@ urlpatterns = [
                   path('cvexample/', CVExample.as_view(), name='cvexample'),
                   path('users/', include('users.urls')),
                   path('users/', include('django.contrib.auth.urls')),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'GIU_Internship_Portal.views.custom_error_404'

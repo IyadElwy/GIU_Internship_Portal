@@ -127,13 +127,32 @@
                                                     <div class="card-body text-primary">
                                                         <p>Use the portal's messaging system to contact the student.</p>
                                                         <div class="container">
-{#                                                            TODO#}
-                                                            <a href="#" class="no_underline ">
-                                                                <button type="button" style="margin-left: 80px" class="btn
+                                                            {% if exists %}
+                                                                <a href="
+{% url 'message_home_page' user.pk %}"
+                                                                   class="no_underline ">
+                                                                    <button type="button" style="margin-left: 80px"
+                                                                            class="btn
                                                         btn-primary">
-                                                                    Message
-                                                                </button>
-                                                            </a>
+                                                                        Message
+                                                                    </button>
+                                                                </a>
+
+
+                                                            {% else %}
+
+                                                                <a href="
+{% url 'start_convo_student' application.student_id.user.username %}"
+                                                                   class="no_underline ">
+                                                                    <button type="button" style="margin-left: 80px"
+                                                                            class="btn
+                                                        btn-primary">
+                                                                        Message
+                                                                    </button>
+                                                                </a>
+
+
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </div>

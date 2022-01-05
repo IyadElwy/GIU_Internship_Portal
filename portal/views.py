@@ -4,6 +4,9 @@ from django.views.generic import TemplateView, DetailView, ListView, UpdateView,
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users import models
 from .models import ReviewProfile, Job, ProgressReport, Application
+from django.db.models import Q
+
+from messenger.models import Conversation, UserMessage
 
 
 class HomePageView(TemplateView):
@@ -296,6 +299,13 @@ class ShowAllApplicationsByCompany(LoginRequiredMixin, UserPassesTestMixin, List
     def get_context_data(self, **kwargs):
         context = super(ShowAllApplicationsByCompany, self).get_context_data(**kwargs)
         context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+
+        convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
+        if convo.exists():
+            context['exists'] = True
+        else:
+            context['exists'] = False
+
         return context
 
     def test_func(self):
@@ -381,6 +391,18 @@ class EmployerPayStudentForInternship(LoginRequiredMixin, UserPassesTestMixin, L
     template_name = 'portal/employer_pay_for_internship.html'
     context_object_name = 'employer_pay_for_internship'
     login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = super(EmployerPayStudentForInternship, self).get_context_data(**kwargs)
+        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+
+        convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
+        if convo.exists():
+            context['exists'] = True
+        else:
+            context['exists'] = False
+
+        return context
 
     def test_func(self):
         return self.request.user.is_employer
@@ -486,6 +508,18 @@ class CocShowApplications(LoginRequiredMixin, UserPassesTestMixin, ListView):
     context_object_name = 'coc_views_application'
     login_url = 'login'
 
+    def get_context_data(self, **kwargs):
+        context = super(CocShowApplications, self).get_context_data(**kwargs)
+        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+
+        convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
+        if convo.exists():
+            context['exists'] = True
+        else:
+            context['exists'] = False
+
+        return context
+
     def test_func(self):
         return self.request.user.is_career_office_coordinator
 
@@ -537,6 +571,18 @@ class StudentShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, ListV
     template_name = 'portal/student_view_active_internship.html'
     context_object_name = 'student_view_active_internship'
     login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentShowActiveInternship, self).get_context_data(**kwargs)
+        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+
+        convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
+        if convo.exists():
+            context['exists'] = True
+        else:
+            context['exists'] = False
+
+        return context
 
     def test_func(self):
         return self.request.user.is_student

@@ -20,4 +20,5 @@ urlpatterns = [
          name='employer_changes_application_status'),
     path('paystudents/', views.EmployerPayStudentForInternship.as_view(), name='employer_pays_students'),
     path('paystudents/payment', views.PaymentView.as_view(), name='payment'),
+
 ]

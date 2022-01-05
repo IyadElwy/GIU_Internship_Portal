@@ -1,5 +1,4 @@
-import datetime
-
+import django.utils.timezone
 from django.db import models
 from users import models as user_models
 
@@ -83,7 +82,7 @@ class Application(models.Model):
     job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
     application_status = models.CharField(max_length=20, default='In review', blank=True)
     visibility_for_employer = models.BooleanField(default=False, blank=True)
-    application_date = models.DateField(default=datetime.datetime.today(), blank=True)
+    application_date = models.DateField(default=django.utils.timezone.now, blank=True)
     has_ended = models.BooleanField(default=False, blank=True)
     has_started = models.BooleanField(default=False, blank=True)
     confirm = models.BooleanField(default=False, blank=True)
@@ -101,7 +100,7 @@ class ProgressReport(models.Model):
     student_id = models.ForeignKey(user_models.Student, on_delete=models.CASCADE)
     academic_advisor_id = models.ForeignKey(user_models.AcademicAdvisor, on_delete=models.CASCADE, null=True)
     progress_report_title = models.CharField(max_length=100, blank=True)
-    progress_report_date = models.DateField(default=datetime.datetime.today(), blank=True)
+    progress_report_date = models.DateField(default=django.utils.timezone.now, blank=True)
     numeric_state = models.PositiveIntegerField(default=0, blank=True)
     evaluation = models.TextField(max_length=300, default='', blank=True)
     progress_report_description = models.TextField(max_length=1000, default='', blank=True)

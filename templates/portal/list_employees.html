@@ -25,8 +25,8 @@
             {% if emp.reviewprofile.review_status == 'In review' %}
                 <tr class="table-danger">
                     <td>{{ emp.company_name }}</td>
-                    <td><a class="no_underline" href="{{ emp.website }}">{{ emp.website }}</a></td>
-                    <td>@<a class="no_underline"
+                    <td><a class="no_underline" href="javascript:void(0)">{{ emp.website }}</a></td>
+                    <td><a class="no_underline"
                             href="{% url 'generic_employer_profile' emp.pk %}">{{ emp.user.username }}</a>
                     </td>
                     <td><a class="no_underline" href="{% url 'update_profile_status' emp.pk %}">Change</a></td>
@@ -42,8 +42,8 @@
 
                 <tr class="table-success">
                     <td>{{ emp.company_name }}</td>
-                    <td><a class="no_underline" href="{{ emp.website }}">{{ emp.website }}</a></td>
-                    <td>@<a class="no_underline"
+                    <td><a class="no_underline" href="javascript:void(0)">{{ emp.website }}</a></td>
+                    <td><a class="no_underline"
                             href="{% url 'generic_employer_profile' emp.pk %}">{{ emp.user.username }}</a>
                     </td>
                     <td><a class="no_underline" href="{% url 'update_profile_status' emp.pk %}">Change</a></td>

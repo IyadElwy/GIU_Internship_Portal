@@ -6,6 +6,8 @@
         {% csrf_token %}
         <p>Are you sure you want to delete "{{ article_delete_view.title }}" ?</p>
         <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+        <button onclick="history.back()" class="btn btn-danger ml-2" type="button">Cancel</button>
+
     </form>
 
 {% endblock content %}

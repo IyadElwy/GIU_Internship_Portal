@@ -1,27 +1,38 @@
-{% extends 'userprofiles/careerofc_profile.html' %}
+{% extends 'userprofiles/profile_base.html' %}
 {% load crispy_forms_tags %}
 
+
 {% block navitems %}
-    <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
 
 {% endblock navitems %}
 
 
 {% block profile_body %}
-    <br>
+
     <div class="container">
-        <h1>Visibility for employers</h1>
+
+        <h1>Start new conversation</h1>
         <br>
+
         <form action="" method="post">
             {% csrf_token %}
             {{ form|crispy }}
             <br>
-            <button class="btn btn-success" type="submit">Submit</button>
+            <button class="btn btn-success ml-2" type="submit">Confirm</button>
             <button onclick="history.back()" class="btn btn-danger ml-2" type="button">Cancel</button>
 
         </form>
-
+        <br>
+        <br>
+        <br>
 
     </div>
 
+
+
+
+
+
 {% endblock profile_body %}
+
+

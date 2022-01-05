@@ -7,6 +7,7 @@ from . import models
 from portal import models as portal_models
 from cvbuilder import models as cv_models
 from news.models import Article
+from messenger.models import Conversation, UserMessage
 
 admin.site.site_header = 'GIU Internship Portal'
 admin.site.index_title = 'GIU IP Admin'
@@ -36,3 +37,6 @@ admin.site.register(portal_models.ReviewProfile)
 admin.site.register(cv_models.CvBuilder)
 
 admin.site.register(Article)
+# messanger
+admin.site.register(UserMessage)
+admin.site.register(Conversation)
