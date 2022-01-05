@@ -5,7 +5,7 @@ import GIU_Internship_Portal.views
 from cvbuilder.views import CVExample
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import handler404, handler403
+from django.conf.urls import handler404, handler403, handler400, handler500
 
 urlpatterns = [
                   path('', include('portal.urls')),
@@ -18,3 +18,4 @@ urlpatterns = [
 
 handler404 = 'GIU_Internship_Portal.views.custom_error_404'
 handler403 = 'GIU_Internship_Portal.views.custom_error_403'
+handler400 = 'GIU_Internship_Portal.views.custom_error_404'

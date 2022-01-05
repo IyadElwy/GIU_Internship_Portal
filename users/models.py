@@ -64,12 +64,38 @@ class AcademicAdvisor(models.Model):
 
 
 class Student(models.Model):
+    sem_choices = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+        (10, 10),
+        (11, 11),
+        (12, 12),
+    )
+
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     middle_name = models.CharField(max_length=20)
     student_university_id = models.PositiveIntegerField()
     birthdate = models.DateField()
-    semester = models.IntegerField()
-    faculty = models.CharField(max_length=20)
+    semester = models.IntegerField(choices=sem_choices)
+    faculty = models.CharField(max_length=20, choices=fac_choices)
     major = models.CharField(max_length=20)
     gpa = models.DecimalField(decimal_places=2, max_digits=3)
     student_address = models.CharField(max_length=10)

@@ -9,7 +9,9 @@
         <div class="jumbotron">
 
             <h1>Job posted successfully</h1>
-            <h2>You can view your posted jobs <a class="no_underline" href="#">here</a>.</h2>
+            <h2>You can view your posted jobs <a class="no_underline" href="
+{% url 'employer_show_posted_jobs' job_post_successful.pk %}">here</a>
+                .</h2>
             <p>Back to <a class="no_underline" href="{% url 'employer_profile' job_post_successful.pk %}">profile</a>.
             </p>
 

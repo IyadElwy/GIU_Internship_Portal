@@ -15,5 +15,7 @@ urlpatterns = [
     path('viewprogressreports/viewevaluation/', views.StudentReadsEvaluation.as_view(),
          name='student_views_evaluation'),
     path('pastinternships/', views.StudentShowPastInternships.as_view(), name='student_show_past_internships'),
+    path('apply/', views.StudentConfirmApply.as_view(), name='student_applies'),
+    path('apply/successful/', views.SuccessfulApplicationView.as_view(), name='successful_application')
 
 ]

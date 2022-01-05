@@ -25,6 +25,21 @@ class GenericJobView(DetailView):
     template_name = 'portal/generic_job.html'
     context_object_name = 'generic_job'
 
+    def get_context_data(self, **kwargs):
+        context = super(GenericJobView, self).get_context_data(**kwargs)
+        stud = models.Student(user=self.request.user)
+        job = self.object.pk
+
+        application = Application.objects.filter(student_id=stud, job_id=job)
+
+        if application.exists():
+            context['applied'] = 'T'
+        else:
+            context['applied'] = 'F'
+
+        context['student'] = stud
+        return context
+
 
 class ListEmployeesViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = models.Employer
@@ -440,14 +455,14 @@ class FacRepShowJobs(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return self.request.user.is_faculty_representative
 
 
-class ShowJobForFacRep(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/fac_rep_views_job.html'
-    context_object_name = 'fac_rep_views_job'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_faculty_representative
+# class ShowJobForFacRep(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+#     model = Job
+#     template_name = 'portal/fac_rep_views_job.html'
+#     context_object_name = 'fac_rep_views_job'
+#     login_url = 'login'
+#
+#     def test_func(self):
+#         return self.request.user.is_faculty_representative
 
 
 class FacRepChangeJobStatus(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -537,41 +552,59 @@ class StudentShowPastInternships(LoginRequiredMixin, UserPassesTestMixin, ListVi
         return self.request.user.is_student
 
 
-class ShowAllJobsForStudent(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = Job
-    template_name = 'portal/student_views_jobs.html'
-    context_object_name = 'student_views_jobs'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_student
+# class ShowAllJobsForStudent(LoginRequiredMixin, UserPassesTestMixin, ListView):
+#     model = Job
+#     template_name = 'portal/student_views_jobs.html'
+#     context_object_name = 'student_views_jobs'
+#     login_url = 'login'
+#
+#     def test_func(self):
+#         return self.request.user.is_student
 
 
 # here the apply button
-class ShowJobForStudent(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/student_views_job.html'
-    context_object_name = 'student_views_job'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_student
+# class ShowJobForStudent(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+#     model = Job
+#     template_name = 'portal/student_views_job.html'
+#     context_object_name = 'student_views_job'
+#     login_url = 'login'
+#
+#     def test_func(self):
+#         return self.request.user.is_student
 
 
 class StudentConfirmApply(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Application
     template_name = 'portal/student_apply_for_job.html'
+    fields = ('confirm',)
     context_object_name = 'student_apply_for_job'
     login_url = 'login'
+    success_url = 'successful_application'
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+
+        return reverse('successful_application', kwargs={'pk': pk})
 
     def form_valid(self, form):
         student = models.Student(user=self.request.user)
         form.instance.student_id = student
+        pk = self.kwargs["pk"]
+        job = Job(pk=pk)
+        form.instance.job_id = job
         # pass parameter of job when calling this view so make url take in primary key of job
         return super().form_valid(form)
 
     def test_func(self):
         # and job is visible for admin and faculty
+        return self.request.user.is_student
+
+
+class SuccessfulApplicationView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    template_name = 'portal/successful_application.html'
+    login_url = 'login'
+
+    def test_func(self):
         return self.request.user.is_student
 
 
@@ -671,14 +704,15 @@ class AcademicAdvisorEvaluateProgressReport(LoginRequiredMixin, UserPassesTestMi
         return self.request.user.is_academic_advisor
 
 
-class AcademicAdvisorViewsStudentJob(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Job
-    template_name = 'portal/academicadvisorviewsjob.html'
-    context_object_name = 'cademic_advisor_viewsjob'
-    login_url = 'login'
-
-    def test_func(self):
-        return self.request.user.is_academic_advisor
+#
+# class AcademicAdvisorViewsStudentJob(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+#     model = Job
+#     template_name = 'portal/academicadvisorviewsjob.html'
+#     context_object_name = 'cademic_advisor_viewsjob'
+#     login_url = 'login'
+#
+#     def test_func(self):
+#         return self.request.user.is_academic_advisor
 
 
 class StudentReadsEvaluation(LoginRequiredMixin, UserPassesTestMixin, DetailView):

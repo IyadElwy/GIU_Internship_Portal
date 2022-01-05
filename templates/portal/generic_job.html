@@ -13,7 +13,15 @@
                 <h1 class="font-weight-light">{{ generic_job.title }}</h1>
                 <h3 class="font-weight-light">at {{ generic_job.employer_id.company_name }}</h3>
                 <p>{{ generic_job.job_description }}</p>
-                {#                <a class="btn btn-primary" href="#">Apply</a>#}
+                {% if user.is_student %}
+                    {% if applied == 'F' %}
+                        <a class="btn btn-primary btn-lg btn-block" href="
+{% url 'student_applies' generic_job.pk %}">Apply</a>
+
+                    {% else %}
+                        <a class="btn btn-outline-success btn-lg btn-block" href="javascript:void(0)">Already Applied</a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
         <!-- Call to Action-->
@@ -50,6 +58,8 @@
                     </div>
                 </div>
             </div>
+
+
             {#            <div class="col-md-4 mb-5">#}
             {#                <div class="card h-100">#}
             {#                    <div class="card-body">#}
@@ -59,6 +69,8 @@
             {#                    </div>#}
             {#                </div>#}
             {#            </div>#}
+
+
         </div>
     </div>
 

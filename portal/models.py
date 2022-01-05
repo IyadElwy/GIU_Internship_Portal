@@ -18,6 +18,32 @@ class ReviewProfile(models.Model):
 
 
 class Job(models.Model):
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
+    sem_choices = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+        (10, 10),
+        (11, 11),
+        (12, 12),
+    )
+
     job_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=30)
     job_description = models.TextField(max_length=1000)
@@ -33,8 +59,8 @@ class Job(models.Model):
     application_email = models.CharField(max_length=50, null=True, blank=True)
     job_type = models.CharField(max_length=30)
     employer_id = models.ForeignKey(user_models.Employer, on_delete=models.CASCADE)
-    allowed_faculties = models.TextField(max_length=300)
-    required_semesters = models.CharField(max_length=20)
+    allowed_faculties = models.TextField(max_length=300, choices=fac_choices)
+    required_semesters = models.CharField(max_length=20, choices=sem_choices)
     # for later elegibility
     aa_id = models.ForeignKey(user_models.AcademicAdvisor, null=True, blank=True, on_delete=models.DO_NOTHING)
     visibility_fac_rep = models.BooleanField(default=False, blank=True)
@@ -60,6 +86,7 @@ class Application(models.Model):
     application_date = models.DateField(default=datetime.datetime.today(), blank=True)
     has_ended = models.BooleanField(default=False, blank=True)
     has_started = models.BooleanField(default=False, blank=True)
+    confirm = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return f'{self.student_id.user.username} applies to {self.job_id.title}'
