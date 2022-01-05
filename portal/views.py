@@ -6,7 +6,11 @@ from users import models
 from .models import ReviewProfile, Job, ProgressReport, Application
 from django.db.models import Q
 
-from messenger.models import Conversation, UserMessage
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from django.conf import settings
+
+from messenger.models import Conversation
 
 
 class HomePageView(TemplateView):
@@ -96,6 +100,25 @@ class UpdateEmployerProfileStatus(LoginRequiredMixin, UserPassesTestMixin, Updat
     def form_valid(self, form):
         admin = models.GIUAdmin(user=self.request.user)
         form.instance.admin_id = admin
+
+        message = Mail(
+            from_email='iyadelwy@gmail.com',
+            to_emails=admin.user.email,
+            subject='GIU Internship Portal',
+            html_content='<h1>Yay!</h1>'
+                         '<h3>Your profile has been acceoted.</h3>'
+                         '<p>Feel free to post jobs, talk to students and if any complication should arise, '
+                         'please do not hesitate to contact us.</p>'
+        )
+        try:
+            sg = SendGridAPIClient(settings.SENDGRID_API)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e)
+
         return super().form_valid(form)
 
     def test_func(self):

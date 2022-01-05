@@ -1,9 +1,12 @@
 from django import forms
-from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from . import models
 from portal.models import ReviewProfile
+from password_generator import PasswordGenerator
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from django.conf import settings
 
 
 class StudentSignUpForm(UserCreationForm):
@@ -19,6 +22,9 @@ class StudentSignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=20, required=True)
     last_name = forms.CharField(max_length=20, required=True)
 
+    password1 = None
+    password2 = None
+
     class Meta(UserCreationForm.Meta):
         model = models.User
         fields = ('first_name',
@@ -27,8 +33,6 @@ class StudentSignUpForm(UserCreationForm):
                   'student_address',
                   'username',
                   'email',
-                  'password1',
-                  'password2',
                   'student_university_id',
                   'birthdate',
                   'semester',
@@ -38,8 +42,36 @@ class StudentSignUpForm(UserCreationForm):
 
     @transaction.atomic
     def save(self):
-        user = super().save(commit=False)
-        user.is_student = True
+        pwo = PasswordGenerator()
+        pw = pwo.generate()
+
+        email_to_send_to = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+
+        message = Mail(
+            from_email='iyadelwy@gmail.com',
+            to_emails=email_to_send_to,
+            subject='GIU Internship Portal',
+            html_content='<h1>Here is your password.</h1>'
+                         '<h3>Please change it after logging in</h3>'
+                         f'<p>Username: {username} </p>'
+                         f'<p>Password: {pw} </p>')
+        try:
+            sg = SendGridAPIClient(settings.SENDGRID_API)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e)
+
+        first_n = self.cleaned_data.get('first_name')
+        last_n = self.cleaned_data.get('last_name')
+
+        print(pw)
+        user = models.User.objects.create(is_student=True, password=pw, first_name=first_n, last_name=last_n,
+                                          username=username, email=email_to_send_to)
+        user.set_password(pw)
         user.save()
         student = models.Student.objects.create(user=user, middle_name=self.cleaned_data.get('middle_name'),
                                                 student_university_id=self.cleaned_data.get('student_university_id'),
@@ -69,12 +101,13 @@ class EmployerSignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
     company_logo = forms.ImageField(max_length=1000, required=False)
 
+    password1 = None
+    password2 = None
+
     class Meta(UserCreationForm.Meta):
         model = models.User
         fields = ('username',
                   'email',
-                  'password1',
-                  'password2',
                   'company_name',
                   'employer_address',
                   'phone_number',
@@ -90,8 +123,36 @@ class EmployerSignUpForm(UserCreationForm):
 
     @transaction.atomic
     def save(self):
-        user = super().save(commit=False)
-        user.is_employer = True
+        pwo = PasswordGenerator()
+        pw = pwo.generate()
+
+        email_to_send_to = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+
+        message = Mail(
+            from_email='iyadelwy@gmail.com',
+            to_emails=email_to_send_to,
+            subject='GIU Internship Portal',
+            html_content='<h1>Here is your password.</h1>'
+                         '<h3>Please change it after logging in</h3>'
+                         f'<p>Username: {username} </p>'
+                         f'<p>Password: {pw} </p>')
+        try:
+            sg = SendGridAPIClient(settings.SENDGRID_API)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e)
+
+        first_n = self.cleaned_data.get('first_name')
+        last_n = self.cleaned_data.get('last_name')
+
+        print(pw)
+        user = models.User.objects.create(is_employer=True, password=pw, first_name=first_n, last_name=last_n,
+                                          username=username, email=email_to_send_to)
+        user.set_password(pw)
         user.save()
         employer = models.Employer.objects.create(user=user,
                                                   company_name=self.cleaned_data.get('company_name'),

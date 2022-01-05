@@ -5,8 +5,11 @@ from . import models
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.conf import settings
 from portal.models import ReviewProfile
+from password_generator import PasswordGenerator
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from django.conf import settings
 
 
 class SuccessfulSignupView(TemplateView):
@@ -30,7 +33,6 @@ class StudentSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
         return redirect('success_signup')
 
 
@@ -47,7 +49,6 @@ class EmployerSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
         return redirect('success_signup_employer')
 
 

@@ -4,3 +4,5 @@ pipreqs==0.4.11
 pillow==8.4.0
 django-crispy-forms==1.13.0
 cripsy-bootstrap5==0.6
+sendgrid==6.9.3
+random-password-generator==2.2.0

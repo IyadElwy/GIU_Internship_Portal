@@ -24,8 +24,8 @@
             <tr class="table-success">
                 <td>{{ s.user.first_name }} {{ s.user.last_name }}</td>
                 <td>{{ s.user.email }}</td>
-                <td>@<a class="no_underline"
-                        href="{% url 'generic_student_profile' s.pk %}">{{ s.user.username }}</a>
+                <td><a class="no_underline"
+                       href="{% url 'generic_student_profile' s.pk %}">{{ s.user.username }}</a>
                 </td>
                 <td><a class="no_underline" href="{% url 'admin_delete_students' s.pk %}">
                     <button class="btn btn-danger ml-2" type="submit">Confirm</button>
