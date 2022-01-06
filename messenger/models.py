@@ -4,6 +4,7 @@ from users import models as user_models
 
 
 class Conversation(models.Model):
+    # convo_id = models.AutoField()
     user1 = models.ForeignKey(user_models.User, on_delete=models.CASCADE, related_name='creator', primary_key=True)
     user2 = models.ForeignKey(user_models.User, on_delete=models.CASCADE, related_name='created')
     started_on = models.DateTimeField(default=django.utils.timezone.now)

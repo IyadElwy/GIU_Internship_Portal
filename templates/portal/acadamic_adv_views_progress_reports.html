@@ -33,7 +33,7 @@
                         </td>
                         <td><a class="no_underline"
                                href="{% url 'generic_student_profile' report.student_id.user.pk %}">
-                            @{{ report.student_id.user.username }}</a></td>
+                            {{ report.student_id.user.username }}</a></td>
                         <td><a class="no_underline"
                                href="{% url 'job_generic' report.application_id.job_id.pk %}"
                         >{{ report.application_id.job_id.title }}</a></td>

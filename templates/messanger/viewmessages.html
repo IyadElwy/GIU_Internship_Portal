@@ -3,7 +3,7 @@
 
 {% block navitems %}
 
-    <a class="no_underline" href="{% url 'send_new_message_page' user.pk %}">
+    <a class="no_underline" href="{% url 'send_new_message_page' conversation.user1.pk conversation.user2.pk %}">
         <button class="btn btn-outline-info ml-2" type="button">Send New Message</button>
     </a>
 {% endblock navitems %}

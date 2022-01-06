@@ -49,13 +49,16 @@ class ViewConversation(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ViewConversation, self).get_context_data(**kwargs)
-        convo = models.Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
+        user1 = self.kwargs['pk1']
+        user2 = self.kwargs['pk2']
+        convo = models.Conversation.objects.filter(user1=user1, user2=user2)[0]
+        context["conversation"] = convo
         return context
 
     def get_queryset(self):
-        convopk = self.kwargs['pk']
-        convo = models.Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))[0]
-
+        user1 = self.kwargs['pk1']
+        user2 = self.kwargs['pk2']
+        convo = models.Conversation.objects.filter(user1=user1, user2=user2)[0]
         return models.UserMessage.objects.filter(conversation=convo).order_by('-date_time')
 
 
@@ -72,8 +75,10 @@ class SendNewMessage(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.message_user = self.request.user
-        form.instance.conversation = models.Conversation.objects.filter(
-            Q(user1=self.request.user) | Q(user2=self.request.user))[0]
+        user1 = self.kwargs['pk1']
+        user2 = self.kwargs['pk2']
+        convo = models.Conversation.objects.filter(user1=user1, user2=user2)[0]
+        form.instance.conversation = convo
 
         return super().form_valid(form)
 
