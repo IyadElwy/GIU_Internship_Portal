@@ -31,7 +31,7 @@
         <a class="nav-link" href="{% url 'employer_profile_status' employer_profile_view.pk %}">Profile Status</a>
     </li>
     <li class="nav-item">
-        {% if employer_profile_view.reviewprofile.review_status == 'Accepted' %}
+        {% if accepted == 'Accepted' %}
             <a class="nav-link" href="{% url 'employer_posts_job' employer_profile_view.pk %}">Post Job</a>
         {% else %}
             <a class="nav-link" href="{% url 'employer_status_not_accepted' employer_profile_view.pk %}">Post Job</a>

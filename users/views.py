@@ -288,6 +288,9 @@ class EmployerProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context = super(EmployerProfileView, self).get_context_data(**kwargs)
         context['google_maps_api_key'] = self.api_key
         context['positions_api_key'] = self.api_key_places
+        employer = models.Employer.objects.filter(user=self.request.user)[0]
+        rev = ReviewProfile.objects.filter(employer_id=employer)[0]
+        context['accepted'] = rev.review_status
         return context
 
     def test_func(self):

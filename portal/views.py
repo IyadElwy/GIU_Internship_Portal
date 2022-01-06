@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView, UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -242,8 +241,9 @@ class EmployerJobPostSuccessful(LoginRequiredMixin, UserPassesTestMixin, DetailV
     context_object_name = 'job_post_successful'
 
     def test_func(self):
-        employer = models.Employer(user=self.request.user)
-        return employer.reviewprofile.review_status == 'Accepted'
+        employer = models.Employer.objects.filter(user=self.request.user)[0]
+        rev = ReviewProfile.objects.filter(employer_id=employer)[0]
+        return rev.review_status == 'Accepted'
 
 
 class EmployerStatusNotAccepted(LoginRequiredMixin, DetailView):
@@ -321,7 +321,7 @@ class ShowAllApplicationsByCompany(LoginRequiredMixin, UserPassesTestMixin, List
 
     def get_context_data(self, **kwargs):
         context = super(ShowAllApplicationsByCompany, self).get_context_data(**kwargs)
-        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+        # context['company_name'] = self.object_list[0].job_id.employer_id.company_name
 
         convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
         if convo.exists():
@@ -359,7 +359,9 @@ class EmployerChangesStudentApplicationStatus(LoginRequiredMixin, UserPassesTest
             form.instance.has_started = True
             std = self.object.student_id
             form.instance.student_id = std
-            # models.Student.objects.filter(user=std.user).update(current_aa=self.object.job_id.aa_id)
+            models.Student.objects.filter(user=std.user).update(current_aa=self.object.job_id.aa_id)
+            models.Student.objects.filter(user=std.user).update(is_in_job=True)
+            # Job.objects.filter(job_id=self.object.job_id.job_id).active_student = std
             ProgressReport.objects.create(student_id=self.object.student_id,
                                           application_id=self.object,
                                           academic_advisor_id=self.object.job_id.aa_id,
@@ -403,6 +405,10 @@ class EmployerEndInternship(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
     def form_valid(self, form):
         form.instance.has_started = False
+        std = self.object.student_id
+        models.Student.objects.filter(user=std.user).update(current_aa=None)
+        models.Student.objects.filter(user=std.user).update(is_in_job=False)
+
         return super().form_valid(form)
 
     def test_func(self):
@@ -417,7 +423,7 @@ class EmployerPayStudentForInternship(LoginRequiredMixin, UserPassesTestMixin, L
 
     def get_context_data(self, **kwargs):
         context = super(EmployerPayStudentForInternship, self).get_context_data(**kwargs)
-        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+        # context['company_name'] = self.object_list[0].job_id.employer_id.company_name
 
         convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
         if convo.exists():
@@ -533,7 +539,7 @@ class CocShowApplications(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CocShowApplications, self).get_context_data(**kwargs)
-        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+        # context['company_name'] = self.object_list[0].job_id.employer_id.company_name
 
         convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
         if convo.exists():
@@ -597,7 +603,7 @@ class StudentShowActiveInternship(LoginRequiredMixin, UserPassesTestMixin, ListV
 
     def get_context_data(self, **kwargs):
         context = super(StudentShowActiveInternship, self).get_context_data(**kwargs)
-        context['company_name'] = self.object_list[0].job_id.employer_id.company_name
+        # context['company_name'] = self.object_list[0].job_id.employer_id.company_name
 
         convo = Conversation.objects.filter(Q(user1=self.request.user) | Q(user2=self.request.user))
         if convo.exists():
@@ -683,6 +689,10 @@ class StudentShowProgressReports(LoginRequiredMixin, UserPassesTestMixin, ListVi
     context_object_name = 'student_show_progress_reports'
     login_url = 'login'
 
+    def get_queryset(self):
+        std = models.Student(user=self.request.user)
+        return ProgressReport.objects.filter(student_id=std)
+
     def get_context_data(self, **kwargs):
         context = super(StudentShowProgressReports, self).get_context_data(**kwargs)
         std = models.Student(user=self.request.user)
@@ -708,7 +718,7 @@ class StudentShowProgressReport(LoginRequiredMixin, UserPassesTestMixin, DetailV
 class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ProgressReport
     template_name = 'portal/student_fills_in_progress_report.html'
-    fields = ('progress_report_title', 'progress_report_description')
+    fields = ('progress_report_title', 'progress_report_description', 'application_id')
     context_object_name = 'student_fills_in_progress_report'
     login_url = 'login'
     success_url = 'student_views_progress_reports'
@@ -716,9 +726,9 @@ class StudentFillInProgressReport(LoginRequiredMixin, UserPassesTestMixin, Creat
     def form_valid(self, form):
         std = models.Student(user=self.request.user)
         form.instance.student_id = std
-        std = models.Student(user=self.request.user)
-        pr = ProgressReport.objects.filter(student_id=std)[0]
-        form.instance.academic_advisor_id = pr.academic_advisor_id
+        job = form.cleaned_data['application_id']
+        form.instance.academic_advisor_id = job.job_id.aa_id
+
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -743,6 +753,10 @@ class AcademicAdvisorListProgressReports(LoginRequiredMixin, UserPassesTestMixin
     template_name = 'portal/acadamic_adv_views_progress_reports.html'
     context_object_name = 'acadamic_adv_views_progress_reports'
     login_url = 'login'
+
+    def get_queryset(self):
+        aa = models.AcademicAdvisor.objects.filter(user=self.request.user)[0]
+        return ProgressReport.objects.filter(academic_advisor_id=aa)
 
     def test_func(self):
         return self.request.user.is_academic_advisor

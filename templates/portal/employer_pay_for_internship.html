@@ -15,7 +15,7 @@
 
 {% block profile_body %}
 
-    <div class="d-flex" id="wrapper">
+    <div class="d-flex" id="wrapper" style="overflow-y: scroll;height: 600px;">
         <!-- Sidebar -->
         <div class="bg-light border-right vh-100" id="sidebar-wrapper">
             <div class="sidebar-heading">
@@ -69,7 +69,7 @@
                                                 <div class="card-body text-primary">
                                                     <p>View job details</p>
                                                     <div class="container">
-                                                        <a href="{% url 'job_generic' application.job_id.pk %}"
+                                                        <a href="{% url 'job_generic' job.pk %}"
                                                            class="no_underline ">
                                                             <button type="button" style="margin-left: 70px; margin-right:
                                                          80px" class="btn

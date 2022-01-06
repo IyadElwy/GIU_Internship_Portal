@@ -15,6 +15,7 @@ class User(AbstractUser):
     is_faculty_representative = models.BooleanField(default=False)
     is_academic_advisor = models.BooleanField(default=False)
     is_career_office_coordinator = models.BooleanField(default=False)
+    password = models.CharField(null=True, blank=True, max_length=500)
 
 
 # All users
@@ -23,7 +24,7 @@ class User(AbstractUser):
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     company_name = models.CharField(max_length=20)
-    employer_address = models.CharField(max_length=100)
+    employer_address = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=20)
     fax_number = models.CharField(max_length=50, null=True, blank=True)
     website = models.CharField(max_length=50)
@@ -48,16 +49,38 @@ class GIUAdmin(models.Model):
 
 
 class FacultyRepresentative(models.Model):
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    faculty = models.CharField(max_length=20)
+    faculty = models.CharField(max_length=20, choices=fac_choices)
 
     def __str__(self):
         return self.faculty
 
 
 class AcademicAdvisor(models.Model):
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    faculty = models.CharField(max_length=20)
+    faculty = models.CharField(max_length=20, choices=fac_choices)
 
     def __str__(self):
         return self.user.username
@@ -101,8 +124,8 @@ class Student(models.Model):
     student_address = models.CharField(max_length=10)
     has_cv = models.BooleanField(default=False, blank=True)
     cover_letter = models.TextField(max_length=1000, default='', blank=True)
-
-    # current_aa = models.ForeignKey(AcademicAdvisor, on_delete=models.DO_NOTHING, null=True, blank=True)
+    is_in_job = models.BooleanField(default=False)
+    current_aa = models.ForeignKey(AcademicAdvisor, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     @property
     def age(self):

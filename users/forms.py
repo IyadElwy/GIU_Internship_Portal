@@ -10,11 +10,37 @@ from django.conf import settings
 
 
 class StudentSignUpForm(UserCreationForm):
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
+    sem_choices = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+        (10, 10),
+        (11, 11),
+        (12, 12),
+    )
+
     middle_name = forms.CharField(max_length=20)
     student_university_id = forms.IntegerField()
     birthdate = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD'}))
-    semester = forms.IntegerField()
-    faculty = forms.CharField(max_length=20)
+    semester = forms.ChoiceField(choices=sem_choices)
+    faculty = forms.ChoiceField(choices=fac_choices)
     major = forms.CharField(max_length=20)
     gpa = forms.DecimalField(decimal_places=2, max_digits=3)
     student_address = forms.CharField(max_length=10)
@@ -146,9 +172,10 @@ class EmployerSignUpForm(UserCreationForm):
         except Exception as e:
             print(e)
 
-        first_n = self.cleaned_data.get('first_name')
-        last_n = self.cleaned_data.get('last_name')
+        first_n = "first_name_comp"
+        last_n = "last_name_comp"
 
+        # TODO REMOVE
         print(pw)
         user = models.User.objects.create(is_employer=True, password=pw, first_name=first_n, last_name=last_n,
                                           username=username, email=email_to_send_to)
@@ -199,7 +226,18 @@ class GIUAdminSignUpForm(UserCreationForm):
 
 
 class FacultyRepresentativeForm(UserCreationForm):
-    faculty = forms.CharField(max_length=20)
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
+    faculty = forms.ChoiceField(choices=fac_choices)
     email = forms.EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):
@@ -217,7 +255,18 @@ class FacultyRepresentativeForm(UserCreationForm):
 
 
 class AcademicAdvisorForm(UserCreationForm):
-    faculty = forms.CharField(max_length=20)
+    fac_choices = (
+        ('Engineering', 'Engineering'),
+        ('Computer Science', 'Computer Science'),
+        ('Business', 'Business'),
+        ('Design', 'Design'),
+        ('Architecture', 'Architecture'),
+        ('Biotechnology', 'Biotechnology'),
+        ('Pharmaceutical', 'Pharmaceutical')
+
+    )
+
+    faculty = forms.ChoiceField(choices=fac_choices)
     email = forms.EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):

@@ -5,6 +5,7 @@
     <button onclick="history.back()" class="btn btn-outline-info ml-2" type="button">Back</button>
 
 
+    {#    {% if std %}#}
     <div class="container">
         <a href="{% url 'student_fills_in_report' std.pk %}"
            class="no_underline">
@@ -12,11 +13,11 @@
         </a>
 
     </div>
+    {#    {% endif %}#}
 
 {% endblock navitems %}
 
 {% block profile_body %}
-
 
     <table class="table">
         <thead>
