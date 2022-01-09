@@ -75,7 +75,7 @@ class StudentSignUpForm(UserCreationForm):
         username = self.cleaned_data.get('username')
 
         message = Mail(
-            from_email='iyadelwy@gmail.com',
+            from_email='iyadelwy2@gmail.com',
             to_emails=email_to_send_to,
             subject='GIU Internship Portal',
             html_content='<h1>Here is your password.</h1>'
@@ -156,7 +156,7 @@ class EmployerSignUpForm(UserCreationForm):
         username = self.cleaned_data.get('username')
 
         message = Mail(
-            from_email='iyadelwy@gmail.com',
+            from_email='iyadelwy2@gmail.com',
             to_emails=email_to_send_to,
             subject='GIU Internship Portal',
             html_content='<h1>Here is your password.</h1>'

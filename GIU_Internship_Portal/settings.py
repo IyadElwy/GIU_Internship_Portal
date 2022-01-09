@@ -22,7 +22,6 @@ load_dotenv(ENV_PATH)
 GOOGLE_MAPS_API_KEY = os.environ.get('google_maps_api_key')
 POSITION_API = os.environ.get('position_stack_api')
 SENDGRID_API = os.environ.get('SENDGRIDAPIKEY')
-SENDGRID_PASSWORD = os.environ.get('PASSWORD')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -151,7 +150,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 # TODO: edit
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = 'iyadelwy@gmail.com'
+DEFAULT_FROM_EMAIL = 'iyadelwy2@gmail.com'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API

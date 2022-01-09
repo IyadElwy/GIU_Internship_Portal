@@ -62,7 +62,8 @@
 
 
                                 <div class="card-body">
-                                    <h3>{{ company.company_name }}</h3>
+                                    <h3><a class="no_underline" href="{% url 'generic_employer_profile' company.pk %}"
+                                    >{{ company.company_name }}</a></h3>
                                     <p>{{ company.website }}</p>
                                     <p>{{ company.products_or_services }}</p>
                                     <p>{{ company.employer_address }}</p>
