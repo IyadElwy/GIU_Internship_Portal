@@ -3,6 +3,7 @@
 ## A complete Internship Portal designed for the German International University in Cairo
 ### Includes many features ranging from a messaging system, paypal and google maps integrations to login, authentication, news and help page, registration with email notifications and much more
 
+## Live [HERE](https://aqueous-headland-97420.herokuapp.com/)
 
 ### Users and Components:
 
